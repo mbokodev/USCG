@@ -68,6 +68,9 @@ export interface ISubCategory {
   createdAt: string;
   updatedAt: string;
   category?: ICategoryInfo;
+  _count?: {
+    ads?: number;
+  };
 }
 
 /**
