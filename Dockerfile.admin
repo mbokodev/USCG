@@ -60,10 +60,10 @@ RUN apk add --no-cache dumb-init
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nextjs -u 1001
 
-# Copy built application (standalone output)
+# Copy built application (standalone output - monorepo structure)
 COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/.next/static ./admin-panel/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/public ./admin-panel/public
 
 # Switch to non-root user
 USER nextjs
@@ -79,5 +79,5 @@ ENV PORT=3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
 
-# Start the application
-CMD ["dumb-init", "node", "server.js"]
+# Start the application (server.js is in admin-panel/ due to monorepo)
+CMD ["dumb-init", "node", "admin-panel/server.js"]
