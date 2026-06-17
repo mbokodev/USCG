@@ -1,7 +1,8 @@
 # =============================================================================
-# USCG Admin Panel - Dockerfile
+# USCG Admin Panel - Dockerfile (Monorepo)
 # =============================================================================
-# Multi-stage build for optimized production image
+# Build context: root of monorepo (.)
+# Usage: docker build -f admin-panel/Dockerfile .
 
 # -----------------------------------------------------------------------------
 # Stage 1: Dependencies
@@ -10,10 +11,16 @@ FROM node:20-alpine AS deps
 
 WORKDIR /app
 
-# Copy package files
+# Copy workspace package files
 COPY package*.json ./
+COPY admin-panel/package*.json ./admin-panel/
+COPY shared/package*.json ./shared/
+
+# Copy shared source
+COPY shared ./shared
 
 # Install dependencies
+WORKDIR /app/admin-panel
 RUN npm ci && npm cache clean --force
 
 # -----------------------------------------------------------------------------
@@ -23,15 +30,20 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy dependencies
+# Copy from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --from=deps /app/admin-panel/node_modules ./admin-panel/node_modules
+COPY --from=deps /app/shared ./shared
+
+# Copy admin-panel source
+COPY admin-panel ./admin-panel
 
 # Set environment variables for build
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
-# Build the application
+# Build
+WORKDIR /app/admin-panel
 RUN npm run build
 
 # -----------------------------------------------------------------------------
@@ -41,7 +53,7 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
-# Install dumb-init for proper signal handling
+# Install dumb-init
 RUN apk add --no-cache dumb-init
 
 # Create non-root user
@@ -49,9 +61,9 @@ RUN addgroup -g 1001 -S nodejs && \
     adduser -S nextjs -u 1001
 
 # Copy built application
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/public ./public
 
 # Switch to non-root user
 USER nextjs

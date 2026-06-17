@@ -1,7 +1,8 @@
 # =============================================================================
-# USCG Backend - Dockerfile
+# USCG Backend - Dockerfile (Monorepo)
 # =============================================================================
-# Multi-stage build for optimized production image
+# Build context: root of monorepo (.)
+# Usage: docker build -f backend/Dockerfile .
 
 # -----------------------------------------------------------------------------
 # Stage 1: Dependencies
@@ -13,12 +14,20 @@ WORKDIR /app
 # Install dependencies required for Prisma
 RUN apk add --no-cache openssl
 
-# Copy package files
+# Copy workspace package files
 COPY package*.json ./
-COPY prisma ./prisma/
+COPY backend/package*.json ./backend/
+COPY shared/package*.json ./shared/
+
+# Copy shared source (needed for workspace)
+COPY shared ./shared
+
+# Copy prisma schema
+COPY backend/prisma ./backend/prisma/
 
 # Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+WORKDIR /app/backend
+RUN npm ci && npm cache clean --force
 
 # Generate Prisma client
 RUN npx prisma generate
@@ -33,15 +42,17 @@ WORKDIR /app
 # Install dependencies required for build
 RUN apk add --no-cache openssl
 
-# Copy dependencies from deps stage
+# Copy from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --from=deps /app/backend/node_modules ./backend/node_modules
+COPY --from=deps /app/shared ./shared
 
-# Generate Prisma client
-RUN npx prisma generate
+# Copy backend source
+COPY backend ./backend
 
-# Build the application
-RUN npm run build
+# Build
+WORKDIR /app/backend
+RUN npx prisma generate && npm run build
 
 # -----------------------------------------------------------------------------
 # Stage 3: Production
@@ -58,10 +69,10 @@ RUN addgroup -g 1001 -S nodejs && \
     adduser -S nestjs -u 1001
 
 # Copy built application
-COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
-COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nestjs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nestjs:nodejs /app/package*.json ./
+COPY --from=builder --chown=nestjs:nodejs /app/backend/dist ./dist
+COPY --from=builder --chown=nestjs:nodejs /app/backend/node_modules ./node_modules
+COPY --from=builder --chown=nestjs:nodejs /app/backend/prisma ./prisma
+COPY --from=builder --chown=nestjs:nodejs /app/backend/package*.json ./
 
 # Create uploads directory
 RUN mkdir -p uploads/images uploads/documents && \
