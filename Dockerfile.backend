@@ -68,6 +68,8 @@ RUN addgroup -g 1001 -S nodejs && \
 
 # Copy built application
 COPY --from=builder --chown=nestjs:nodejs /app/backend/dist ./dist
+# Merge node_modules: root (hoisted deps) first, then backend (Prisma client) on top
+COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nodejs /app/backend/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nodejs /app/backend/prisma ./prisma
 COPY --from=builder --chown=nestjs:nodejs /app/backend/package*.json ./
