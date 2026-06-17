@@ -1,0 +1,81 @@
+# =============================================================================
+# USCG Marketplace - Dockerfile (Root level for Dokploy)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Stage 1: Dependencies
+# -----------------------------------------------------------------------------
+FROM node:20-alpine AS deps
+
+WORKDIR /app
+
+# Copy workspace package files
+COPY package*.json ./
+COPY marketplace/package*.json ./marketplace/
+COPY shared/package*.json ./shared/
+
+# Copy shared source
+COPY shared ./shared
+
+# Install dependencies
+WORKDIR /app/marketplace
+RUN npm ci && npm cache clean --force
+
+# -----------------------------------------------------------------------------
+# Stage 2: Builder
+# -----------------------------------------------------------------------------
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/marketplace/node_modules ./marketplace/node_modules
+COPY --from=deps /app/shared ./shared
+
+# Copy marketplace source
+COPY marketplace ./marketplace
+
+# Set environment variables for build
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
+# Build
+WORKDIR /app/marketplace
+RUN npm run build
+
+# -----------------------------------------------------------------------------
+# Stage 3: Production
+# -----------------------------------------------------------------------------
+FROM node:20-alpine AS production
+
+WORKDIR /app
+
+# Install dumb-init
+RUN apk add --no-cache dumb-init
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+# Copy built application
+COPY --from=builder --chown=nextjs:nodejs /app/marketplace/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/marketplace/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/marketplace/public ./public
+
+# Switch to non-root user
+USER nextjs
+
+# Expose port
+EXPOSE 3003
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3003
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3003 || exit 1
+
+# Start the application
+CMD ["dumb-init", "node", "server.js"]
