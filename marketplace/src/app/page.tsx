@@ -13,6 +13,9 @@ import Section7 from "@sections/Section7";
 import Section11 from "@sections/Section11";
 import Section12 from "@sections/Section12";
 
+// Force dynamic rendering - skip prerendering at build time
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const [
     carList,
