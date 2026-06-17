@@ -1,0 +1,45 @@
+// Prisma Schema - Universal Services of Congo (USCG)
+// Phase 1 MVP - Mai 2026
+// Configuration de base : generator, datasource, enums
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum Role {
+  BUYER
+  OPERATOR
+  SUPER_ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum AdStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  MODIFICATION_REQUESTED
+}
+
+enum AdType {
+  SALE
+  RENT
+}
+
+// Phase 2: DOCUMENT sera utilisé pour PDF/Word
+enum FileType {
+  IMAGE
+  DOCUMENT
+}

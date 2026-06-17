@@ -1,0 +1,31 @@
+// SubCategory Model - Sous-catégories d'annonces
+
+model SubCategory {
+  id          String  @id @default(cuid())
+  name        Json    // I18n: { fr: "...", en: "..." }
+  slug        String
+  description Json?   // I18n: { fr: "...", en: "..." }
+
+  // Relation avec la catégorie parente
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  // Ordre d'affichage
+  sortOrder Int @default(0)
+
+  // Statut
+  isActive Boolean @default(true)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  ads      Ad[]
+  variants Variant[]
+
+  // Contrainte d'unicité : slug unique par catégorie
+  @@unique([categoryId, slug])
+  @@index([categoryId])
+  @@index([isActive])
+}

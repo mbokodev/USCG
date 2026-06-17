@@ -1,0 +1,96 @@
+// Variant Model - Variantes/Attributs dynamiques définis par l'administrateur
+// Exemples : Couleur, Stockage, Taille, Nombre de chambres, Surface, etc.
+
+model Variant {
+  id String @id @default(cuid())
+
+  // Liaison avec catégorie ET/OU sous-catégorie
+  // Si categoryId seul : s'applique à toute la catégorie
+  // Si subCategoryId seul : s'applique uniquement à cette sous-catégorie
+  // Si les deux : s'applique à cette sous-catégorie spécifique de cette catégorie
+  categoryId    String?
+  category      Category?    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  subCategoryId String?
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
+
+  // Nom et description multilingues (Phase 3 ready)
+  // Format: {"fr": "Couleur", "en": "Color"}
+  name        Json
+  description Json?
+
+  // Type de variante pour validation et filtrage
+  type VariantType @default(SELECT)
+
+  // Options prédéfinies (pour SELECT, MULTI_SELECT, COLOR)
+  // Format JSON flexible selon le type:
+  // SELECT/MULTI_SELECT: [{"value": "64GB", "label": {"fr": "64 Go", "en": "64GB"}}, ...]
+  // COLOR: [{"value": "noir", "label": {"fr": "Noir", "en": "Black"}, "hex": "#000000"}, ...]
+  // NUMBER: {"min": 0, "max": 1000, "step": 1} (optionnel, pour validation)
+  options Json @default("[]")
+
+  // Unité de mesure pour NUMBER (ex: "m²", "Go", "kg")
+  unit String?
+
+  // Configuration
+  allowCustomValue Boolean @default(false) // Permettre valeur hors options
+  isRequired       Boolean @default(false) // Obligatoire pour cette catégorie
+  isFilterable     Boolean @default(true)  // Afficher dans les filtres de recherche
+  isActive         Boolean @default(true)
+  displayOrder     Int     @default(0)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  adVariantValues AdVariantValue[]
+
+  @@index([categoryId])
+  @@index([subCategoryId])
+  @@index([isActive])
+  @@index([type])
+  @@map("variants")
+}
+
+// Types de variantes
+enum VariantType {
+  TEXT         // Texte libre
+  NUMBER       // Nombre (filtrable par range min/max)
+  SELECT       // Choix unique parmi options
+  MULTI_SELECT // Choix multiples parmi options
+  COLOR        // Couleur avec code hex
+  BOOLEAN      // Oui/Non
+}
+
+// Valeurs de variantes sélectionnées pour une annonce
+model AdVariantValue {
+  id String @id @default(cuid())
+
+  // Annonce
+  adId String
+  ad   Ad     @relation(fields: [adId], references: [id], onDelete: Cascade)
+
+  // Variante
+  variantId String
+  variant   Variant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  // Valeur sélectionnée
+  // Pour TEXT: la valeur texte
+  // Pour NUMBER: le nombre (stocké comme string)
+  // Pour SELECT/COLOR: la valeur de l'option (ex: "noir", "64gb")
+  // Pour MULTI_SELECT: une entrée par valeur sélectionnée
+  // Pour BOOLEAN: "true" ou "false"
+  value String
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Contrainte: une valeur unique par combinaison ad+variant+value
+  // Permet plusieurs valeurs pour MULTI_SELECT
+  @@unique([adId, variantId, value])
+  @@index([adId])
+  @@index([variantId])
+  @@index([value])
+  @@map("ad_variant_values")
+}

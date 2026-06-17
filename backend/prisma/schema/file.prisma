@@ -1,0 +1,33 @@
+// File Model - Images et Documents
+
+model File {
+  id String @id @default(cuid())
+
+  // Informations fichier
+  filename     String
+  originalName String
+  path         String
+  url          String
+  mimeType     String
+  size         Int // Taille en bytes
+
+  // Type de fichier (IMAGE pour Phase 1, DOCUMENT pour Phase 2)
+  type FileType @default(IMAGE)
+
+  // Image par défaut de l'annonce
+  isDefault Boolean @default(false)
+
+  // Relations
+  adId          String?
+  ad            Ad?            @relation(fields: [adId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sellerRequest SellerRequest?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  @@index([adId])
+  @@index([userId])
+  @@index([type])
+}

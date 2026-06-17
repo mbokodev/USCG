@@ -1,0 +1,40 @@
+// User Model - Utilisateurs de la plateforme
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  phone     String?
+
+  // Role système (BUYER par défaut, OPERATOR, SUPER_ADMIN)
+  role Role @default(BUYER)
+
+  // Statut vendeur (permet accès Admin Panel côté SELLER)
+  isSeller Boolean @default(false)
+
+  // Acceptation CGU avec horodatage
+  termsAcceptedAt DateTime?
+
+  // Phase 3: Langue préférée (initialisé maintenant)
+  preferredLanguage String? @default("fr")
+
+  // Statut compte
+  isActive Boolean @default(true)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  sellerRequest SellerRequest?
+  ads           Ad[]           @relation("SellerAds")
+  validatedAds  Ad[]           @relation("ValidatedBy")
+  loginHistory  LoginHistory[]
+  files         File[]
+
+  @@index([email])
+  @@index([role])
+  @@index([isSeller])
+}

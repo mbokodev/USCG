@@ -1,0 +1,573 @@
+{
+  "nav": {
+    "groups": {
+      "general": "General",
+      "catalog": "Catalog",
+      "users": "Users",
+      "store": "Store",
+      "sales": "Sales"
+    },
+    "flashDeals": "Flash Deals",
+    "banners": "Banners",
+    "dashboard": "Dashboard",
+    "myAds": "My Ads",
+    "profile": "My Profile",
+    "pendingAds": "Pending Ads",
+    "ads": "Ads",
+    "categories": "Categories",
+    "subcategories": "Subcategories",
+    "variants": "Variants",
+    "orders": "Orders",
+    "customers": "Customers",
+    "sellerRequests": "Seller Requests",
+    "logout": "Logout",
+    "adminPanel": "USCG Admin",
+    "version": "Admin Panel v1.0"
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Sign in to access the admin panel",
+    "email": "Email",
+    "emailPlaceholder": "admin@uscg.cd",
+    "password": "Password",
+    "passwordPlaceholder": "********",
+    "submit": "Sign in",
+    "loading": "Signing in...",
+    "footer": "Access reserved for sellers and administrators",
+    "brandTitle": "USCG",
+    "brandSubtitle": "Admin Panel",
+    "error": {
+      "invalid": "Invalid email or password",
+      "disabled": "This account has been disabled",
+      "noAccess": "Access denied",
+      "noAccessDescription": "Your seller request is pending approval. You will receive an email once approved."
+    }
+  },
+  "dashboard": {
+    "seller": {
+      "title": "Seller Dashboard",
+      "welcome": "Welcome to your seller dashboard",
+      "totalAds": "My Ads",
+      "pendingAds": "Pending",
+      "approvedAds": "Approved",
+      "rejectedAds": "Rejected"
+    },
+    "operator": {
+      "title": "Operator Dashboard",
+      "welcome": "Welcome to your operator dashboard",
+      "pendingAds": "Pending Ads",
+      "pendingRequests": "Seller Requests",
+      "totalBuyers": "Total Buyers",
+      "totalSellers": "Total Sellers"
+    },
+    "admin": {
+      "title": "Admin Dashboard",
+      "welcome": "Welcome to your admin dashboard",
+      "totalUsers": "Total Users",
+      "totalOperators": "Operators",
+      "totalCategories": "Categories",
+      "pendingRequests": "Pending Requests"
+    }
+  },
+  "ads": {
+    "title": "My Ads",
+    "description": "Manage your listings",
+    "add": "New Ad",
+    "search": {
+      "placeholder": "Search ads..."
+    },
+    "table": {
+      "image": "Image",
+      "title": "Title",
+      "price": "Price",
+      "category": "Category",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected",
+      "MODIFICATION_REQUESTED": "Modification Requested"
+    },
+    "viewReason": "View reason",
+    "reasonModal": {
+      "title": "Request reason",
+      "close": "Close"
+    },
+    "type": {
+      "SALE": "Sale",
+      "RENT": "Rent"
+    },
+    "stepper": {
+      "step": "Step {current} of {total}",
+      "category": "Category",
+      "categoryDesc": "Category and location",
+      "information": "Information",
+      "informationDesc": "Ad details",
+      "images": "Images",
+      "imagesDesc": "Ad photos"
+    },
+    "form": {
+      "createTitle": "New Ad",
+      "editTitle": "Edit Ad",
+      "title": "Ad title",
+      "titlePlaceholder": "Ex: Beautiful 4 bedroom house with garden",
+      "titleRequired": "Ad title *",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe your item...",
+      "price": "Price (FCFA)",
+      "priceRequired": "Price *",
+      "pricePlaceholder": "Ex: 500000",
+      "discountedPrice": "Promotional price (FCFA)",
+      "discountedPricePlaceholder": "Ex: 400000",
+      "discountedPriceHint": "Leave empty if no promotion.",
+      "type": "Ad type",
+      "typeRequired": "Ad type *",
+      "typeSale": "Sale",
+      "typeRent": "Rent",
+      "category": "Category",
+      "categoryRequired": "Category *",
+      "selectCategory": "Select a category",
+      "subcategory": "Subcategory",
+      "selectSubcategory": "Select a subcategory (optional)",
+      "location": "Exact address",
+      "locationRequired": "Exact address *",
+      "locationPlaceholder": "Ex: 123 Peace Avenue, Downtown",
+      "locationHint": "This address will remain confidential",
+      "city": "City",
+      "cityRequired": "City *",
+      "cityPlaceholder": "Ex: Brazzaville",
+      "images": "Photos",
+      "imagesHint": "Max 10 images, 5MB each",
+      "quantity": "Available quantity",
+      "quantityPlaceholder": "Ex: 10",
+      "quantityHint": "Leave empty if not applicable (real estate)",
+      "submit": "Save",
+      "cancel": "Cancel",
+      "next": "Next",
+      "previous": "Previous",
+      "submitting": "Publishing...",
+      "uploadingImages": "Uploading images...",
+      "creatingAd": "Creating ad...",
+      "updatingAd": "Updating ad...",
+      "linkingImages": "Linking images...",
+      "deletingImages": "Deleting images...",
+      "success": "Ad published successfully!",
+      "error": "An error occurred"
+    },
+    "images": {
+      "title": "Ad photos",
+      "dropzone": "Click or drop photos here",
+      "formats": "PNG, JPG, WEBP (max {size}MB per image, max {count} images)",
+      "empty": "No images added. Images are optional but highly recommended.",
+      "count": "{current} / {max} images",
+      "countDetail": "({existing} existing, {new} new)",
+      "existing": "Existing",
+      "new": "New",
+      "main": "Main",
+      "setAsDefault": "Set as default",
+      "deleteConfirm": {
+        "title": "Delete this image?",
+        "message": "This image will be deleted when saving."
+      },
+      "note": "Your ad will be submitted for review. An administrator will review your ad before publication."
+    },
+    "validation": {
+      "title": "Validate Ad",
+      "approve": "Approve",
+      "reject": "Reject",
+      "requestModification": "Request modifications",
+      "reason": "Reason",
+      "reasonPlaceholder": "Enter the reason for rejection or requested modifications...",
+      "modificationReason": "Requested modifications",
+      "modificationPlaceholder": "Describe the requested modifications...",
+      "send": "Send",
+      "approveConfirm": {
+        "title": "Approve ad",
+        "message": "This ad will be published and visible to all users."
+      },
+      "rejectConfirm": {
+        "title": "Reject ad",
+        "reasonLabel": "Rejection reason"
+      }
+    },
+    "empty": {
+      "title": "No ads yet",
+      "description": "Create your first ad to start selling.",
+      "action": "Create an ad"
+    },
+    "pending": {
+      "title": "Pending Ads",
+      "description": "Approve or reject seller ads"
+    },
+    "detail": {
+      "title": "Ad Details",
+      "editTitle": "Edit Ad",
+      "myEditTitle": "Edit my ad",
+      "backToList": "Back to ads",
+      "backToMyAds": "Back to my ads",
+      "seller": "Seller",
+      "category": "Category",
+      "city": "City",
+      "date": "Date",
+      "location": "Location",
+      "locationConfidential": "Confidential address",
+      "contact": "Contact",
+      "createdAt": "Published on",
+      "gallery": "Photo Gallery",
+      "noPhoto": "No photo",
+      "quantity": "Quantity",
+      "rejectionReason": "Rejection reason",
+      "modificationRequested": "Requested modifications"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View"
+    }
+  },
+  "sellerRequests": {
+    "title": "Seller Requests",
+    "description": "Manage requests to become a seller",
+    "table": {
+      "user": "User",
+      "business": "Business",
+      "phone": "Phone",
+      "status": "Status",
+      "date": "Request Date",
+      "actions": "Actions"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    },
+    "detail": {
+      "title": "Request Details",
+      "userInfo": "User Information",
+      "businessInfo": "Business Information",
+      "email": "Email",
+      "name": "Full Name",
+      "businessName": "Business Name",
+      "businessAddress": "Address",
+      "businessPhone": "Phone",
+      "taxId": "Tax ID",
+      "description": "Business Description"
+    },
+    "validation": {
+      "approve": "Approve Request",
+      "reject": "Reject Request",
+      "reason": "Rejection Reason",
+      "reasonPlaceholder": "Enter why this request is rejected..."
+    },
+    "empty": {
+      "title": "No pending requests",
+      "description": "All requests have been processed."
+    }
+  },
+  "customers": {
+    "title": "Customers",
+    "description": "Manage buyer users",
+    "totalCustomers": "total customers",
+    "searchPlaceholder": "Search for a customer...",
+    "noCustomers": "No customers found",
+    "seller": "Seller",
+    "active": "Active",
+    "inactive": "Inactive",
+    "table": {
+      "customer": "Customer",
+      "contact": "Contact",
+      "status": "Status",
+      "date": "Registered",
+      "actions": "Actions"
+    },
+    "detail": {
+      "title": "Customer Details",
+      "personalInfo": "Personal Information",
+      "name": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "registrationDate": "Registration Date",
+      "termsAccepted": "Terms accepted on",
+      "isSeller": "Approved seller",
+      "isActive": "Active account"
+    }
+  },
+  "users": {
+    "buyers": {
+      "title": "Buyers",
+      "description": "List of buyer users"
+    },
+    "operators": {
+      "title": "Operators",
+      "description": "Manage operator accounts",
+      "add": "New Operator"
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "isSeller": "Seller",
+      "date": "Registered",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "New Operator",
+      "editTitle": "Edit Operator",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Save",
+      "cancel": "Cancel"
+    },
+    "empty": {
+      "title": "No users",
+      "description": "No users found."
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "description": "Manage ad categories",
+    "add": "New Category",
+    "subcategories": "Subcategories",
+    "table": {
+      "name": "Name",
+      "slug": "Slug",
+      "ads": "Ads",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "New Category",
+      "editTitle": "Edit Category",
+      "name": "Name",
+      "slug": "Slug",
+      "description": "Description",
+      "icon": "Icon",
+      "iconPlaceholder": "Search for an icon...",
+      "iconNoResults": "No icons found",
+      "isActive": "Active",
+      "submit": "Save",
+      "cancel": "Cancel"
+    },
+    "empty": {
+      "title": "No categories",
+      "description": "Create your first category."
+    }
+  },
+  "subcategories": {
+    "title": "Subcategories",
+    "description": "Manage ad subcategories",
+    "add": "New Subcategory",
+    "table": {
+      "name": "Name",
+      "slug": "Slug",
+      "category": "Category",
+      "ads": "Ads",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "New Subcategory",
+      "editTitle": "Edit Subcategory",
+      "name": "Name",
+      "slug": "Slug",
+      "description": "Description",
+      "category": "Parent Category",
+      "selectCategory": "Select a category",
+      "isActive": "Active",
+      "submit": "Save",
+      "cancel": "Cancel"
+    },
+    "empty": {
+      "title": "No subcategories",
+      "description": "Create your first subcategory."
+    },
+    "filter": {
+      "all": "All categories",
+      "category": "Filter by category"
+    }
+  },
+  "loginHistory": {
+    "title": "Login History",
+    "description": "View user login history",
+    "table": {
+      "user": "User",
+      "role": "Role",
+      "ip": "IP Address",
+      "userAgent": "Browser",
+      "date": "Date",
+      "success": "Status"
+    },
+    "status": {
+      "success": "Success",
+      "failed": "Failed"
+    }
+  },
+  "profile": {
+    "title": "My Profile",
+    "description": "Manage your personal and business information",
+    "personalInfo": "Personal Information",
+    "businessInfo": "Business Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "businessName": "Business Name",
+    "businessAddress": "Business Address",
+    "businessPhone": "Business Phone",
+    "taxId": "Tax ID",
+    "businessDescription": "Business Description",
+    "sellerStatus": "Seller Status",
+    "approvedAt": "Approved on",
+    "noBusinessInfo": "No business information available",
+    "submit": "Update"
+  },
+  "banners": {
+    "title": "Banners",
+    "description": "Manage homepage carousel banners",
+    "add": "Add a banner",
+    "edit": "Edit banner",
+    "empty": "No banners configured",
+    "emptyDescription": "The carousel will display the default banner",
+    "emptyAction": "Add a banner",
+    "table": {
+      "image": "Image",
+      "title": "Title",
+      "status": "Status",
+      "order": "Order",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "New banner",
+      "editTitle": "Edit banner",
+      "title": "Title",
+      "titlePlaceholder": "Ex: Welcome to USCG Marketplace",
+      "description": "Description",
+      "descriptionPlaceholder": "Ex: Find the best deals in Congo",
+      "image": "Image",
+      "imageHint": "Drag and drop an image or click to select",
+      "imageFormats": "Accepted formats: JPG, PNG, WebP (max 5MB)",
+      "imageRequired": "Image is required",
+      "buttonText": "Button text",
+      "buttonTextPlaceholder": "Ex: Browse ads",
+      "linkType": "Link type",
+      "linkTypeAds": "To a announce",
+      "linkTypePage": "To a page",
+      "selectProduct": "Search for a product...",
+      "selectPage": "Select a page",
+      "noProductFound": "No product found",
+      "productRequired": "Select a product",
+      "pageRequired": "Select a page",
+      "pages": {
+        "allAds": "All ads",
+        "categories": "Categories",
+        "about": "About",
+        "contact": "Contact"
+      },
+      "isActive": "Active",
+      "order": "Display order",
+      "orderHint": "Banners are displayed in ascending order",
+      "submit": "Save",
+      "cancel": "Cancel"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "deleteConfirm": {
+      "title": "Delete banner",
+      "message": "Are you sure you want to delete this banner?"
+    },
+    "notFound": "Banner not found"
+  },
+  "flashDeals": {
+    "title": "Flash Deals",
+    "subtitle": "Manage flash promotions for your ads",
+    "addNew": "New Flash Deal",
+    "table": {
+      "ad": "Ad",
+      "price": "Price",
+      "period": "Period",
+      "status": "Status",
+      "order": "Order",
+      "noFlashDeals": "No Flash Deals configured",
+      "noEndDate": "No end date"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "scheduled": "Scheduled",
+      "expired": "Expired"
+    },
+    "drawer": {
+      "createTitle": "New Flash Deal",
+      "editTitle": "Edit Flash Deal"
+    },
+    "form": {
+      "ad": "Ad",
+      "searchAd": "Search for an ad...",
+      "noAdsFound": "No ads found",
+      "noEligibleAds": "No eligible ads (approved with discounted price)",
+      "adNotEditable": "The ad cannot be changed after creation",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "hasEndDate": "Set an end date",
+      "isActive": "Flash Deal active",
+      "order": "Display order",
+      "orderHelp": "Flash Deals are displayed in ascending order"
+    },
+    "validation": {
+      "adRequired": "Please select an ad",
+      "startDateRequired": "Start date is required",
+      "endDateRequired": "End date is required",
+      "orderMin": "Order must be positive"
+    },
+    "deleteModal": {
+      "title": "Delete Flash Deal",
+      "message": "Are you sure you want to delete this Flash Deal? This action cannot be undone."
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "create": "Create",
+    "actions": "Actions",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "back": "Back",
+    "search": "Search",
+    "filter": "Filter",
+    "noResults": "No results",
+    "typeToSearch": "Type to search...",
+    "priceOnRequest": "Price on request",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "active": "Active",
+    "inactive": "Inactive",
+    "all": "All",
+    "currency": "FCFA",
+    "admin": "Administrator",
+    "deleteConfirm": {
+      "title": "Confirm Deletion",
+      "message": "Are you sure you want to delete this item? This action cannot be undone."
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "showing": "Showing {from} to {to} of {total}"
+    },
+    "errors": {
+      "generic": "An error occurred",
+      "network": "Server connection error",
+      "unauthorized": "Session expired, please login again"
+    }
+  }
+}

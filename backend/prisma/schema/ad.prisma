@@ -1,0 +1,61 @@
+// Ad Model - Annonces
+
+model Ad {
+  id String @id @default(cuid())
+
+  // Informations de base
+  title           String
+  description     Json   // TiptapEditor JSON content
+  price           Float? // Prix en FCFA (null = prix sur devis/variable)
+  discountedPrice Float? // Prix réduit pour Flash Deals (null = pas de promo)
+  type            AdType @default(SALE)
+
+  // Quantité disponible (nullable = pas de notion de stock, ex: immobilier)
+  quantity    Int?
+
+  // Catégorie
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  // Sous-catégorie (optionnelle)
+  subCategoryId String?
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
+
+  // Vendeur (BUYER avec isSeller=true)
+  userId String
+  user   User   @relation("SellerAds", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Localisation (CONFIDENTIELLE - visible uniquement pour OPERATOR/SUPER_ADMIN/SELLER owner)
+  location  String  @db.Text // Adresse complète
+  city      String // Ville (visible publiquement)
+  latitude  Float?
+  longitude Float?
+
+  // Statut de validation
+  status          AdStatus  @default(PENDING)
+  rejectionReason String?
+
+  // Validation par OPERATOR/SUPER_ADMIN
+  validatedAt   DateTime?
+  validatedById String?
+  validatedBy   User?     @relation("ValidatedBy", fields: [validatedById], references: [id], onDelete: SetNull)
+
+  // Phase 2: Statistiques
+  viewCount Int @default(0)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  files          File[]
+  variantValues  AdVariantValue[]
+  flashDeal      FlashDeal?
+
+  @@index([status])
+  @@index([categoryId])
+  @@index([subCategoryId])
+  @@index([userId])
+  @@index([city])
+  @@index([createdAt])
+}

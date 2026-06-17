@@ -1,0 +1,35 @@
+// SellerRequest Model - Demandes pour devenir vendeur
+
+model SellerRequest {
+  id String @id @default(cuid())
+
+  // Référence au BUYER qui fait la demande
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Informations business
+  businessName    String
+  businessAddress String
+  businessPhone   String
+  taxId           String? // Numéro fiscal (optionnel)
+  description     String  @db.Text
+
+  // Logo (optionnel)
+  businessLogoId  String? @unique
+  businessLogo    File?   @relation(fields: [businessLogoId], references: [id], onDelete: SetNull)
+
+  // Statut de la demande
+  status          RequestStatus @default(PENDING)
+  rejectionReason String?
+
+  // Validation
+  validatedAt DateTime?
+  validatedBy String? // ID de l'OPERATOR/SUPER_ADMIN qui a validé
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([userId])
+}

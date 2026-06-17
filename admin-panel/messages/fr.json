@@ -1,0 +1,573 @@
+{
+  "nav": {
+    "groups": {
+      "general": "General",
+      "catalog": "Catalogue",
+      "users": "Utilisateurs",
+      "store": "Boutique",
+      "sales": "Ventes"
+    },
+    "flashDeals": "Flash Deals",
+    "banners": "Bannieres",
+    "dashboard": "Tableau de bord",
+    "myAds": "Mes annonces",
+    "profile": "Mon profil",
+    "pendingAds": "Annonces en attente",
+    "ads": "Annonces",
+    "categories": "Categories",
+    "subcategories": "Sous-categories",
+    "variants": "Variantes",
+    "orders": "Commandes",
+    "customers": "Clients",
+    "sellerRequests": "Demandes vendeur",
+    "logout": "Deconnexion",
+    "adminPanel": "USCG Admin",
+    "version": "Admin Panel v1.0"
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Connectez-vous pour acceder au panel admin",
+    "email": "Email",
+    "emailPlaceholder": "admin@uscg.cd",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "********",
+    "submit": "Se connecter",
+    "loading": "Connexion...",
+    "footer": "Acces reserve aux vendeurs et administrateurs",
+    "brandTitle": "USCG",
+    "brandSubtitle": "Panel d'administration",
+    "error": {
+      "invalid": "Email ou mot de passe incorrect",
+      "disabled": "Ce compte a ete desactive",
+      "noAccess": "Acces non autorise",
+      "noAccessDescription": "Votre demande vendeur est en attente de validation. Vous recevrez un email une fois approuvee."
+    }
+  },
+  "dashboard": {
+    "seller": {
+      "title": "Mon espace vendeur",
+      "welcome": "Bienvenue sur votre espace vendeur",
+      "totalAds": "Mes annonces",
+      "pendingAds": "En attente",
+      "approvedAds": "Approuvees",
+      "rejectedAds": "Refusees"
+    },
+    "operator": {
+      "title": "Tableau de bord Operateur",
+      "welcome": "Bienvenue sur votre espace operateur",
+      "pendingAds": "Annonces en attente",
+      "pendingRequests": "Demandes vendeur",
+      "totalBuyers": "Total acheteurs",
+      "totalSellers": "Total vendeurs"
+    },
+    "admin": {
+      "title": "Tableau de bord Administrateur",
+      "welcome": "Bienvenue sur votre espace administrateur",
+      "totalUsers": "Total utilisateurs",
+      "totalOperators": "Operateurs",
+      "totalCategories": "Categories",
+      "pendingRequests": "Demandes en attente"
+    }
+  },
+  "ads": {
+    "title": "Mes annonces",
+    "description": "Gerez vos annonces de vente",
+    "add": "Nouvelle annonce",
+    "search": {
+      "placeholder": "Rechercher une annonce..."
+    },
+    "table": {
+      "image": "Image",
+      "title": "Titre",
+      "price": "Prix",
+      "category": "Categorie",
+      "status": "Statut",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "status": {
+      "PENDING": "En attente",
+      "APPROVED": "Approuvee",
+      "REJECTED": "Refusee",
+      "MODIFICATION_REQUESTED": "Modifications demandees"
+    },
+    "viewReason": "Voir la raison",
+    "reasonModal": {
+      "title": "Note",
+      "close": "Fermer"
+    },
+    "type": {
+      "SALE": "Vente",
+      "RENT": "Location"
+    },
+    "stepper": {
+      "step": "Etape {current} sur {total}",
+      "category": "Categorie",
+      "categoryDesc": "Categorie et localisation",
+      "information": "Informations",
+      "informationDesc": "Details de l'annonce",
+      "images": "Images",
+      "imagesDesc": "Photos de l'annonce"
+    },
+    "form": {
+      "createTitle": "Nouvelle annonce",
+      "editTitle": "Modifier l'annonce",
+      "title": "Titre de l'annonce",
+      "titlePlaceholder": "Ex: Belle maison 4 chambres avec jardin",
+      "titleRequired": "Titre de l'annonce *",
+      "description": "Description",
+      "descriptionPlaceholder": "Decrivez votre bien...",
+      "price": "Prix (FCFA)",
+      "priceRequired": "Prix *",
+      "pricePlaceholder": "Ex: 500000",
+      "discountedPrice": "Prix promotionnel (FCFA)",
+      "discountedPricePlaceholder": "Ex: 400000",
+      "discountedPriceHint": "Laissez vide si pas de promotion.",
+      "type": "Type d'annonce",
+      "typeRequired": "Type d'annonce *",
+      "typeSale": "Vente",
+      "typeRent": "Location",
+      "category": "Categorie",
+      "categoryRequired": "Categorie *",
+      "selectCategory": "Selectionner une categorie",
+      "subcategory": "Sous-categorie",
+      "selectSubcategory": "Selectionner une sous-categorie (optionnel)",
+      "location": "Adresse exacte",
+      "locationRequired": "Adresse exacte *",
+      "locationPlaceholder": "Ex: 123 Avenue de la Paix, Quartier Centre",
+      "locationHint": "Cette adresse restera confidentielle",
+      "city": "Ville",
+      "cityRequired": "Ville *",
+      "cityPlaceholder": "Ex: Brazzaville",
+      "images": "Photos",
+      "imagesHint": "Max 10 images, 5Mo chacune",
+      "quantity": "Quantite disponible",
+      "quantityPlaceholder": "Ex: 10",
+      "quantityHint": "Laisser vide si non applicable (immobilier)",
+      "submit": "Enregistrer",
+      "cancel": "Annuler",
+      "next": "Suivant",
+      "previous": "Precedent",
+      "submitting": "Publication en cours...",
+      "uploadingImages": "Upload des images...",
+      "creatingAd": "Creation de l'annonce...",
+      "updatingAd": "Modification de l'annonce...",
+      "linkingImages": "Association des images...",
+      "deletingImages": "Suppression des images...",
+      "success": "Annonce publiee avec succes !",
+      "error": "Une erreur est survenue"
+    },
+    "images": {
+      "title": "Photos de l'annonce",
+      "dropzone": "Cliquez ou deposez des photos ici",
+      "formats": "PNG, JPG, WEBP (max {size}Mo par image, max {count} images)",
+      "empty": "Aucune image ajoutee. Les images sont optionnelles mais fortement recommandees.",
+      "count": "{current} / {max} images",
+      "countDetail": "({existing} existantes, {new} nouvelles)",
+      "existing": "Existante",
+      "new": "Nouvelle",
+      "main": "Principale",
+      "setAsDefault": "Definir comme principale",
+      "deleteConfirm": {
+        "title": "Supprimer cette image ?",
+        "message": "Cette image sera supprimee lors de la sauvegarde."
+      },
+      "note": "Votre annonce sera soumise pour validation. Un administrateur examinera votre annonce avant sa publication."
+    },
+    "validation": {
+      "title": "Valider l'annonce",
+      "approve": "Approuver",
+      "reject": "Refuser",
+      "requestModification": "Demander des modifications",
+      "reason": "Raison",
+      "reasonPlaceholder": "Indiquez la raison du refus ou les modifications demandees...",
+      "modificationReason": "Modifications demandees",
+      "modificationPlaceholder": "Decrivez les modifications demandees...",
+      "send": "Envoyer",
+      "approveConfirm": {
+        "title": "Approuver l'annonce",
+        "message": "Cette annonce sera publiee et visible par tous les utilisateurs."
+      },
+      "rejectConfirm": {
+        "title": "Refuser l'annonce",
+        "reasonLabel": "Raison du refus"
+      }
+    },
+    "empty": {
+      "title": "Aucune annonce pour le moment",
+      "description": "Publiez votre premiere annonce pour commencer a vendre.",
+      "action": "Creer une annonce"
+    },
+    "pending": {
+      "title": "Annonces en attente",
+      "description": "Validez ou refusez les annonces des vendeurs"
+    },
+    "detail": {
+      "title": "Detail de l'annonce",
+      "editTitle": "Modifier l'annonce",
+      "myEditTitle": "Modifier mon annonce",
+      "backToList": "Retour aux annonces",
+      "backToMyAds": "Retour a mes annonces",
+      "seller": "Vendeur",
+      "category": "Categorie",
+      "city": "Ville",
+      "date": "Date",
+      "location": "Localisation",
+      "locationConfidential": "Adresse confidentielle",
+      "contact": "Contact",
+      "createdAt": "Publiee le",
+      "gallery": "Galerie photos",
+      "noPhoto": "Aucune photo",
+      "quantity": "Quantite",
+      "rejectionReason": "Raison du refus",
+      "modificationRequested": "Modifications demandees"
+    },
+    "actions": {
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "view": "Voir"
+    }
+  },
+  "sellerRequests": {
+    "title": "Demandes vendeur",
+    "description": "Gerez les demandes pour devenir vendeur",
+    "table": {
+      "user": "Utilisateur",
+      "business": "Entreprise",
+      "phone": "Telephone",
+      "status": "Statut",
+      "date": "Date demande",
+      "actions": "Actions"
+    },
+    "status": {
+      "PENDING": "En attente",
+      "APPROVED": "Approuvee",
+      "REJECTED": "Refusee"
+    },
+    "detail": {
+      "title": "Detail de la demande",
+      "userInfo": "Informations utilisateur",
+      "businessInfo": "Informations entreprise",
+      "email": "Email",
+      "name": "Nom complet",
+      "businessName": "Nom de l'entreprise",
+      "businessAddress": "Adresse",
+      "businessPhone": "Telephone",
+      "taxId": "Numero fiscal",
+      "description": "Description de l'activite"
+    },
+    "validation": {
+      "approve": "Approuver la demande",
+      "reject": "Refuser la demande",
+      "reason": "Raison du refus",
+      "reasonPlaceholder": "Indiquez pourquoi cette demande est refusee..."
+    },
+    "empty": {
+      "title": "Aucune demande en attente",
+      "description": "Toutes les demandes ont ete traitees."
+    }
+  },
+  "customers": {
+    "title": "Clients",
+    "description": "Gestion des utilisateurs acheteurs",
+    "totalCustomers": "clients au total",
+    "searchPlaceholder": "Rechercher un client...",
+    "noCustomers": "Aucun client trouve",
+    "seller": "Vendeur",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "table": {
+      "customer": "Client",
+      "contact": "Contact",
+      "status": "Statut",
+      "date": "Inscription",
+      "actions": "Actions"
+    },
+    "detail": {
+      "title": "Detail du client",
+      "personalInfo": "Informations personnelles",
+      "name": "Nom complet",
+      "email": "Email",
+      "phone": "Telephone",
+      "registrationDate": "Date d'inscription",
+      "termsAccepted": "CGU acceptees le",
+      "isSeller": "Vendeur approuve",
+      "isActive": "Compte actif"
+    }
+  },
+  "users": {
+    "buyers": {
+      "title": "Acheteurs",
+      "description": "Liste des utilisateurs acheteurs"
+    },
+    "operators": {
+      "title": "Operateurs",
+      "description": "Gerez les comptes operateurs",
+      "add": "Nouvel operateur"
+    },
+    "table": {
+      "name": "Nom",
+      "email": "Email",
+      "role": "Role",
+      "isSeller": "Vendeur",
+      "date": "Inscription",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "Nouvel operateur",
+      "editTitle": "Modifier l'operateur",
+      "firstName": "Prenom",
+      "lastName": "Nom",
+      "email": "Email",
+      "password": "Mot de passe",
+      "submit": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "empty": {
+      "title": "Aucun utilisateur",
+      "description": "Aucun utilisateur trouve."
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "description": "Gerez les categories d'annonces",
+    "add": "Nouvelle categorie",
+    "subcategories": "Sous-categories",
+    "table": {
+      "name": "Nom",
+      "slug": "Slug",
+      "ads": "Annonces",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "Nouvelle categorie",
+      "editTitle": "Modifier la categorie",
+      "name": "Nom",
+      "slug": "Slug",
+      "description": "Description",
+      "icon": "Icone",
+      "iconPlaceholder": "Rechercher une icone...",
+      "iconNoResults": "Aucune icone trouvee",
+      "isActive": "Active",
+      "submit": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "empty": {
+      "title": "Aucune categorie",
+      "description": "Creez votre premiere categorie."
+    }
+  },
+  "subcategories": {
+    "title": "Sous-categories",
+    "description": "Gerez les sous-categories d'annonces",
+    "add": "Nouvelle sous-categorie",
+    "table": {
+      "name": "Nom",
+      "slug": "Slug",
+      "category": "Categorie",
+      "ads": "Annonces",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "Nouvelle sous-categorie",
+      "editTitle": "Modifier la sous-categorie",
+      "name": "Nom",
+      "slug": "Slug",
+      "description": "Description",
+      "category": "Categorie parente",
+      "selectCategory": "Selectionner une categorie",
+      "isActive": "Active",
+      "submit": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "empty": {
+      "title": "Aucune sous-categorie",
+      "description": "Creez votre premiere sous-categorie."
+    },
+    "filter": {
+      "all": "Toutes les categories",
+      "category": "Filtrer par categorie"
+    }
+  },
+  "loginHistory": {
+    "title": "Historique des connexions",
+    "description": "Consultez l'historique des connexions utilisateurs",
+    "table": {
+      "user": "Utilisateur",
+      "role": "Role",
+      "ip": "Adresse IP",
+      "userAgent": "Navigateur",
+      "date": "Date",
+      "success": "Statut"
+    },
+    "status": {
+      "success": "Succes",
+      "failed": "Echec"
+    }
+  },
+  "profile": {
+    "title": "Mon profil",
+    "description": "Gerez vos informations personnelles et professionnelles",
+    "personalInfo": "Informations personnelles",
+    "businessInfo": "Informations entreprise",
+    "firstName": "Prenom",
+    "lastName": "Nom",
+    "email": "Email",
+    "phone": "Telephone",
+    "businessName": "Nom entreprise",
+    "businessAddress": "Adresse entreprise",
+    "businessPhone": "Telephone entreprise",
+    "taxId": "Numero fiscal",
+    "businessDescription": "Description activite",
+    "sellerStatus": "Statut vendeur",
+    "approvedAt": "Approuve le",
+    "noBusinessInfo": "Aucune information entreprise disponible",
+    "submit": "Mettre a jour"
+  },
+  "banners": {
+    "title": "Bannieres",
+    "description": "Gerez les bannieres du carousel d'accueil",
+    "add": "Ajouter une banniere",
+    "edit": "Modifier la banniere",
+    "empty": "Aucune banniere configuree",
+    "emptyDescription": "Le carousel affichera la banniere par defaut",
+    "emptyAction": "Ajouter une banniere",
+    "table": {
+      "image": "Image",
+      "title": "Titre",
+      "status": "Statut",
+      "order": "Ordre",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "Nouvelle banniere",
+      "editTitle": "Modifier la banniere",
+      "title": "Titre",
+      "titlePlaceholder": "Ex: Bienvenue sur USCG Marketplace",
+      "description": "Description",
+      "descriptionPlaceholder": "Ex: Trouvez les meilleures annonces au Congo",
+      "image": "Image",
+      "imageHint": "Glissez-deposez une image ou cliquez pour selectionner",
+      "imageFormats": "Formats acceptes : JPG, PNG, WebP (max 5Mo)",
+      "imageRequired": "L'image est requise",
+      "buttonText": "Texte du bouton",
+      "buttonTextPlaceholder": "Ex: Parcourir les annonces",
+      "linkType": "Type de lien",
+      "linkTypeAds": "Vers un annonce",
+      "linkTypePage": "Vers une page",
+      "selectProduct": "Rechercher un produit...",
+      "selectPage": "Selectionner une page",
+      "noProductFound": "Aucun produit trouve",
+      "productRequired": "Selectionnez un produit",
+      "pageRequired": "Selectionnez une page",
+      "pages": {
+        "allAds": "Toutes les annonces",
+        "categories": "Categories",
+        "about": "A propos",
+        "contact": "Contact"
+      },
+      "isActive": "Active",
+      "order": "Ordre d'affichage",
+      "orderHint": "Les bannieres sont affichees par ordre croissant",
+      "submit": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "deleteConfirm": {
+      "title": "Supprimer la banniere",
+      "message": "Voulez-vous vraiment supprimer cette banniere ?"
+    },
+    "notFound": "Banniere introuvable"
+  },
+  "flashDeals": {
+    "title": "Flash Deals",
+    "subtitle": "Gerez les promotions flash de vos annonces",
+    "addNew": "Nouveau Flash Deal",
+    "table": {
+      "ad": "Annonce",
+      "price": "Prix",
+      "period": "Periode",
+      "status": "Statut",
+      "order": "Ordre",
+      "noFlashDeals": "Aucun Flash Deal configure",
+      "noEndDate": "Sans limite"
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "scheduled": "Programme",
+      "expired": "Expire"
+    },
+    "drawer": {
+      "createTitle": "Nouveau Flash Deal",
+      "editTitle": "Modifier le Flash Deal"
+    },
+    "form": {
+      "ad": "Annonce",
+      "searchAd": "Rechercher une annonce...",
+      "noAdsFound": "Aucune annonce trouvee",
+      "noEligibleAds": "Aucune annonce eligible (approuvee avec prix reduit)",
+      "adNotEditable": "L'annonce ne peut pas etre modifiee apres creation",
+      "startDate": "Date de debut",
+      "endDate": "Date de fin",
+      "hasEndDate": "Definir une date de fin",
+      "isActive": "Flash Deal actif",
+      "order": "Ordre d'affichage",
+      "orderHelp": "Les Flash Deals sont affiches par ordre croissant"
+    },
+    "validation": {
+      "adRequired": "Veuillez selectionner une annonce",
+      "startDateRequired": "La date de debut est requise",
+      "endDateRequired": "La date de fin est requise",
+      "orderMin": "L'ordre doit etre positif"
+    },
+    "deleteModal": {
+      "title": "Supprimer le Flash Deal",
+      "message": "Voulez-vous vraiment supprimer ce Flash Deal ? Cette action est irreversible."
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "saving": "Enregistrement...",
+    "create": "Creer",
+    "actions": "Actions",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "back": "Retour",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "noResults": "Aucun resultat",
+    "typeToSearch": "Tapez pour rechercher...",
+    "priceOnRequest": "Prix sur devis",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "all": "Tous",
+    "currency": "FCFA",
+    "admin": "Administrateur",
+    "deleteConfirm": {
+      "title": "Confirmer la suppression",
+      "message": "Voulez-vous vraiment supprimer cet element ? Cette action est irreversible."
+    },
+    "pagination": {
+      "previous": "Precedent",
+      "next": "Suivant",
+      "showing": "Affichage de {from} a {to} sur {total}"
+    },
+    "errors": {
+      "generic": "Une erreur est survenue",
+      "network": "Erreur de connexion au serveur",
+      "unauthorized": "Session expiree, veuillez vous reconnecter"
+    }
+  }
+}

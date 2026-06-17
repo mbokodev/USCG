@@ -1,0 +1,31 @@
+{
+  "name": "universal-services-congo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Universal Services of Congo - Plateforme Marketplace MVP",
+  "workspaces": [
+    "backend",
+    "marketplace",
+    "admin-panel",
+    "shared"
+  ],
+  "scripts": {
+    "dev:backend": "npm run start:dev --workspace=backend",
+    "dev:marketplace": "npm run dev --workspace=marketplace",
+    "dev:admin": "npm run dev --workspace=admin-panel",
+    "build:all": "npm run build --workspaces",
+    "build:backend": "npm run build --workspace=backend",
+    "build:marketplace": "npm run build --workspace=marketplace",
+    "build:admin": "npm run build --workspace=admin-panel",
+    "install:all": "npm install"
+  },
+  "keywords": [
+    "marketplace",
+    "congo",
+    "real-estate",
+    "nestjs",
+    "nextjs"
+  ],
+  "author": "Universal Services of Congo",
+  "license": "UNLICENSED"
+}
