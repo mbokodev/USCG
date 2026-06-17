@@ -1,6 +1,8 @@
 # =============================================================================
 # USCG Marketplace - Dockerfile (Root level for Dokploy)
 # =============================================================================
+# Build context: root of monorepo
+# npm workspaces: dependencies installed at root level
 
 # -----------------------------------------------------------------------------
 # Stage 1: Dependencies
@@ -9,16 +11,15 @@ FROM node:20-alpine AS deps
 
 WORKDIR /app
 
-# Copy workspace package files
+# Copy all package files for workspace resolution
 COPY package*.json ./
 COPY marketplace/package*.json ./marketplace/
 COPY shared/package*.json ./shared/
 
-# Copy shared source
+# Copy shared source (needed as workspace dependency)
 COPY shared ./shared
 
-# Install dependencies
-WORKDIR /app/marketplace
+# Install ALL workspace dependencies from root
 RUN npm ci && npm cache clean --force
 
 # -----------------------------------------------------------------------------
@@ -28,9 +29,10 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy from deps stage
+# Copy node_modules from root (workspace hoisting)
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/marketplace/node_modules ./marketplace/node_modules
+
+# Copy shared (workspace dependency)
 COPY --from=deps /app/shared ./shared
 
 # Copy marketplace source
@@ -40,7 +42,7 @@ COPY marketplace ./marketplace
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
-# Build
+# Build marketplace
 WORKDIR /app/marketplace
 RUN npm run build
 
@@ -58,7 +60,7 @@ RUN apk add --no-cache dumb-init
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nextjs -u 1001
 
-# Copy built application
+# Copy built application (standalone output)
 COPY --from=builder --chown=nextjs:nodejs /app/marketplace/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/marketplace/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/marketplace/public ./public

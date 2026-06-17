@@ -1,6 +1,8 @@
 # =============================================================================
 # USCG Admin Panel - Dockerfile (Root level for Dokploy)
 # =============================================================================
+# Build context: root of monorepo
+# npm workspaces: dependencies installed at root level
 
 # -----------------------------------------------------------------------------
 # Stage 1: Dependencies
@@ -9,16 +11,15 @@ FROM node:20-alpine AS deps
 
 WORKDIR /app
 
-# Copy workspace package files
+# Copy all package files for workspace resolution
 COPY package*.json ./
 COPY admin-panel/package*.json ./admin-panel/
 COPY shared/package*.json ./shared/
 
-# Copy shared source
+# Copy shared source (needed as workspace dependency)
 COPY shared ./shared
 
-# Install dependencies
-WORKDIR /app/admin-panel
+# Install ALL workspace dependencies from root
 RUN npm ci && npm cache clean --force
 
 # -----------------------------------------------------------------------------
@@ -28,9 +29,10 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy from deps stage
+# Copy node_modules from root (workspace hoisting)
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/admin-panel/node_modules ./admin-panel/node_modules
+
+# Copy shared (workspace dependency)
 COPY --from=deps /app/shared ./shared
 
 # Copy admin-panel source
@@ -40,7 +42,7 @@ COPY admin-panel ./admin-panel
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
-# Build
+# Build admin-panel
 WORKDIR /app/admin-panel
 RUN npm run build
 
@@ -58,7 +60,7 @@ RUN apk add --no-cache dumb-init
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nextjs -u 1001
 
-# Copy built application
+# Copy built application (standalone output)
 COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/admin-panel/public ./public
