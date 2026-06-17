@@ -29,8 +29,8 @@ COPY backend/prisma ./backend/prisma/
 WORKDIR /app/backend
 RUN npm ci && npm cache clean --force
 
-# Generate Prisma client
-RUN npx prisma generate
+# Generate Prisma client (multi-file schema in prisma/schema/)
+RUN npx prisma generate --schema prisma/schema
 
 # -----------------------------------------------------------------------------
 # Stage 2: Builder
@@ -52,7 +52,7 @@ COPY backend ./backend
 
 # Build
 WORKDIR /app/backend
-RUN npx prisma generate && npm run build
+RUN npx prisma generate --schema prisma/schema && npm run build
 
 # -----------------------------------------------------------------------------
 # Stage 3: Production
