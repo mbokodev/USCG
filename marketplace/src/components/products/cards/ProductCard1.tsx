@@ -37,9 +37,18 @@ const Wrapper = styled(Card)`
   .image-holder {
     text-align: center;
     position: relative;
-    display: inline-block;
-    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 220px;
     padding: 0.75rem;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
 
     .extra-icons {
       z-index: 2;
@@ -53,7 +62,7 @@ const Wrapper = styled(Card)`
     }
 
     @media only screen and (max-width: ${deviceSize.sm}px) {
-      display: block;
+      height: 180px;
     }
   }
 
