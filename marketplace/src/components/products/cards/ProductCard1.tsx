@@ -137,7 +137,7 @@ export default function ProductCard1({
           {imgUrl ? (
             <NextImage alt={title} width={277} src={imgUrl} height={270} />
           ) : (
-            <DefaultImage height={250} />
+            <DefaultImage width={270} height={210} />
           )}
         </Link>
       </div>
