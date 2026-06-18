@@ -9,6 +9,7 @@ import Navbar from "@component/layout/navbar/Navbar";
 import Section1 from "@sections/Section1";
 import Section2 from "@sections/Section2";
 import Section6 from "@sections/Section6";
+import Section11 from "@sections/Section11";
 import Section12 from "@sections/Section12";
 
 // Force dynamic rendering - skip prerendering at build time
@@ -41,6 +42,9 @@ export default async function HomePage() {
             locale="fr"
           />
         ))}
+
+        {/* LATEST ADS AREA */}
+        <Section11 />
 
         {/* SERVICES AREA */}
         <Section12 />
