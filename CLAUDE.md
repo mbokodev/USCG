@@ -987,12 +987,112 @@ npm run install:all        # Installer tout
 npm run build:all          # Build tout
 ```
 
+## Déploiement (Production)
+
+### Infrastructure
+
+- **Plateforme** : Dokploy (PaaS) sur VPS Contabo
+- **Domaine** : `universal-services-cg.com`
+
+### URLs Production
+
+| Service | URL | Port interne |
+|---------|-----|--------------|
+| Backend API | `https://api.universal-services-cg.com` | 3001 |
+| Admin Panel | `https://admin.universal-services-cg.com` | 3000 |
+| Marketplace | `https://universal-services-cg.com` | 3003 |
+
+### Dockerfiles
+
+Trois Dockerfiles à la racine du monorepo :
+
+| Fichier | Service | Base image |
+|---------|---------|------------|
+| `Dockerfile.backend` | NestJS API | node:20-alpine |
+| `Dockerfile.admin` | Admin Panel | node:20-alpine |
+| `Dockerfile.marketplace` | Marketplace | node:20-alpine |
+
+**Points clés des Dockerfiles :**
+- Multi-stage builds (deps → builder → production)
+- Prisma schema multi-fichiers : `--schema prisma/schema`
+- Next.js standalone output avec `turbopack.root: ".."`
+- Binding `0.0.0.0` pour accessibilité container
+- Healthchecks IPv4 (`127.0.0.1` au lieu de `localhost`)
+- `dumb-init` comme init system
+
+### Variables d'environnement
+
+**Backend (.env)**
+```env
+DATABASE_URL=postgresql://user:pass@host:5432/uscg
+JWT_SECRET=your-secret
+JWT_REFRESH_SECRET=your-refresh-secret
+CORS_ORIGIN=https://admin.universal-services-cg.com,https://universal-services-cg.com
+PORT=3001
+HOST=0.0.0.0
+```
+
+**Admin Panel / Marketplace**
+- Build-time : `NEXT_PUBLIC_API_URL` (passé via `--build-arg`)
+- Runtime : `API_URL` (pour middleware/SSR)
+- Runtime : `COOKIE_DOMAIN` (pour cookies cross-subdomain)
+
+**Exemple Dokploy env vars :**
+```
+NEXT_PUBLIC_API_URL=https://api.universal-services-cg.com  # build-arg
+API_URL=https://api.universal-services-cg.com              # runtime SSR
+COOKIE_DOMAIN=.universal-services-cg.com                   # cookies cross-subdomain
+```
+
+**IMPORTANT** : Le `.` devant `COOKIE_DOMAIN` est obligatoire pour partager les cookies entre sous-domaines.
+
+### Commandes Dokploy utiles
+
+```bash
+# Seed database (dans terminal Dokploy du backend)
+npx prisma db seed
+
+# Migrations
+npx prisma migrate deploy
+
+# Logs
+# Via interface Dokploy
+```
+
+### Configuration spécifique Next.js 16
+
+Dans `next.config.ts` :
+```typescript
+turbopack: {
+  root: "..",  // Nécessaire pour monorepo
+},
+output: "standalone",
+```
+
+Dans pages dynamiques (SSR avec API) :
+```typescript
+export const dynamic = "force-dynamic";
+```
+
+### Middleware Auth (proxy.ts)
+
+Le middleware `proxy.ts` gère le refresh token côté serveur :
+```typescript
+// Utilise API_URL en runtime, fallback sur NEXT_PUBLIC_API_URL
+const apiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+```
+
+**IMPORTANT** : Configurer `API_URL` dans les variables d'environnement Dokploy pour le SSR.
+
 ## En cas de problème
 
 1. **Prisma issues** : `npx prisma generate` puis redémarrer
 2. **Port déjà utilisé** : Changer PORT dans .env
 3. **Types non trouvés** : Vérifier imports depuis `shared/types`
 4. **Build errors** : Nettoyer `rm -rf node_modules .next dist` puis réinstaller
+5. **Container 502 Bad Gateway** : Vérifier `HOSTNAME="0.0.0.0"` et standalone path
+6. **Healthcheck fail** : Utiliser `127.0.0.1` au lieu de `localhost` (IPv6 issue)
+7. **Login puis logout immédiat** : Ajouter `COOKIE_DOMAIN=.universal-services-cg.com` pour partage cookies cross-subdomain
 
 ## Questions fréquentes
 
@@ -1037,9 +1137,12 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.2
+**Version** : 1.4
 **Dernière mise à jour** : 17 Juin 2026
 **Changelog** :
+- v1.4 : Fix cookies cross-subdomain (COOKIE_DOMAIN), documentation mise à jour
+- v1.3 : Ajout section Déploiement (Dokploy, Docker, variables env), problèmes connus
 - v1.2 : Ajout utilitaires backend (query.utils, authorization.utils), sécurité implémentée
 - v1.1 : Documentation initiale
 **Phase actuelle** : MVP Basique (Phase 1)
+**Statut déploiement** : En production

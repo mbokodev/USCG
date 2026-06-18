@@ -6,6 +6,7 @@ interface CookieOptions {
   maxAge?: number;
   path?: string;
   sameSite?: "strict" | "lax" | "none";
+  domain?: string;
 }
 
 export async function getSession() {
@@ -23,6 +24,7 @@ export async function getSession() {
         maxAge: options.maxAge,
         path: options.path ?? "/",
         sameSite: options.sameSite ?? "lax",
+        domain: options.domain,
       });
     },
 

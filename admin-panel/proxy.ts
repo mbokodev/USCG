@@ -152,12 +152,16 @@ export async function proxy(request: NextRequest) {
     }
 
     // Sécurité Niveau 2 : httpOnly pour les deux tokens
+    // Domain pour partage cookies cross-subdomain en production
+    const cookieDomain = process.env.COOKIE_DOMAIN || undefined;
+
     response.cookies.set("accessToken", newTokens.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: newTokens.expiresIn,
       path: "/",
+      domain: cookieDomain,
     });
     response.cookies.set("refreshToken", newTokens.refreshToken, {
       httpOnly: true,
@@ -165,6 +169,7 @@ export async function proxy(request: NextRequest) {
       sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7, // 7 jours
       path: "/",
+      domain: cookieDomain,
     });
 
     // Utiliser le nouveau token pour les vérifications

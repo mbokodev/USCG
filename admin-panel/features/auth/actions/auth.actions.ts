@@ -13,6 +13,8 @@ export async function loginAction(credentials: LoginRequest) {
 
   if (response.success) {
     const session = await getSession();
+    // Domain pour partage cookies cross-subdomain en production
+    const cookieDomain = process.env.COOKIE_DOMAIN || undefined;
 
     // accessToken: httpOnly (XSS impossible)
     session.set("accessToken", response.data.accessToken, {
@@ -21,6 +23,7 @@ export async function loginAction(credentials: LoginRequest) {
       maxAge: response.data.expiresIn,
       path: "/",
       sameSite: "lax",
+      domain: cookieDomain,
     });
 
     // refreshToken: httpOnly (XSS impossible)
@@ -30,6 +33,7 @@ export async function loginAction(credentials: LoginRequest) {
       maxAge: 60 * 60 * 24 * 7, // 7 jours
       path: "/",
       sameSite: "lax",
+      domain: cookieDomain,
     });
 
     // Stocker les infos user pour le middleware
@@ -39,6 +43,7 @@ export async function loginAction(credentials: LoginRequest) {
       maxAge: 60 * 60 * 24 * 7,
       path: "/",
       sameSite: "lax",
+      domain: cookieDomain,
     });
 
     return {
