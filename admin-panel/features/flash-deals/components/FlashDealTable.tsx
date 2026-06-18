@@ -96,19 +96,16 @@ export function FlashDealTable({
                 {tTable("status")}
               </th>
               <th className="px-4 py-3 text-right text-xs font-medium text-neutral-500 uppercase">
-                {t("table.order")}
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-neutral-500 uppercase">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-200">
             {isLoading ? (
-              <TableBodyLoading rows={3} columns={6} />
+              <TableBodyLoading rows={3} columns={5} />
             ) : !flashDeals || flashDeals.length === 0 ? (
               <tr>
-                <td colSpan={6}>
+                <td colSpan={5}>
                   <EmptyState
                     title={tTable("noFlashDeals")}
                     description={t("subtitle")}
@@ -187,11 +184,6 @@ export function FlashDealTable({
                       <Badge variant={status.variant}>
                         {status.label}
                       </Badge>
-                    </td>
-
-                    {/* Order */}
-                    <td className="px-4 py-4 text-right text-sm text-neutral-900">
-                      {flashDeal.order}
                     </td>
 
                     {/* Actions */}
