@@ -26,9 +26,9 @@ export default function Footer1() {
                 </Link>
 
                 <Paragraph mb="1.25rem" color="gray.500" maxWidth="320px">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor libero id et, in
-                  gravida. Sit diam duis mauris nulla cursus. Erat et lectus vel ut sollicitudin
-                  elit at amet.
+                  Votre marketplace de confiance au Congo. Achetez et vendez en toute simplicité :
+                  immobilier, véhicules, électroménager et bien plus encore. Connectez-vous avec
+                  des vendeurs vérifiés près de chez vous.
                 </Paragraph>
 
                 <AppStore />

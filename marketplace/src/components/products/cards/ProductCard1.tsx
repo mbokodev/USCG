@@ -135,9 +135,9 @@ export default function ProductCard1({
 
         <Link href={`/product/${slug}`}>
           {imgUrl ? (
-            <NextImage alt={title} width={277} src={imgUrl} height={270} />
+            <NextImage alt={title} src={imgUrl} width={277} height={270}/>
           ) : (
-            <DefaultImage width={270} height={210} />
+            <DefaultImage width={277} height={270}/>
           )}
         </Link>
       </div>
