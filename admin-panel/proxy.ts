@@ -79,7 +79,8 @@ async function refreshTokens(
   if (!refreshToken) return null;
 
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    // Use API_URL for server-side (runtime), fallback to NEXT_PUBLIC_API_URL (build-time)
+    const apiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
     const res = await fetch(`${apiUrl}/api/auth/refresh`, {
       method: "POST",
       headers: {
