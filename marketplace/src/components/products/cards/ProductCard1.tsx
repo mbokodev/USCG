@@ -37,17 +37,22 @@ const Wrapper = styled(Card)`
   .image-holder {
     text-align: center;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
     height: 220px;
     padding: 0.75rem;
     overflow: hidden;
 
-    img {
+    a {
+      display: block;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+    }
+
+    img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      border-radius: 8px;
     }
 
     .extra-icons {
@@ -135,9 +140,9 @@ export default function ProductCard1({
 
         <Link href={`/product/${slug}`}>
           {imgUrl ? (
-            <NextImage alt={title} src={imgUrl} width={277} height={270}/>
+            <NextImage alt={title} src={imgUrl} width={270}  height={210} />
           ) : (
-            <DefaultImage width={277} height={270}/>
+            <DefaultImage />
           )}
         </Link>
       </div>

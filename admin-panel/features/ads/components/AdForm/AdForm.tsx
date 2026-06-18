@@ -137,8 +137,9 @@ export function AdForm({
           await filesService.linkFilesToAd(uploadedFileIds, adId);
         }
 
-        // Success - redirect
+        // Success - invalidate caches and redirect
         queryClient.invalidateQueries({ queryKey: ["ads-admin"] });
+        queryClient.invalidateQueries({ queryKey: ["my-ads"] });
         queryClient.invalidateQueries({ queryKey: ["admin-ad", adId] });
         router.push(ROUTES.ADS.DETAIL(adId));
       } else {
@@ -163,8 +164,9 @@ export function AdForm({
           await filesService.linkFilesToAd(uploadedFileIds, createdAd.id);
         }
 
-        // Success - redirect
+        // Success - invalidate caches and redirect
         queryClient.invalidateQueries({ queryKey: ["ads-admin"] });
+        queryClient.invalidateQueries({ queryKey: ["my-ads"] });
         router.push(ROUTES.ADS.LIST);
       }
     } catch (error) {
