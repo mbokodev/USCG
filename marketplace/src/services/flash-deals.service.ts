@@ -45,10 +45,15 @@ function mapFlashDealToProduct(item: IFlashDealListItem): Product {
  * Fetch active flash deals (public endpoint)
  */
 export async function getFlashDeals(limit = 10): Promise<Product[]> {
-  const response = await api.get<FlashDealsResponse>("/flash-deals", {
-    params: { limit },
-  });
-  return response.data.data.map(mapFlashDealToProduct);
+  try {
+    const response = await api.get<FlashDealsResponse>("/flash-deals", {
+      params: { limit },
+    });
+    return response.data.data.map(mapFlashDealToProduct);
+  } catch (error) {
+    console.error("Error fetching flash deals:", error);
+    return [];
+  }
 }
 
 export const flashDealsService = {
