@@ -37,7 +37,9 @@
       "theme/*": ["./src/theme/*"],
       "utils/*": ["./src/utils/*"],
       "interfaces": ["./src/interfaces/index.ts"],
-      "interfaces/*": ["./src/interfaces/*"]
+      "interfaces/*": ["./src/interfaces/*"],
+      "@uscg/shared": ["../shared/src"],
+      "@uscg/shared/*": ["../shared/src/*"]
     }
   },
   "include": [

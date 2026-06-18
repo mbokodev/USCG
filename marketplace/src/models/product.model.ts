@@ -1,25 +1,17 @@
-import Shop from "./shop.model";
-import Review from "./Review.model";
+import type { IAdListItem } from "@uscg/shared/types";
 
-interface Product {
-  unit?: any;
-  slug: string;
-  price: number;
-  salePrice?: number | null; // Prix réduit exact (pour flash deals)
-  title: string;
-  rating: number;
-  discount: number;
-  thumbnail: string;
-  id: string;
-  shop?: Shop;
-  brand?: string;
-  size?: string[];
-  status?: string;
-  colors?: string[];
+/**
+ * Product model for marketplace
+ * Extends IAdListItem with optional marketplace-specific fields
+ */
+interface Product extends IAdListItem {
+  slug?: string; // For URL routing (defaults to id)
+  rating?: number; // Future: product rating
+  discount?: number; // Calculated discount percentage
+  // Legacy fields for backward compatibility with mock data
+  thumbnail?: string;
   images?: string[];
-  categories: any[];
-  reviews?: Review[];
-  published?: boolean;
+  salePrice?: number | null;
 }
 
 export default Product;

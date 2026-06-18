@@ -401,6 +401,19 @@ USCG/
 - [x] **Champs** : adId, startDate, endDate, isActive, order
 - [x] **Conditions** : Annonce doit être APPROVED avec discountedPrice défini
 
+**Featured Sections (Sections Homepage)** ✅ TERMINÉ
+- [x] GET /featured-sections (public - sections actives avec annonces pour homepage)
+- [x] GET /featured-sections/admin (SUPER_ADMIN - toutes les sections)
+- [x] GET /featured-sections/:id (SUPER_ADMIN - détail section)
+- [x] POST /featured-sections (SUPER_ADMIN - créer section)
+- [x] PATCH /featured-sections/:id (SUPER_ADMIN - modifier)
+- [x] DELETE /featured-sections/:id (SUPER_ADMIN - supprimer)
+- [x] GET /featured-sections/:id/ads (public - annonces d'une section avec filtres)
+- [x] **Champs** : title (i18n), categoryId, subCategoryId, filterType, limit, order, isActive
+- [x] **FilterType** : NONE, CITY, SUBCATEGORY, VARIANT
+- [x] **Marketplace** : Section6 dynamique avec sidebar filtres (max 7), premier filtre présélectionné
+- [x] **Lien "Voir tout"** : Redirige vers /search avec paramètres de filtre
+
 **Historique connexions**
 - [ ] Enregistrement automatique à chaque login
   - userId, ipAddress, userAgent, timestamp
@@ -880,6 +893,7 @@ shared/src/types/
 ├── file.types.ts         # FileType enum, IFile (avec isDefault)
 ├── banner.types.ts       # IBanner, ICreateBannerDto, IUpdateBannerDto
 ├── flash-deal.types.ts   # IFlashDeal, ICreateFlashDealDto, IUpdateFlashDealDto
+├── featured-section.types.ts # FilterType, IFeaturedSection, IFilter
 └── api.types.ts          # ApiResponse, PaginatedResponse, PaginationMeta
 ```
 
@@ -891,6 +905,45 @@ import { IAdListItem, AdStatus, I18nText } from "@uscg/shared/types";
 // Ou via les features (avec alias)
 import { Ad, AdListItem } from "@/features/ads";
 ```
+
+### Types Marketplace
+
+**Product model** (`marketplace/src/models/product.model.ts`)
+
+Le type `Product` étend `IAdListItem` avec des champs supplémentaires pour la compatibilité avec les fake data (templates). **À conserver tant que les fake data sont utilisées.**
+
+```typescript
+interface Product extends IAdListItem {
+  slug?: string;        // Pour routing URL (défaut: id)
+  rating?: number;      // Note produit
+  discount?: number;    // Pourcentage de réduction calculé
+  // Legacy fields pour fake data
+  thumbnail?: string;   // URL image principale (string)
+  images?: string[];    // URLs images (strings)
+  salePrice?: number;   // Prix réduit
+}
+```
+
+**Construction des URLs d'images (côté serveur)**
+
+Les URLs d'images doivent être construites **côté serveur** (dans les services) car `process.env` n'est pas disponible côté client.
+
+```typescript
+// featured-sections.service.ts
+const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+
+function buildFileUrl(file: IAdFile): string {
+  let folder = "images";
+  if (file.path?.startsWith("documents") || file.type === "DOCUMENT") {
+    folder = "documents";
+  }
+  return `${API_URL}/api/files/${folder}/${file.filename}`;
+}
+```
+
+**Pattern pour les composants :**
+- Service (serveur) : transforme `files[]` → `thumbnail` string
+- Composant (client) : reçoit `imgUrl: string` prêt à l'emploi
 
 ## Conventions de code
 
@@ -1137,9 +1190,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.4
-**Dernière mise à jour** : 17 Juin 2026
+**Version** : 1.5
+**Dernière mise à jour** : 18 Juin 2026
 **Changelog** :
+- v1.5 : FeaturedSections (sections homepage configurables), Product model étend IAdListItem, documentation URLs images
 - v1.4 : Fix cookies cross-subdomain (COOKIE_DOMAIN), documentation mise à jour
 - v1.3 : Ajout section Déploiement (Dokploy, Docker, variables env), problèmes connus
 - v1.2 : Ajout utilitaires backend (query.utils, authorization.utils), sécurité implémentée

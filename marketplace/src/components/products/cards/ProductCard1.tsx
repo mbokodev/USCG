@@ -9,6 +9,7 @@ import Rating from "@component/ui/rating";
 import Chip from "@component/ui/Chip";
 import FlexBox from "@component/ui/FlexBox";
 import NextImage from "@component/ui/NextImage";
+import DefaultImage from "@component/ui/DefaultImage";
 import Card, { CardProps } from "@component/ui/Card";
 import { H3, SemiSpan } from "@component/ui/Typography";
 import { IconButton } from "@component/ui/buttons";
@@ -74,9 +75,9 @@ interface ProductCard1Props extends CardProps {
   slug: string;
   title: string;
   price: number;
-  salePrice?: number; // Prix réduit exact (optionnel, sinon calculé depuis off)
-  imgUrl: string;
-  rating: number;
+  salePrice?: number;
+  imgUrl?: string;
+  rating?: number;
   images?: string[];
   id?: string | number;
 }
@@ -124,7 +125,11 @@ export default function ProductCard1({
         </FlexBox>
 
         <Link href={`/product/${slug}`}>
-          <NextImage alt={title} width={277} src={imgUrl} height={270} />
+          {imgUrl ? (
+            <NextImage alt={title} width={277} src={imgUrl} height={270} />
+          ) : (
+            <DefaultImage height={250} />
+          )}
         </Link>
       </div>
 

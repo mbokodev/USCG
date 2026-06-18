@@ -1,0 +1,45 @@
+// FeaturedSection Model - Sections configurables pour la homepage marketplace
+// Permet de créer des sections dynamiques affichant des annonces par catégorie/sous-catégorie
+
+model FeaturedSection {
+  id String @id @default(cuid())
+
+  // Affichage
+  title    Json    // I18n: { fr: "Terrains à vendre", en: "Land for sale" }
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+
+  // Source des annonces (une seule des deux)
+  categoryId    String?
+  category      Category?    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  subCategoryId String?
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
+
+  // Type de filtre pour la sidebar
+  filterType FilterType @default(NONE)
+
+  // Si filterType = VARIANT, on lie à une variante spécifique
+  variantId String?
+  variant   Variant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  // Limite d'annonces à afficher
+  limit Int @default(20)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([order])
+  @@index([categoryId])
+  @@index([subCategoryId])
+  @@map("featured_sections")
+}
+
+// Types de filtres pour la sidebar de la section
+enum FilterType {
+  NONE        // Pas de filtre sidebar
+  CITY        // Filtrer par ville (champ city des annonces)
+  SUBCATEGORY // Filtrer par sous-catégorie (si source = catégorie)
+  VARIANT     // Filtrer par une variante spécifique
+}

@@ -16,29 +16,29 @@ import { FilesModule } from './files';
 import { SellerRequestsModule } from './seller-requests';
 import { BannersModule } from './banners';
 import { FlashDealsModule } from './flash-deals';
+import { FeaturedSectionsModule } from './featured-sections';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
     }),
     // Rate limiting global - protection contre les attaques brute force
     ThrottlerModule.forRoot([
       {
         name: 'short',
-        ttl: 1000,   // 1 seconde
-        limit: 3,    // 3 requêtes max par seconde
+        ttl: 1000, // 1 seconde
+        limit: 3, // 3 requêtes max par seconde
       },
       {
         name: 'medium',
-        ttl: 10000,  // 10 secondes
-        limit: 20,   // 20 requêtes max par 10 secondes
+        ttl: 10000, // 10 secondes
+        limit: 20, // 20 requêtes max par 10 secondes
       },
       {
         name: 'long',
-        ttl: 60000,  // 1 minute
-        limit: 100,  // 100 requêtes max par minute
+        ttl: 60000, // 1 minute
+        limit: 100, // 100 requêtes max par minute
       },
     ]),
     PrismaModule,
@@ -53,6 +53,7 @@ import { FlashDealsModule } from './flash-deals';
     SellerRequestsModule,
     BannersModule,
     FlashDealsModule,
+    FeaturedSectionsModule,
   ],
   controllers: [AppController],
   providers: [

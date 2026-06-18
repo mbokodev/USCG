@@ -23,11 +23,11 @@ API REST pour la plateforme Universal Services of Congo.
 # Installer les dépendances
 npm install
 
-# Copier le fichier .env
-cp .env.example .env
+# Copier le fichier .env.local
+cp .env.local.example .env.local
 
-# Éditer .env avec vos credentials
-nano .env
+# Éditer .env.local avec vos credentials
+nano .env.local
 ```
 
 ## Configuration (.env)

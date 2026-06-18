@@ -9,6 +9,7 @@ import {
   UserPlus,
   Image,
   Zap,
+  LayoutGrid,
   type LucideIcon,
 } from "lucide-react";
 import { UserRole } from "@uscg/shared";
@@ -68,6 +69,7 @@ export const adminSidebarGroups: SidebarGroup[] = [
     items: [
       { path: ROUTES.BANNERS.LIST, icon: Image, name: "banners" },
       { path: ROUTES.FLASH_DEALS, icon: Zap, name: "flashDeals" },
+      { path: ROUTES.FEATURED_SECTIONS.LIST, icon: LayoutGrid, name: "featuredSections" },
     ],
   },
   {

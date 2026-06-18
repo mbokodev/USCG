@@ -18,9 +18,10 @@ model Category {
   updatedAt DateTime @updatedAt
 
   // Relations
-  ads           Ad[]
-  subCategories SubCategory[]
-  variants      Variant[]
+  ads              Ad[]
+  subCategories    SubCategory[]
+  variants         Variant[]
+  featuredSections FeaturedSection[]
 
   @@index([slug])
   @@index([isActive])

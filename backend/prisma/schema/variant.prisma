@@ -43,7 +43,8 @@ model Variant {
   updatedAt DateTime @updatedAt
 
   // Relations
-  adVariantValues AdVariantValue[]
+  adVariantValues  AdVariantValue[]
+  featuredSections FeaturedSection[]
 
   @@index([categoryId])
   @@index([subCategoryId])

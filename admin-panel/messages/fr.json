@@ -8,6 +8,7 @@
       "sales": "Ventes"
     },
     "flashDeals": "Flash Deals",
+    "featuredSections": "Sections vedettes",
     "banners": "Bannieres",
     "dashboard": "Tableau de bord",
     "myAds": "Mes annonces",
@@ -529,6 +530,66 @@
     "deleteModal": {
       "title": "Supprimer le Flash Deal",
       "message": "Voulez-vous vraiment supprimer ce Flash Deal ? Cette action est irreversible."
+    }
+  },
+  "featuredSections": {
+    "title": "Sections vedettes",
+    "subtitle": "Configurez les sections de la page d'accueil marketplace",
+    "addNew": "Nouvelle section",
+    "table": {
+      "order": "Ordre",
+      "title": "Titre",
+      "source": "Source",
+      "filter": "Filtre",
+      "limit": "Limite",
+      "status": "Statut"
+    },
+    "sourceType": {
+      "category": "Categorie",
+      "subcategory": "Sous-categorie"
+    },
+    "filterType": {
+      "none": "Aucun",
+      "city": "Par ville",
+      "subcategory": "Par sous-categorie",
+      "variant": "Par variante"
+    },
+    "empty": {
+      "title": "Aucune section configuree",
+      "description": "Creez une section pour afficher des annonces sur la page d'accueil"
+    },
+    "new": {
+      "title": "Nouvelle section",
+      "description": "Configurez une nouvelle section pour la page d'accueil"
+    },
+    "edit": {
+      "title": "Modifier la section",
+      "description": "Modifiez les parametres de cette section"
+    },
+    "form": {
+      "title": "Titre",
+      "titlePlaceholder": "Ex: Terrains a vendre",
+      "sourceType": "Type de source",
+      "sourceTypes": {
+        "category": "Categorie",
+        "subcategory": "Sous-categorie"
+      },
+      "category": "Categorie",
+      "selectCategory": "Selectionnez une categorie",
+      "subcategory": "Sous-categorie",
+      "selectSubcategory": "Selectionnez une sous-categorie",
+      "filterType": "Type de filtre",
+      "filterTypes": {
+        "none": "Aucun filtre",
+        "city": "Filtrer par ville",
+        "subcategory": "Filtrer par sous-categorie",
+        "variant": "Filtrer par variante"
+      },
+      "variant": "Variante",
+      "selectVariant": "Selectionnez une variante",
+      "limit": "Nombre d'annonces",
+      "order": "Ordre d'affichage",
+      "isActive": "Section active"
     }
   },
   "common": {

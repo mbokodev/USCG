@@ -21,8 +21,9 @@ model SubCategory {
   updatedAt DateTime @updatedAt
 
   // Relations
-  ads      Ad[]
-  variants Variant[]
+  ads              Ad[]
+  variants         Variant[]
+  featuredSections FeaturedSection[]
 
   // Contrainte d'unicité : slug unique par catégorie
   @@unique([categoryId, slug])

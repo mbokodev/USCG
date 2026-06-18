@@ -6,6 +6,7 @@ import Product from "@models/product.model";
 import Service from "@models/service.model";
 import Category from "@models/category.model";
 import { Banner } from "@models/market-1.model";
+import { getFileUrlFromPath } from "@uscg/shared/utils";
 
 const getTopRatedProduct = async (): Promise<Product[]> => {
   const response = await axios.get("/api/market-1/toprated-product");
@@ -110,9 +111,11 @@ const getFlashDeals = async (): Promise<Product[]> => {
         ? Math.round((1 - discountedPrice / originalPrice) * 100)
         : 0;
 
-      // Build thumbnail URL
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-      const thumbnail = fd.ad.thumbnail ? `${apiUrl}/api/files/${fd.ad.thumbnail}` : "/assets/images/products/no-image.png";
+      // Build thumbnail URL using shared utility
+      // Return empty string if no image - ProductCard1 will show DefaultImage
+      const thumbnail = fd.ad.thumbnail
+        ? getFileUrlFromPath(fd.ad.thumbnail)
+        : "";
 
       return {
         id: fd.ad.id,

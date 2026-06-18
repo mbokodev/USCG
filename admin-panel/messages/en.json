@@ -8,6 +8,7 @@
       "sales": "Sales"
     },
     "flashDeals": "Flash Deals",
+    "featuredSections": "Featured Sections",
     "banners": "Banners",
     "dashboard": "Dashboard",
     "myAds": "My Ads",
@@ -529,6 +530,66 @@
     "deleteModal": {
       "title": "Delete Flash Deal",
       "message": "Are you sure you want to delete this Flash Deal? This action cannot be undone."
+    }
+  },
+  "featuredSections": {
+    "title": "Featured Sections",
+    "subtitle": "Configure homepage sections for the marketplace",
+    "addNew": "New Section",
+    "table": {
+      "order": "Order",
+      "title": "Title",
+      "source": "Source",
+      "filter": "Filter",
+      "limit": "Limit",
+      "status": "Status"
+    },
+    "sourceType": {
+      "category": "Category",
+      "subcategory": "Subcategory"
+    },
+    "filterType": {
+      "none": "None",
+      "city": "By city",
+      "subcategory": "By subcategory",
+      "variant": "By variant"
+    },
+    "empty": {
+      "title": "No sections configured",
+      "description": "Create a section to display ads on the homepage"
+    },
+    "new": {
+      "title": "New Section",
+      "description": "Configure a new section for the homepage"
+    },
+    "edit": {
+      "title": "Edit Section",
+      "description": "Modify this section's settings"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Ex: Land for sale",
+      "sourceType": "Source type",
+      "sourceTypes": {
+        "category": "Category",
+        "subcategory": "Subcategory"
+      },
+      "category": "Category",
+      "selectCategory": "Select a category",
+      "subcategory": "Subcategory",
+      "selectSubcategory": "Select a subcategory",
+      "filterType": "Filter type",
+      "filterTypes": {
+        "none": "No filter",
+        "city": "Filter by city",
+        "subcategory": "Filter by subcategory",
+        "variant": "Filter by variant"
+      },
+      "variant": "Variant",
+      "selectVariant": "Select a variant",
+      "limit": "Number of ads",
+      "order": "Display order",
+      "isActive": "Active section"
     }
   },
   "common": {

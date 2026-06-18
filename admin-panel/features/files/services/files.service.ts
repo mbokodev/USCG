@@ -1,4 +1,5 @@
 import { http } from "@/shared/api/http";
+import { getFileUrl as getFileUrlShared } from "@uscg/shared/utils";
 
 export interface UploadedFile {
   id: string;
@@ -100,13 +101,10 @@ const filesService = {
   },
 
   /**
-   * Get file URL
+   * Get file URL (uses shared utility)
    */
   getFileUrl: (file: { filename: string; type?: string; mimeType?: string }): string => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-    // Check type or fallback to mimeType
-    const isImage = file.type === "IMAGE" || file.mimeType?.startsWith("image/");
-    return `${baseUrl}/api/files/${isImage ? "images" : "documents"}/${file.filename}`;
+    return getFileUrlShared(file);
   },
 };
 

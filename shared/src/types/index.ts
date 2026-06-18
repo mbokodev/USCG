@@ -128,6 +128,17 @@ export {
 } from "./flash-deal.types";
 
 // ============================================
+// Featured Section types
+// ============================================
+export {
+  FilterType,
+  type IFilter,
+  type IFeaturedSection,
+  type IFeaturedSectionWithAds,
+  type IFeaturedSectionsListResponse,
+} from "./featured-section.types";
+
+// ============================================
 // API types (pagination, responses)
 // ============================================
 export {

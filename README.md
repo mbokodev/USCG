@@ -33,9 +33,9 @@ USCG/
 # Installation des dépendances
 npm run install:all
 
-# Configuration .env
-cp backend/.env.example backend/.env
-# Éditer backend/.env avec vos credentials
+# Configuration .env.local
+cp backend/.env.local.example backend/.env.local
+# Éditer backend/.env.local avec vos credentials
 
 # Initialiser la base de données
 cd backend

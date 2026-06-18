@@ -53,6 +53,13 @@ export const ROUTES = {
   // Store - Flash Deals (ADMIN)
   FLASH_DEALS: "/flash-deals",
 
+  // Store - Featured Sections (ADMIN)
+  FEATURED_SECTIONS: {
+    LIST: "/featured-sections",
+    NEW: "/featured-sections/new",
+    EDIT: (id: string) => `/featured-sections/${id}` as const,
+  },
+
   // Sales - Orders (Phase 3 placeholder)
   ORDERS: "/orders",
 
