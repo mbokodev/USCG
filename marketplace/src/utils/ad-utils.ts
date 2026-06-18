@@ -4,6 +4,14 @@ import Product from "@models/product.model";
 const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 /**
+ * Build image URL from path string (e.g., "images/filename.jpg")
+ */
+export function buildImageUrl(path: string | null | undefined): string {
+  if (!path) return "";
+  return `${API_URL}/api/files/${path}`;
+}
+
+/**
  * Build file URL from file object (server-side only)
  */
 export function buildFileUrl(file: IAdFile): string {
