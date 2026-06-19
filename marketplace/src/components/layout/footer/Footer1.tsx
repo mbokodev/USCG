@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import Box from "@component/ui/Box";
 import Image from "@component/ui/Image";
@@ -11,9 +14,24 @@ import Typography, { Paragraph } from "@component/ui/Typography";
 // STYLED COMPONENTS
 import { StyledLink } from "./styles";
 // CUSTOM DATA
-import { aboutLinks, customerCareLinks, iconList } from "./data";
+import { iconList } from "./data";
 
 export default function Footer1() {
+  const t = useTranslations("footer");
+
+  const customerCareLinks = [
+    { label: t("helpCenter"), href: "/help" },
+    { label: t("trackOrder"), href: "/track" },
+    { label: t("faq"), href: "/faq" },
+  ];
+
+  const aboutLinks = [
+    { label: t("aboutUs"), href: "/about" },
+    { label: t("terms"), href: "/terms" },
+    { label: t("privacy"), href: "/privacy" },
+    { label: t("careers"), href: "/careers" },
+  ];
+
   return (
     <footer>
       <Box bg="#0F3460">
@@ -26,9 +44,7 @@ export default function Footer1() {
                 </Link>
 
                 <Paragraph mb="1.25rem" color="gray.500" maxWidth="320px">
-                  Votre marketplace de confiance au Congo. Achetez et vendez en toute simplicité :
-                  immobilier, véhicules, électroménager et bien plus encore. Connectez-vous avec
-                  des vendeurs vérifiés près de chez vous.
+                  {t("slogan")}
                 </Paragraph>
 
                 <AppStore />
@@ -36,13 +52,13 @@ export default function Footer1() {
 
               <Grid item lg={3} md={6} sm={6} xs={12}>
                 <Typography mb="1.25rem" lineHeight="1" fontSize={20} fontWeight="600">
-                  Customer Care
+                  {t("customerCare")}
                 </Typography>
 
                 <div>
                   {customerCareLinks.map((item, ind) => (
-                    <StyledLink href="/" key={ind}>
-                      {item}
+                    <StyledLink href={item.href} key={ind}>
+                      {item.label}
                     </StyledLink>
                   ))}
                 </div>
@@ -50,13 +66,13 @@ export default function Footer1() {
 
               <Grid item lg={2} md={6} sm={6} xs={12}>
                 <Typography mb="1.25rem" lineHeight="1" fontSize={20} fontWeight="600">
-                  About Us
+                  {t("aboutUs")}
                 </Typography>
 
                 <div>
                   {aboutLinks.map((item, ind) => (
-                      <StyledLink href="/" key={ind}>
-                        {item}
+                      <StyledLink href={item.href} key={ind}>
+                        {item.label}
                       </StyledLink>
                   ))}
                 </div>
@@ -64,19 +80,19 @@ export default function Footer1() {
 
               <Grid item lg={3} md={6} sm={6} xs={12}>
                 <Typography mb="1.25rem" lineHeight="1" fontSize={20} fontWeight="600">
-                  Contact Us
+                  {t("contactUs")}
                 </Typography>
 
                 <Typography py="0.3rem" color="gray.500">
-                  Carrefour Raffinerie - Siafoumou Bloc 7-8
+                  {t("address")}
                 </Typography>
 
                 <Typography py="0.3rem" color="gray.500">
-                  Email: support@universal-services-cg.com.com
+                  Email: {t("email")}
                 </Typography>
 
                 <Typography py="0.3rem" mb="1rem" color="gray.500">
-                  Phone: +242 06 654 40 11
+                  Phone: {t("phone")}
                 </Typography>
 
                 <FlexBox className="flex" mx="-5px">

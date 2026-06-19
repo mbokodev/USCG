@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 import Box from "@component/ui/Box";
 import Hidden from "@component/ui/hidden";
@@ -45,6 +46,8 @@ export default function Section6({
   locale = "fr",
   onFilterChange,
 }: Props) {
+  const t = useTranslations("home");
+
   // Limit filters to max 7 and pre-select the first one
   const displayedFilters = filters.slice(0, MAX_FILTERS);
   const firstFilterValue = displayedFilters[0]?.value || null;
@@ -167,9 +170,7 @@ export default function Section6({
 
           {filteredProducts.length === 0 ? (
             <Box textAlign="center" py="3rem" color="text.muted">
-              {locale === "fr"
-                ? "Aucune annonce disponible"
-                : "No ads available"}
+              {t("noAdsAvailable")}
             </Box>
           ) : (
             <Grid container spacing={6}>

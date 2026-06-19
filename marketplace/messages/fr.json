@@ -1,0 +1,99 @@
+{
+  "topbar": {
+    "needHelp": "Besoin d'aide ?"
+  },
+  "common": {
+    "welcome": "Bienvenue",
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher des produits...",
+    "viewAll": "Voir tout",
+    "loading": "Chargement...",
+    "noResults": "Aucun résultat",
+    "error": "Une erreur est survenue",
+    "currency": "FCFA"
+  },
+  "nav": {
+    "home": "Accueil",
+    "categories": "Catégories",
+    "allCategories": "Toutes les catégories",
+    "flashDeals": "Ventes Flash",
+    "newArrivals": "Nouveautés",
+    "contact": "Contact",
+    "about": "À propos"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "logout": "Déconnexion",
+    "myAccount": "Mon compte",
+    "email": "Email",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "Déjà un compte ?",
+    "signUp": "S'inscrire",
+    "signIn": "Se connecter"
+  },
+  "home": {
+    "heroTitle": "Trouvez ce que vous cherchez",
+    "heroSubtitle": "Des milliers d'annonces près de chez vous",
+    "flashDeals": "Ventes Flash",
+    "flashDealsSubtitle": "Offres limitées dans le temps",
+    "latestAds": "Dernières annonces",
+    "latestAdsSubtitle": "Découvrez les nouvelles annonces",
+    "noAdsAvailable": "Aucune annonce disponible"
+  },
+  "product": {
+    "price": "Prix",
+    "originalPrice": "Prix original",
+    "discount": "Réduction",
+    "description": "Description",
+    "category": "Catégorie",
+    "location": "Localisation",
+    "city": "Ville",
+    "contact": "Contacter le vendeur",
+    "share": "Partager",
+    "favorite": "Ajouter aux favoris",
+    "relatedProducts": "Produits similaires",
+    "details": "Détails",
+    "off": "de réduction"
+  },
+  "search": {
+    "title": "Recherche",
+    "results": "résultats",
+    "filters": "Filtres",
+    "sortBy": "Trier par",
+    "priceRange": "Fourchette de prix",
+    "minPrice": "Prix min",
+    "maxPrice": "Prix max",
+    "apply": "Appliquer",
+    "reset": "Réinitialiser"
+  },
+  "footer": {
+    "slogan": "Votre marketplace de confiance au Congo. Achetez et vendez en toute simplicité : immobilier, véhicules, électroménager et bien plus encore.",
+    "customerCare": "Service client",
+    "aboutUs": "À propos",
+    "contactUs": "Contactez-nous",
+    "helpCenter": "Centre d'aide",
+    "trackOrder": "Suivre ma commande",
+    "faq": "FAQ",
+    "terms": "Conditions générales",
+    "privacy": "Politique de confidentialité",
+    "careers": "Carrières",
+    "ourStores": "Nos magasins",
+    "address": "Carrefour Raffinerie - Siafoumou Bloc 7-8",
+    "email": "support@universal-services-cg.com",
+    "phone": "+242 06 654 40 11",
+    "copyright": "© {year} USCG. Tous droits réservés."
+  },
+  "services": {
+    "delivery": "Livraison rapide",
+    "deliveryDesc": "Livraison dans tout le Congo",
+    "secure": "Paiement sécurisé",
+    "secureDesc": "Transactions 100% sécurisées",
+    "support": "Support 24/7",
+    "supportDesc": "Assistance disponible à tout moment",
+    "returns": "Retours faciles",
+    "returnsDesc": "Politique de retour flexible"
+  }
+}

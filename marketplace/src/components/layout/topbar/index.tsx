@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import NextImage from "next/image";
 import { IconChevronDown, IconMail, IconPhone } from "@tabler/icons-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import Menu from "@component/ui/menu";
 import Image from "@component/ui/Image";
@@ -11,29 +12,32 @@ import MenuItem from "@component/ui/MenuItem";
 import Container from "@component/ui/Container";
 import { Small } from "@component/ui/Typography";
 import { StyledTopbar } from "./styles";
-import { LANGUAGES, CURRENCIES } from "./data";
+import { LANGUAGES } from "./data";
+import { useRouter, usePathname } from "@/i18n/routing";
 
 import logo from "../../../../public/assets/images/logo.svg";
 
 export default function Topbar() {
-  const [currency, setCurrency] = useState(CURRENCIES[0]);
-  const [language, setLanguage] = useState(LANGUAGES[0]);
+  const t = useTranslations("topbar");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const handleCurrencyClick = useCallback((curr: typeof currency) => () => setCurrency(curr), []);
+  const currentLanguage = LANGUAGES.find((lang) => lang.code === locale) || LANGUAGES[0];
 
-  const handleLanguageClick = useCallback((lang: typeof language) => () => setLanguage(lang), []);
-
-  useEffect(() => {
-    // get language from browser
-    // console.log(navigator.language);
-  }, []);
+  const handleLanguageClick = useCallback(
+    (lang: typeof LANGUAGES[0]) => () => {
+      router.replace(pathname, { locale: lang.code });
+    },
+    [router, pathname]
+  );
 
   return (
     <StyledTopbar>
       <Container className="container">
         <div className="topbar-left">
           <div className="logo">
-            <NextImage src={logo} alt="Bonik" />
+            <NextImage src={logo} alt="USCG" />
           </div>
 
           <div className="phone">
@@ -43,48 +47,29 @@ export default function Topbar() {
 
           <div className="email">
             <IconMail size={16} stroke={1.5} />
-            <span>support@universal-services-cg.com.com</span>
+            <span>support@universal-services-cg.com</span>
           </div>
         </div>
 
         <div className="topbar-right">
           <NavLink className="link" href="/">
-            Need Help?
+            {t("needHelp")}
           </NavLink>
 
           <Menu
             direction="right"
             handler={(handleOpen) => (
               <div className="dropdown-handler" onClick={handleOpen}>
-                <Image src={language.imgUrl} alt={language.title} />
-                <Small fontWeight="600">{language.title}</Small>
+                <Small fontWeight="600">{currentLanguage.title}</Small>
                 <IconChevronDown size={16} stroke={1.5} />
               </div>
             )}>
             {LANGUAGES.map((item) => (
               <MenuItem key={item.id} onClick={handleLanguageClick(item)}>
-                <Image src={item.imgUrl} borderRadius="2px" mr="0.5rem" alt={item.title} />
                 <Small fontWeight="600">{item.title}</Small>
               </MenuItem>
             ))}
           </Menu>
-
-          {/* <Menu
-            direction="right"
-            handler={
-              <FlexBox className="dropdown-handler" alignItems="center" height="40px">
-                <Image src={currency.imgUrl} alt={currency.title} />
-                <Small fontWeight="600">{currency.title}</Small>
-                <IconChevronDown size={16} stroke={1.5} />
-              </FlexBox>
-            }>
-            {CURRENCIES.map((item) => (
-              <MenuItem key={item.id} onClick={handleCurrencyClick(item)}>
-                <Image src={item.imgUrl} borderRadius="2px" mr="0.5rem" alt={item.title} />
-                <Small fontWeight="600">{item.title}</Small>
-              </MenuItem>
-            ))}
-          </Menu> */}
         </div>
       </Container>
     </StyledTopbar>

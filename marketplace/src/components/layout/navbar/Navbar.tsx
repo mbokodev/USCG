@@ -2,6 +2,7 @@
 
 import { useTheme } from "styled-components";
 import { IconCategoryFilled, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 import Box from "@component/ui/Box";
 import Card from "@component/ui/Card";
@@ -15,7 +16,6 @@ import Typography, { Span } from "@component/ui/Typography";
 import Categories from "@component/categories/Categories";
 
 import StyledNavbar from "./styles";
-import navbarNavigations from "@data/navbarNavigations";
 
 import type { NavigationItem } from "@/utils/category-utils";
 
@@ -118,6 +118,13 @@ const renderNestedNav = (list: Nav[], isRoot = false) => {
 
 export default function Navbar({ navListOpen, categories = [] }: NavbarProps) {
   const theme = useTheme();
+  const t = useTranslations("nav");
+
+  const navbarNavigations: Nav[] = [
+    { title: t("home"), url: "/" },
+    { title: t("flashDeals"), url: "/search?flashDeals=true" },
+    { title: t("contact"), url: "/contact" },
+  ];
 
   return (
     <StyledNavbar>
@@ -140,7 +147,7 @@ export default function Navbar({ navListOpen, categories = [] }: NavbarProps) {
                 fontWeight="600"
                 textAlign="left"
                 color="text.muted">
-                Categories
+                {t("categories")}
               </Typography>
 
               <IconChevronDown className="dropdown-icon" size={18} stroke={1.5} />

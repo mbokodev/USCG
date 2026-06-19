@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import Grid from "@component/ui/grid/Grid";
 import Container from "@component/ui/Container";
 import ProductCard1 from "@component/products/cards/ProductCard1";
@@ -5,13 +6,14 @@ import CategorySectionHeader from "@component/products/CategorySectionHeader";
 import { getLatestAds } from "@/services/ads.service";
 
 export default async function Section11() {
+  const t = await getTranslations("home");
   const products = await getLatestAds(12);
 
   if (products.length === 0) return null;
 
   return (
     <Container mb="70px">
-      <CategorySectionHeader title="Nouvelles annonces" seeMoreLink="/search" />
+      <CategorySectionHeader title={t("latestAds")} seeMoreLink="/search" />
 
       <Grid container spacing={6}>
         {products.map((item) => (

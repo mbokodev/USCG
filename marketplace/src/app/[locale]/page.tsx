@@ -15,13 +15,19 @@ import Section12 from "@sections/Section12";
 // Force dynamic rendering - skip prerendering at build time
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+interface HomePageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function HomePage({ params }: HomePageProps) {
+  const { locale } = await params;
+
   const [categoriesData, featuredSections] = await Promise.all([
     getCategories().catch(() => []),
     getFeaturedSectionsWithAds().catch(() => []),
   ]);
 
-  const categories = categoriesToNavigation(categoriesData, "fr");
+  const categories = categoriesToNavigation(categoriesData, locale as "fr" | "en");
 
   return (
     <AppLayout navbar={<Navbar navListOpen categories={categories} />} categories={categories}>
@@ -39,7 +45,7 @@ export default async function HomePage() {
             section={section}
             filters={filters}
             products={products}
-            locale="fr"
+            locale={locale as "fr" | "en"}
           />
         ))}
 

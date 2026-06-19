@@ -1,0 +1,99 @@
+{
+  "topbar": {
+    "needHelp": "Need Help?"
+  },
+  "common": {
+    "welcome": "Welcome",
+    "search": "Search",
+    "searchPlaceholder": "Search for products...",
+    "viewAll": "View all",
+    "loading": "Loading...",
+    "noResults": "No results",
+    "error": "An error occurred",
+    "currency": "FCFA"
+  },
+  "nav": {
+    "home": "Home",
+    "categories": "Categories",
+    "allCategories": "All categories",
+    "flashDeals": "Flash Deals",
+    "newArrivals": "New Arrivals",
+    "contact": "Contact",
+    "about": "About"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "myAccount": "My Account",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signUp": "Sign up",
+    "signIn": "Sign in"
+  },
+  "home": {
+    "heroTitle": "Find what you're looking for",
+    "heroSubtitle": "Thousands of listings near you",
+    "flashDeals": "Flash Deals",
+    "flashDealsSubtitle": "Limited time offers",
+    "latestAds": "Latest Ads",
+    "latestAdsSubtitle": "Discover new listings",
+    "noAdsAvailable": "No ads available"
+  },
+  "product": {
+    "price": "Price",
+    "originalPrice": "Original price",
+    "discount": "Discount",
+    "description": "Description",
+    "category": "Category",
+    "location": "Location",
+    "city": "City",
+    "contact": "Contact seller",
+    "share": "Share",
+    "favorite": "Add to favorites",
+    "relatedProducts": "Related products",
+    "details": "Details",
+    "off": "off"
+  },
+  "search": {
+    "title": "Search",
+    "results": "results",
+    "filters": "Filters",
+    "sortBy": "Sort by",
+    "priceRange": "Price range",
+    "minPrice": "Min price",
+    "maxPrice": "Max price",
+    "apply": "Apply",
+    "reset": "Reset"
+  },
+  "footer": {
+    "slogan": "Your trusted marketplace in Congo. Buy and sell with ease: real estate, vehicles, appliances and much more.",
+    "customerCare": "Customer Care",
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "helpCenter": "Help Center",
+    "trackOrder": "Track Order",
+    "faq": "FAQ",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "careers": "Careers",
+    "ourStores": "Our Stores",
+    "address": "Carrefour Raffinerie - Siafoumou Bloc 7-8",
+    "email": "support@universal-services-cg.com",
+    "phone": "+242 06 654 40 11",
+    "copyright": "© {year} USCG. All rights reserved."
+  },
+  "services": {
+    "delivery": "Fast Delivery",
+    "deliveryDesc": "Delivery across Congo",
+    "secure": "Secure Payment",
+    "secureDesc": "100% secure transactions",
+    "support": "24/7 Support",
+    "supportDesc": "Assistance available anytime",
+    "returns": "Easy Returns",
+    "returnsDesc": "Flexible return policy"
+  }
+}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { IconChevronRight } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 import Icon from "@component/ui/icon/Icon";
 import FlexBox from "@component/ui/FlexBox";
@@ -16,7 +17,9 @@ interface Props {
 }
 // ==============================================================
 
-export default function CategorySectionHeader({ title, iconName, seeMoreLink, locale = "fr" }: Props) {
+export default function CategorySectionHeader({ title, iconName, seeMoreLink }: Props) {
+  const t = useTranslations("common");
+
   return (
     <FlexBox justifyContent="space-between" alignItems="center" mb="1.5rem">
       <FlexBox alignItems="center">
@@ -35,7 +38,7 @@ export default function CategorySectionHeader({ title, iconName, seeMoreLink, lo
         <Link href={seeMoreLink}>
           <FlexBox alignItems="center" ml="0.5rem" color="text.muted">
             <SemiSpan mr="0.5rem">
-              {locale === "fr" ? "Voir tout" : "View all"}
+              {t("viewAll")}
             </SemiSpan>
             <IconChevronRight size={16} stroke={1.5} />
           </FlexBox>
