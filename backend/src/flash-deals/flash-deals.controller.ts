@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { SkipThrottle } from '@nestjs/throttler';
 import { Role } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -27,6 +28,7 @@ import { AdListItemDto } from '../ads/dto';
 
 @ApiTags('flash-deals')
 @Controller('flash-deals')
+@SkipThrottle({ short: true, medium: true, long: true })
 export class FlashDealsController {
   constructor(private readonly flashDealsService: FlashDealsService) {}
 

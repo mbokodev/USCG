@@ -15,6 +15,7 @@ import {
   ApiBearerAuth,
   ApiParam,
 } from '@nestjs/swagger';
+import { SkipThrottle } from '@nestjs/throttler';
 import { Role } from '@prisma/client';
 import { BannersService } from './banners.service';
 import {
@@ -27,6 +28,7 @@ import { RolesGuard } from '../auth/guards';
 
 @ApiTags('banners')
 @Controller('banners')
+@SkipThrottle({ short: true, medium: true, long: true })
 export class BannersController {
   constructor(private readonly bannersService: BannersService) {}
 

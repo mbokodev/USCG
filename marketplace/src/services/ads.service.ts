@@ -101,9 +101,27 @@ export async function getAdById(id: string): Promise<IAdPublic | null> {
   }
 }
 
+/**
+ * Fetch related products by category (excluding current ad)
+ */
+export async function getRelatedProducts(
+  categoryId: string,
+  excludeId: string,
+  limit: number = 4
+): Promise<Product[]> {
+  const { products } = await getAds({
+    categoryId,
+    limit: limit + 1, // Fetch extra in case current ad is included
+    sortBy: "createdAt",
+    sortOrder: "desc",
+  });
+  return products.filter((p) => p.id !== excludeId).slice(0, limit);
+}
+
 export const adsService = {
   getAds,
   getLatestAds,
   searchAds,
   getAdById,
+  getRelatedProducts,
 };

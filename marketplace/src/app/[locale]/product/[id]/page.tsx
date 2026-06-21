@@ -1,10 +1,19 @@
+import { Fragment } from "react";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
 
+// LAYOUT
+import AppLayout from "@component/layout";
+import Navbar from "@component/layout/navbar/Navbar";
 import Container from "@component/ui/Container";
-import { getAdById } from "@/services/ads.service";
+
+// COMPONENTS
 import ProductIntro from "@component/products/ProductIntro";
-import ProductDescription from "@component/products/ProductDescription";
+import ProductView from "@component/products/ProductView";
+
+// SERVICES
+import { getAdById, getRelatedProducts } from "@/services/ads.service";
+import { getCategories } from "@/services/categories.service";
+import { categoriesToNavigation } from "@/utils/category-utils";
 
 // Force dynamic rendering
 export const dynamic = "force-dynamic";
@@ -32,19 +41,33 @@ export async function generateMetadata({ params }: ProductPageProps) {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { id } = await params;
-  const t = await getTranslations("product");
+  const { id, locale } = await params;
 
+  // Fetch ad first to get category
   const ad = await getAdById(id);
 
   if (!ad) {
     notFound();
   }
 
+  // Fetch categories and related products in parallel
+  const [categoriesData, relatedProducts] = await Promise.all([
+    getCategories().catch(() => []),
+    ad.category?.id
+      ? getRelatedProducts(ad.category.id, id, 4).catch(() => [])
+      : Promise.resolve([]),
+  ]);
+
+  const categories = categoriesToNavigation(categoriesData, locale as "fr" | "en");
+
   return (
-    <Container my="2rem">
-      <ProductIntro ad={ad} />
-      <ProductDescription ad={ad} />
-    </Container>
+    <AppLayout navbar={<Navbar categories={categories} />} categories={categories}>
+      <Container py="2rem">
+        <Fragment>
+          <ProductIntro ad={ad} />
+          <ProductView ad={ad} relatedProducts={relatedProducts} />
+        </Fragment>
+      </Container>
+    </AppLayout>
   );
 }

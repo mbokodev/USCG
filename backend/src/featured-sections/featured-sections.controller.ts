@@ -16,6 +16,7 @@ import {
   ApiResponse,
   ApiQuery,
 } from '@nestjs/swagger';
+import { SkipThrottle } from '@nestjs/throttler';
 import { Role } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -26,6 +27,7 @@ import { CreateFeaturedSectionDto, UpdateFeaturedSectionDto } from './dto';
 
 @ApiTags('featured-sections')
 @Controller('featured-sections')
+@SkipThrottle({ short: true, medium: true, long: true })
 export class FeaturedSectionsController {
   constructor(
     private readonly featuredSectionsService: FeaturedSectionsService,
