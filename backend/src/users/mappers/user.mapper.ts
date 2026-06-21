@@ -30,6 +30,7 @@ export const UserMapper = {
       termsAcceptedAt: user.termsAcceptedAt,
       preferredLanguage: user.preferredLanguage,
       isActive: user.isActive,
+      emailVerified: user.emailVerified,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };

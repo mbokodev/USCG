@@ -7,6 +7,10 @@ export const ERROR_MESSAGES = {
   SESSION_EXPIRED: "Session expirée, veuillez vous reconnecter",
   FORBIDDEN: "Accès non autorisé",
   ADMIN_ACCESS_DENIED: "Accès au panel admin non autorisé. Votre demande vendeur est en attente de validation.",
+  EMAIL_NOT_VERIFIED: "Veuillez vérifier votre email avant de vous connecter",
+  VERIFICATION_TOKEN_INVALID: "Lien de vérification invalide ou expiré",
+  EMAIL_ALREADY_VERIFIED: "Votre email est déjà vérifié",
+  VERIFICATION_EMAIL_SENT: "Un email de vérification vous a été envoyé",
 
   // Users
   USER_NOT_FOUND: "Utilisateur non trouvé",

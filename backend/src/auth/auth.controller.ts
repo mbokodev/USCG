@@ -1,7 +1,9 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
+  Param,
   HttpCode,
   HttpStatus,
   UseGuards,
@@ -12,6 +14,7 @@ import {
   ApiOperation,
   ApiResponse,
   ApiBody,
+  ApiParam,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import type { Request } from 'express';
@@ -22,6 +25,7 @@ import {
   LoginResponseDto,
   RefreshResponseDto,
   MessageResponseDto,
+  ResendVerificationDto,
 } from './dto';
 import { Public, CurrentUser } from './decorators';
 import { JwtRefreshGuard } from './guards';
@@ -40,13 +44,13 @@ export class AuthController {
   @ApiOperation({
     summary: 'Inscription BUYER',
     description:
-      "Crée un nouveau compte utilisateur avec le rôle BUYER. L'utilisateur doit accepter les CGU. Les tokens sont retournés dans le body pour le frontend.",
+      "Crée un nouveau compte utilisateur avec le rôle BUYER. L'utilisateur doit accepter les CGU et vérifier son email avant de pouvoir se connecter.",
   })
   @ApiBody({ type: RegisterDto })
   @ApiResponse({
     status: 201,
-    description: 'Utilisateur créé avec succès',
-    type: LoginResponseDto,
+    description: 'Utilisateur créé, email de vérification envoyé',
+    type: MessageResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -56,14 +60,8 @@ export class AuthController {
     status: 409,
     description: 'Email déjà utilisé',
   })
-  async register(@Body() dto: RegisterDto): Promise<LoginResponseDto> {
-    const { user, tokens } = await this.authService.register(dto);
-    return {
-      user,
-      accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
-      expiresIn: this.authService.accessTokenMaxAge / 1000,
-    };
+  async register(@Body() dto: RegisterDto): Promise<MessageResponseDto> {
+    return this.authService.register(dto);
   }
 
   @Public()
@@ -103,6 +101,49 @@ export class AuthController {
       refreshToken: tokens.refreshToken,
       expiresIn: this.authService.accessTokenMaxAge / 1000, // en secondes
     };
+  }
+
+  @Public()
+  @Get('verify-email/:token')
+  @ApiOperation({
+    summary: 'Vérifier email',
+    description: "Vérifie l'email de l'utilisateur à partir du token envoyé par email.",
+  })
+  @ApiParam({
+    name: 'token',
+    description: 'Token de vérification envoyé par email',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Email vérifié avec succès',
+    type: MessageResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Token invalide ou expiré',
+  })
+  async verifyEmail(@Param('token') token: string): Promise<MessageResponseDto> {
+    return this.authService.verifyEmail(token);
+  }
+
+  @Public()
+  @Post('resend-verification')
+  @Throttle({ default: { limit: 1, ttl: 60000 } }) // 1 demande par minute max
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Renvoyer email de vérification',
+    description: "Renvoie l'email de vérification à l'adresse indiquée.",
+  })
+  @ApiBody({ type: ResendVerificationDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Email de vérification envoyé (si le compte existe)',
+    type: MessageResponseDto,
+  })
+  async resendVerification(
+    @Body() dto: ResendVerificationDto,
+  ): Promise<MessageResponseDto> {
+    return this.authService.resendVerificationEmail(dto.email);
   }
 
   @Public()

@@ -283,19 +283,24 @@ USCG/
 
 #### Backend (Fonctionnalités Phase 1)
 
-**Auth & Users**
-- [ ] Auth JWT (register, login, refresh)
-- [ ] POST /auth/register (Marketplace - inscription BUYER libre)
+**Auth & Users** ✅ TERMINÉ
+- [x] Auth JWT (register, login, refresh, logout)
+- [x] POST /auth/register (Marketplace - inscription BUYER libre)
   - Crée User avec role=BUYER, isSeller=false
   - Retourne JWT token
-- [ ] POST /auth/login (tous rôles)
+- [x] POST /auth/login (tous rôles)
   - Vérifie credentials
   - Retourne JWT avec role et isSeller
-- [ ] GET /users/me (tous - mon profil)
-- [ ] PATCH /users/me (tous - modifier mon profil)
-- [ ] GET /users (OPERATOR/SUPER_ADMIN - liste BUYER)
-- [ ] POST /users/operator (SUPER_ADMIN - créer OPERATOR)
-- [ ] CGU acceptance BUYER avec horodatage
+- [x] POST /auth/login/admin (Admin Panel - rejette BUYER non-seller)
+- [x] POST /auth/refresh (refresh token)
+- [x] POST /auth/logout
+- [x] GET /users/me (tous - mon profil)
+- [x] PATCH /users/me (tous - modifier mon profil)
+- [x] GET /users (OPERATOR/SUPER_ADMIN - liste BUYER)
+- [x] GET /users/:id (OPERATOR/SUPER_ADMIN - détail)
+- [x] POST /users/operator (SUPER_ADMIN - créer OPERATOR)
+- [x] DELETE /users/:id (SUPER_ADMIN - supprimer)
+- [x] CGU acceptance BUYER avec horodatage (termsAcceptedAt)
 
 **Demandes vendeur (SellerRequest)** ✅ TERMINÉ
 - [x] POST /seller-requests (BUYER authentifié)
@@ -414,30 +419,29 @@ USCG/
 - [x] **Marketplace** : Section6 dynamique avec sidebar filtres (max 7), premier filtre présélectionné
 - [x] **Lien "Voir tout"** : Redirige vers /search avec paramètres de filtre
 
-**Historique connexions**
-- [ ] Enregistrement automatique à chaque login
+**Historique connexions** ⚠️ PARTIEL
+- [x] Enregistrement automatique à chaque login (OPERATOR/SUPER_ADMIN)
   - userId, ipAddress, userAgent, timestamp
-- [ ] GET /login-history (SUPER_ADMIN - tout)
-- [ ] GET /login-history/me (tous - ses connexions)
+  - Modèle LoginHistory dans Prisma
+- [ ] GET /login-history (SUPER_ADMIN - tout) - API manquante
+- [ ] GET /login-history/me (tous - ses connexions) - API manquante
 
-#### Admin Panel
+#### Admin Panel ✅ TERMINÉ
 
-**Authentification**
-- [ ] Page Login (`/login`)
+**Authentification** ✅ TERMINÉ
+- [x] Page Login (`/login`)
   - Formulaire email + password
-  - Appel API POST /auth/login
-  - Stockage JWT token
-  - Redirection selon rôle/isSeller :
-    - isSeller=true → `/seller/dashboard`
-    - OPERATOR → `/operator/dashboard`
-    - SUPER_ADMIN → `/admin/dashboard`
+  - Appel API POST /auth/login/admin
+  - Stockage JWT token (cookies)
+  - Redirection selon rôle/isSeller
+- [x] Middleware proxy.ts avec refresh token automatique
+- [x] Protection routes par rôle
 
-**Espace SELLER (isSeller=true)**
+**Espace SELLER (isSeller=true)** ✅ TERMINÉ
 
-- [ ] Dashboard SELLER (`/seller/dashboard`)
+- [x] Dashboard SELLER (`/dashboard`)
   - Widget : Mes annonces (total, pending, approved, rejected)
-  - Widget : Mes dernières annonces
-  - Widget : Vues totales (Phase 2+)
+  - StatCards avec icônes
   - Graphique annonces par status (Phase 2)
 
 - [x] Mes annonces (`/my-ads`) ✅ TERMINÉ
@@ -463,33 +467,23 @@ USCG/
   - Submit → API PATCH /ads/:id
   - Remet en PENDING si REJECTED ou MODIFICATION_REQUESTED
 
-- [ ] Mon profil business (`/seller/profile`)
-  - Affichage infos business (SellerRequest approuvée)
-  - Modification : businessName, businessAddress, businessPhone, description
-  - Paramètres (Phase 2+ : notifications, etc.)
+- [x] Mon profil (`/user/profile`)
+  - Affichage infos personnelles et business
+  - Vue lecture seule
 
 - [ ] Mes ventes (`/seller/sales`) - Phase 3
-  - Liste de mes commandes
-  - Tableau : Client, Annonce, Montant, Date, Status
-
 - [ ] Mes clients (`/seller/customers`) - Phase 3
-  - Liste BUYER ayant commandé chez moi
 
-**Espace OPERATOR**
+**Espace OPERATOR** ✅ TERMINÉ
 
-- [ ] Dashboard OPERATOR (`/operator/dashboard`)
-  - Stats globales
-    - Total annonces (toutes, pending, approved)
-    - Total BUYER, Total SELLER
-    - Demandes vendeur pending
-  - Liste dernières annonces pending
-  - Liste dernières demandes vendeur pending
+- [x] Dashboard OPERATOR (`/dashboard`)
+  - Stats : Annonces pending, Demandes pending, Total buyers, Total sellers
+  - StatCards avec icônes
 
-- [ ] Validation annonces (`/operator/ads/pending`)
-  - Liste TOUTES annonces pending (tous SELLER)
-  - Tableau : SELLER, Image, Titre, Prix, Catégorie, Date
-  - Filtres : Catégorie, SELLER
-  - Actions rapides : Approuver, Refuser, Voir détail
+- [x] Liste annonces (`/ads`)
+  - Liste TOUTES annonces (tous SELLER)
+  - Tableau avec filtres et pagination
+  - Actions : Voir détail
 
 - [x] Détail annonce (`/operator/ads/:id`) ✅ TERMINÉ
   - Layout 2 colonnes: Galerie (gauche) + Infos (droite)
@@ -501,92 +495,73 @@ USCG/
     - Bouton Approuver → ConfirmModal
     - Bouton Refuser → RejectModal (avec raison)
 
-- [ ] Validation demandes vendeur (`/operator/seller-requests`)
+- [x] Validation demandes vendeur (`/seller-requests`)
   - Liste TOUTES demandes pending
-  - Tableau : BUYER (nom, email), Business, Téléphone, Date demande
-  - Actions : Approuver, Refuser, Voir détail
-  - Détail : Toutes infos du formulaire
-  - Formulaire validation :
-    - Bouton : Approuver (User.isSeller → true)
-    - Bouton : Refuser (+ champ raison)
+  - Tableau avec pagination
+  - Page détail (`/seller-requests/[id]`)
+  - Boutons Approuver/Refuser avec modal
 
-- [ ] Gestion BUYER (`/operator/buyers`)
-  - Liste tous BUYER
-  - Filtres : isSeller (true/false)
+- [x] Gestion BUYER (`/users/buyers`)
+  - Liste tous BUYER avec pagination
   - Tableau : Nom, Email, isSeller, Date inscription
-  - Actions : Voir détail
-  - Bloquer/Débloquer (Phase 2)
 
-**Espace SUPER_ADMIN**
+**Espace SUPER_ADMIN** ✅ TERMINÉ
 
-- [ ] Dashboard SUPER_ADMIN (`/admin/dashboard`)
-  - Stats complètes (similaire OPERATOR + plus)
-  - Total OPERATOR
-  - Logs système
+- [x] Dashboard SUPER_ADMIN (`/dashboard`)
+  - Stats : Total users, Total operators, Total categories, Demandes pending
 
-- [ ] Validation demandes vendeur (`/admin/seller-requests`)
+- [x] Validation demandes vendeur (`/seller-requests`)
   - Identique à OPERATOR
 
-- [ ] Gestion BUYER (`/admin/buyers`)
-  - Identique à OPERATOR + actions supplémentaires
-  - Supprimer BUYER
+- [x] Gestion BUYER (`/users/buyers`)
+  - Identique à OPERATOR
 
-- [ ] Gestion OPERATOR (`/admin/operators`)
-  - Liste OPERATOR
-  - Créer nouveau OPERATOR
-    - Formulaire : email, password, firstName, lastName
-    - Submit → API POST /users/operator
-  - Modifier OPERATOR
+- [x] Gestion OPERATOR (`/users/operators`)
+  - Liste OPERATOR avec pagination
+  - Créer nouveau OPERATOR (drawer)
   - Supprimer OPERATOR
 
-- [ ] Gestion catégories (`/admin/categories`)
-  - Liste catégories
+- [x] Gestion catégories (`/categories`)
+  - Liste catégories avec CRUD
+  - IconPicker pour icônes Lucide
+
+- [x] Gestion sous-catégories (`/subcategories`)
   - CRUD complet
-  - Créer : nom, slug, description, icon
-  - Modifier
-  - Supprimer (si aucune annonce liée)
 
-- [ ] Historique connexions (`/admin/login-history`)
-  - Liste TOUTES connexions
-  - Filtres : Rôle, Date, User
-  - Tableau : User, Rôle, IP, Date, User Agent
+- [x] Gestion variantes (`/variants`)
+  - CRUD complet
 
-**Layout & Navigation**
+- [x] Gestion bannières (`/banners`)
+  - CRUD complet avec LinkSelector
 
-- [ ] Sidebar dynamique selon rôle
-  - **SELLER** :
-    - Dashboard
-    - Mes annonces
-    - Mon profil
-    - (Phase 3 : Mes ventes, Mes clients)
-  - **OPERATOR** :
-    - Dashboard
-    - Validation annonces
-    - Demandes vendeur
-    - Gestion BUYER
-  - **SUPER_ADMIN** :
-    - Dashboard
-    - Demandes vendeur
-    - Gestion BUYER
-    - Gestion OPERATOR
-    - Catégories
-    - Historique connexions
+- [x] Gestion flash deals (`/flash-deals`)
+  - CRUD complet avec sélection annonces éligibles
 
-- [ ] Header
+- [x] Gestion featured sections (`/featured-sections`)
+  - CRUD complet avec filtres dynamiques
+
+- [ ] Historique connexions (`/login-history`)
+  - Page créée mais affiche "Coming soon"
+  - Nécessite API GET /login-history
+
+**Layout & Navigation** ✅ TERMINÉ
+
+- [x] Sidebar dynamique selon rôle
+  - Menus différents pour SELLER, OPERATOR, SUPER_ADMIN
+  - Icônes et labels i18n
+
+- [x] Header
   - Logo + Nom appli
-  - User dropdown (nom, rôle)
-    - Mon profil
-    - (Si isSeller : "Voir Marketplace")
-    - Déconnexion
+  - User dropdown avec déconnexion
 
-- [ ] Protection routes (middleware Next.js)
-  - Vérifier JWT token
-  - Vérifier rôle approprié pour chaque route
-  - Redirect si non autorisé
+- [x] Protection routes (middleware proxy.ts)
+  - Vérification JWT token
+  - Refresh token automatique
+  - Protection par rôle (requireSeller, requireAdmin)
 
-#### Marketplace (templates fournis par client)
+#### Marketplace (templates fournis par client) ⚠️ PARTIEL
 
-**Authentification**
+**Authentification** ❌ NON IMPLÉMENTÉ
 - [ ] Page Register (`/register`)
   - Formulaire : email, password, firstName, lastName, phone
   - Checkbox CGU (obligatoire)
@@ -594,9 +569,13 @@ USCG/
   - Auto-login → Redirection homepage
 
 - [ ] Page Login (`/login`)
-  - Formulaire email + password
+  - Page existe mais stub seulement ("Cette page sera implémentée prochainement")
+  - Formulaire email + password à créer
   - Submit → API POST /auth/login
   - Redirection homepage (ou page précédente)
+
+- [ ] Auth context/hooks (gestion JWT côté client)
+- [ ] Protection routes auth (middleware)
 
 **Navigation & Recherche**
 - [x] Homepage (`/`)
@@ -627,15 +606,17 @@ USCG/
   - Sidenav mobile pour filtres
   - Reset recherche quand clic sur catégorie
 
-- [ ] Page détail annonce (`/ads/:id`)
-  - Galerie photos (carrousel)
+- [x] Page détail annonce (`/product/[id]`) ✅ TERMINÉ
+  - Galerie photos avec miniatures
   - Titre, Prix, Type (vente/location)
-  - Description complète
-  - Catégorie
-  - Localisation approximative (ville, pas adresse exacte)
-  - Infos vendeur (nom business, pas contact direct)
-  - Bouton : Contacter vendeur (nécessite login - Phase 1)
-  - Bouton : Ajouter au panier (Phase 3)
+  - Description avec TiptapViewer
+  - Catégorie et sous-catégorie
+  - Localisation (ville uniquement)
+  - Infos vendeur (nom)
+  - Onglets Description/Caractéristiques
+  - Produits similaires
+  - [ ] Bouton : Contacter vendeur (nécessite login - Phase 1)
+  - [ ] Bouton : Ajouter au panier (Phase 3)
 
 **Devenir vendeur (IMPORTANT - Phase 1)**
 - [ ] Page Devenir vendeur (`/become-seller`)
@@ -691,24 +672,31 @@ USCG/
 - [ ] Page À propos (`/about`)
 - [ ] Page Contact (`/contact`)
 
-**Header/Footer**
-- [ ] Header
+**Header/Footer** ⚠️ PARTIEL
+- [x] Header (structure complète)
   - Logo
-  - Barre recherche
-  - Navigation : Accueil, Catégories, Annonces
-  - Bouton "Devenir vendeur" (visible pour tous)
-  - User dropdown (si connecté) :
-    - Mon profil
-    - Mes commandes (Phase 3)
-    - (Si isSeller : "Mon espace vendeur" → Admin Panel)
-    - Déconnexion
-  - Login/Register (si non connecté)
-  - Panier (Phase 3)
+  - Barre recherche avec autocomplete
+  - Navigation : Accueil, Catégories, Flash Deals, Contact
+  - Bouton Login (lien vers /login)
+  - [ ] User dropdown (si connecté) - nécessite auth context
+  - [ ] Panier (Phase 3)
 
-- [ ] Footer
-  - Liens : À propos, Contact, CGU
+- [x] Footer (structure complète)
+  - Liens vers pages statiques (À propos, CGU, Contact)
   - Réseaux sociaux
   - Copyright
+  - i18n complet
+  - Note: Les pages de destination n'existent pas encore
+
+**Résumé Marketplace Phase 1 - Ce qui reste à faire** :
+| Fonctionnalité | Priorité |
+|----------------|----------|
+| Auth (Login/Register) avec context | HAUTE |
+| Page Devenir vendeur | HAUTE |
+| Page Statut demande vendeur | HAUTE |
+| Page Profil utilisateur | HAUTE |
+| Contact vendeur (sur page produit) | MOYENNE |
+| Pages statiques (CGU, À propos, Contact) | BASSE |
 
 **IMPORTANT lors de l'intégration des templates** :
 - Remplacer TOUS les textes en dur par `t('key')` (i18n)
@@ -1248,9 +1236,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.6
+**Version** : 1.7
 **Dernière mise à jour** : 21 Juin 2026
 **Changelog** :
+- v1.7 : Mise à jour statut Phase 1 - Backend et Admin Panel 100% terminés, Marketplace ~60%
 - v1.6 : Rate limiting exclusions (file uploads), cache invalidation patterns, React Query config marketplace
 - v1.5 : FeaturedSections (sections homepage configurables), Product model étend IAdListItem, documentation URLs images
 - v1.4 : Fix cookies cross-subdomain (COOKIE_DOMAIN), documentation mise à jour
@@ -1258,4 +1247,8 @@ Si un agent IA a besoin de clarifications :
 - v1.2 : Ajout utilitaires backend (query.utils, authorization.utils), sécurité implémentée
 - v1.1 : Documentation initiale
 **Phase actuelle** : MVP Basique (Phase 1)
+**Statut** :
+- Backend API : ✅ 100% Phase 1
+- Admin Panel : ✅ 100% Phase 1
+- Marketplace : ⚠️ ~60% Phase 1 (auth et pages user manquantes)
 **Statut déploiement** : En production

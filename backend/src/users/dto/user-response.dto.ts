@@ -32,6 +32,9 @@ export class UserProfileResponseDto {
   @ApiProperty({ example: true })
   isActive: boolean;
 
+  @ApiProperty({ example: true })
+  emailVerified: boolean;
+
   @ApiProperty({ example: '2026-05-18T10:00:00.000Z' })
   createdAt: Date;
 

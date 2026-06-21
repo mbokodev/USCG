@@ -4,11 +4,14 @@ import {
   UnauthorizedException,
   BadRequestException,
   ForbiddenException,
+  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+import { randomUUID } from 'crypto';
 import { PrismaService } from '../prisma';
+import { MailService } from '../mail/mail.service';
 import { RegisterDto, LoginDto } from './dto';
 import { Role } from '@prisma/client';
 import type { CookieOptions } from 'express';
@@ -36,10 +39,13 @@ export interface AuthResult {
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private mailService: MailService,
   ) {}
 
   // Durées d'expiration en millisecondes
@@ -61,7 +67,7 @@ export class AuthService {
     };
   }
 
-  async register(dto: RegisterDto): Promise<AuthResult> {
+  async register(dto: RegisterDto): Promise<{ message: string }> {
     if (!dto.acceptTerms) {
       throw new BadRequestException(ERROR_MESSAGES.CGU_REQUIRED);
     }
@@ -75,6 +81,8 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const verificationToken = randomUUID();
+    const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 heures
 
     const user = await this.prisma.user.create({
       data: {
@@ -86,20 +94,99 @@ export class AuthService {
         role: Role.BUYER,
         isSeller: false,
         termsAcceptedAt: new Date(),
-      },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        role: true,
-        isSeller: true,
+        emailVerified: false,
+        emailVerificationToken: verificationToken,
+        emailVerificationExpires: verificationExpires,
       },
     });
 
-    const tokens = await this.generateTokens(user);
+    // Envoyer l'email de vérification
+    try {
+      await this.mailService.sendVerificationEmail(
+        user.email,
+        verificationToken,
+        user.firstName,
+      );
+      this.logger.log(`Verification email sent to ${user.email}`);
+    } catch (error) {
+      this.logger.error(`Failed to send verification email to ${user.email}`, error);
+      // On ne bloque pas l'inscription si l'email échoue, l'utilisateur peut renvoyer
+    }
 
-    return { user, tokens };
+    return {
+      message: ERROR_MESSAGES.VERIFICATION_EMAIL_SENT,
+    };
+  }
+
+  async verifyEmail(token: string): Promise<{ message: string }> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        emailVerificationToken: token,
+        emailVerificationExpires: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException(ERROR_MESSAGES.VERIFICATION_TOKEN_INVALID);
+    }
+
+    if (user.emailVerified) {
+      throw new BadRequestException(ERROR_MESSAGES.EMAIL_ALREADY_VERIFIED);
+    }
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        emailVerified: true,
+        emailVerificationToken: null,
+        emailVerificationExpires: null,
+      },
+    });
+
+    this.logger.log(`Email verified for user ${user.email}`);
+
+    return { message: 'Votre email a été vérifié avec succès. Vous pouvez maintenant vous connecter.' };
+  }
+
+  async resendVerificationEmail(email: string): Promise<{ message: string }> {
+    const user = await this.prisma.user.findUnique({
+      where: { email: email.toLowerCase() },
+    });
+
+    if (!user) {
+      // Ne pas révéler si l'email existe ou non
+      return { message: ERROR_MESSAGES.VERIFICATION_EMAIL_SENT };
+    }
+
+    if (user.emailVerified) {
+      throw new BadRequestException(ERROR_MESSAGES.EMAIL_ALREADY_VERIFIED);
+    }
+
+    const verificationToken = randomUUID();
+    const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        emailVerificationToken: verificationToken,
+        emailVerificationExpires: verificationExpires,
+      },
+    });
+
+    try {
+      await this.mailService.sendVerificationEmail(
+        user.email,
+        verificationToken,
+        user.firstName,
+      );
+    } catch (error) {
+      this.logger.error(`Failed to resend verification email to ${user.email}`, error);
+      throw new BadRequestException('Impossible d\'envoyer l\'email. Veuillez réessayer.');
+    }
+
+    return { message: ERROR_MESSAGES.VERIFICATION_EMAIL_SENT };
   }
 
   async login(
@@ -123,6 +210,11 @@ export class AuthService {
 
     if (!user.isActive) {
       throw new UnauthorizedException(ERROR_MESSAGES.ACCOUNT_DISABLED);
+    }
+
+    // Vérifier que l'email est vérifié (sauf pour les admins créés manuellement)
+    if (!user.emailVerified && user.role === Role.BUYER) {
+      throw new ForbiddenException(ERROR_MESSAGES.EMAIL_NOT_VERIFIED);
     }
 
     // Historique de connexion uniquement pour OPERATOR et SUPER_ADMIN

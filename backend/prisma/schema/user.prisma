@@ -20,6 +20,11 @@ model User {
   // Phase 3: Langue préférée (initialisé maintenant)
   preferredLanguage String? @default("fr")
 
+  // Email verification
+  emailVerified            Boolean   @default(false)
+  emailVerificationToken   String?   @unique
+  emailVerificationExpires DateTime?
+
   // Statut compte
   isActive Boolean @default(true)
 

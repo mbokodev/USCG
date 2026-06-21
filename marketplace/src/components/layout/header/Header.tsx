@@ -50,7 +50,7 @@ export default function Header({ isFixed, className, categories = [] }: HeaderPr
         </FlexBox>
 
         <FlexBox className="header-right" alignItems="center">
-          <Link href="/login">
+          <Link href="/signin">
             <IconButton borderRadius={8} ml="1rem" bg="gray.200" p="12px">
               <IconUser size={16} stroke={1.5} />
             </IconButton>

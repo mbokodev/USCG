@@ -29,6 +29,9 @@ const userSelectWithoutPassword = {
   isActive: true,
   termsAcceptedAt: true,
   preferredLanguage: true,
+  emailVerified: true,
+  emailVerificationToken: true,
+  emailVerificationExpires: true,
   createdAt: true,
   updatedAt: true,
 };
