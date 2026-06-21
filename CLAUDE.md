@@ -871,6 +871,35 @@ Toute annonce publiée passe par un Operator avant d'être visible :
 |----------|---------|-------------|
 | `QueryProvider` | `marketplace/src/components/providers/QueryProvider.tsx` | React Query provider |
 
+**Configuration React Query (Marketplace)** :
+```typescript
+{
+  staleTime: 30 * 1000,      // 30 secondes
+  refetchOnWindowFocus: true, // Rafraîchit au focus
+  retry: 1,
+}
+```
+
+### Cache Invalidation (Admin-Panel)
+
+Lors de la validation d'une annonce, invalider :
+```typescript
+queryClient.invalidateQueries({ queryKey: ["ads-admin"] });
+queryClient.invalidateQueries({ queryKey: ["pending-ads"] });
+queryClient.invalidateQueries({ queryKey: ["my-ads"] });
+queryClient.invalidateQueries({ queryKey: ["admin-ad", adId] });
+```
+
+**Query Keys utilisées** :
+| Query Key | Utilisation |
+|-----------|-------------|
+| `["ads-admin"]` | Liste admin toutes annonces |
+| `["pending-ads"]` | Liste annonces en attente |
+| `["my-ads"]` | Liste annonces du vendeur |
+| `["admin-ad", id]` | Détail annonce admin |
+| `["ads", {...filters}]` | Recherche marketplace |
+| `["search-autocomplete", query]` | Autocomplete recherche |
+
 ### Utilitaires Backend (common/utils)
 
 | Utilitaire | Fichier | Description |
@@ -1021,7 +1050,8 @@ function buildFileUrl(file: IAdFile): string {
 
 - **Validation** : class-validator sur tous les DTOs ✅
 - **Password fort** : Regex exigeant majuscule, minuscule, chiffre, caractère spécial ✅
-- **Rate limiting** : `@nestjs/throttler` sur login/register (5 req/min) ✅
+- **Rate limiting** : `@nestjs/throttler` (3 req/sec global) ✅
+  - Exclusions via `@SkipThrottle()` : upload image, upload document, link file, serve file
 - **Helmet** : Headers de sécurité HTTP activés ✅
 - **Password non fetché** : `userSelectWithoutPassword` dans users.service.ts ✅
 - **Path traversal** : Validation folder + filename dans files.controller.ts ✅
@@ -1218,9 +1248,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.5
-**Dernière mise à jour** : 18 Juin 2026
+**Version** : 1.6
+**Dernière mise à jour** : 21 Juin 2026
 **Changelog** :
+- v1.6 : Rate limiting exclusions (file uploads), cache invalidation patterns, React Query config marketplace
 - v1.5 : FeaturedSections (sections homepage configurables), Product model étend IAdListItem, documentation URLs images
 - v1.4 : Fix cookies cross-subdomain (COOKIE_DOMAIN), documentation mise à jour
 - v1.3 : Ajout section Déploiement (Dokploy, Docker, variables env), problèmes connus
