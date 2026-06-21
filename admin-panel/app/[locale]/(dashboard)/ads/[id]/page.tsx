@@ -55,7 +55,9 @@ export default function AdDetailPage() {
   const validateMutation = useMutation({
     mutationFn: (data: ValidateAdDto) => adsService.validate(adId, data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ads-admin"] });
       queryClient.invalidateQueries({ queryKey: ["pending-ads"] });
+      queryClient.invalidateQueries({ queryKey: ["my-ads"] });
       queryClient.invalidateQueries({ queryKey: ["admin-ad", adId] });
       setShowRejectModal(false);
       setShowApproveModal(false);
