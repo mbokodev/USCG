@@ -38,6 +38,7 @@ import { UseGuards } from '@nestjs/common';
 
 @ApiTags('Files')
 @Controller('files')
+@SkipThrottle({ short: true, medium: true, long: true })
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
@@ -45,7 +46,6 @@ export class FilesController {
    * Upload une image (SELLER uniquement)
    */
   @Post('upload/image')
-  @SkipThrottle()
   @UseGuards(IsSellerGuard)
   @UseInterceptors(
     FileInterceptor('file', {
@@ -98,7 +98,6 @@ export class FilesController {
    * Upload un document PDF (SELLER uniquement) - Phase 2
    */
   @Post('upload/document')
-  @SkipThrottle()
   @UseGuards(IsSellerGuard)
   @UseInterceptors(
     FileInterceptor('file', {
@@ -151,7 +150,6 @@ export class FilesController {
    * Associer un fichier à une annonce
    */
   @Post(':id/link')
-  @SkipThrottle()
   @UseGuards(IsSellerGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Associer un fichier à une annonce (SELLER)' })
@@ -169,7 +167,6 @@ export class FilesController {
    * Servir un fichier (public)
    */
   @Get(':folder/:filename')
-  @SkipThrottle()
   @Public()
   @ApiOperation({ summary: 'Récupérer un fichier (public)' })
   @ApiParam({ name: 'folder', enum: ['images', 'documents'] })

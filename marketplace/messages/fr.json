@@ -56,7 +56,16 @@
     "favorite": "Ajouter aux favoris",
     "relatedProducts": "Produits similaires",
     "details": "Détails",
-    "off": "de réduction"
+    "off": "de réduction",
+    "sale": "Vente",
+    "rent": "Location",
+    "quantity": "Quantité",
+    "priceOnRequest": "Prix sur demande",
+    "characteristics": "Caractéristiques",
+    "views": "vues",
+    "seller": "Vendeur",
+    "postedOn": "Publié le",
+    "notFound": "Annonce non trouvée"
   },
   "search": {
     "title": "Recherche",

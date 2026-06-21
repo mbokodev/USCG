@@ -56,7 +56,16 @@
     "favorite": "Add to favorites",
     "relatedProducts": "Related products",
     "details": "Details",
-    "off": "off"
+    "off": "off",
+    "sale": "For Sale",
+    "rent": "For Rent",
+    "quantity": "Quantity",
+    "priceOnRequest": "Price on request",
+    "characteristics": "Characteristics",
+    "views": "views",
+    "seller": "Seller",
+    "postedOn": "Posted on",
+    "notFound": "Ad not found"
   },
   "search": {
     "title": "Search",

@@ -1,5 +1,5 @@
 import api from "@/lib/api";
-import type { IAdListItem, IAdQueryParams } from "@uscg/shared/types";
+import type { IAdListItem, IAdPublic, IAdQueryParams } from "@uscg/shared/types";
 import Product from "@models/product.model";
 import { mapAdToProduct } from "@/utils/ad-utils";
 
@@ -89,8 +89,21 @@ export async function searchAds(
   }));
 }
 
+/**
+ * Fetch a single ad by ID (public detail)
+ */
+export async function getAdById(id: string): Promise<IAdPublic | null> {
+  try {
+    const response = await api.get<IAdPublic>(`/ads/detail/${id}`);
+    return response.data;
+  } catch {
+    return null;
+  }
+}
+
 export const adsService = {
   getAds,
   getLatestAds,
   searchAds,
+  getAdById,
 };

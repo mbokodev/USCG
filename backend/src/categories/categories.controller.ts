@@ -17,6 +17,7 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
+import { SkipThrottle } from '@nestjs/throttler';
 import { Role } from '@prisma/client';
 import { CategoriesService } from './categories.service';
 import {
@@ -31,6 +32,7 @@ import { RolesGuard } from '../auth/guards';
 
 @ApiTags('categories')
 @Controller('categories')
+@SkipThrottle()
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 

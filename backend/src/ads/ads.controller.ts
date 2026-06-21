@@ -16,6 +16,7 @@ import {
   ApiBearerAuth,
   ApiParam,
 } from '@nestjs/swagger';
+import { SkipThrottle } from '@nestjs/throttler';
 import { Role } from '@prisma/client';
 import { AdsService } from './ads.service';
 import {
@@ -41,6 +42,7 @@ export class AdsController {
 
   @Get()
   @Public()
+  @SkipThrottle()
   @ApiOperation({
     summary: 'Liste des annonces (public)',
     description: 'Récupère les annonces approuvées. Location masquée.',
@@ -52,6 +54,7 @@ export class AdsController {
 
   @Get('detail/:id')
   @Public()
+  @SkipThrottle()
   @ApiOperation({
     summary: "Détail d'une annonce (public)",
     description: 'Récupère une annonce approuvée. Location masquée.',
