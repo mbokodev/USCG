@@ -12,6 +12,7 @@ export interface PaginationProps extends SpaceProps {
   pageCount: number;
   pageRangeDisplayed?: number;
   marginPagesDisplayed?: number;
+  currentPage?: number;
   onChange?: (data: number) => void;
 }
 // ==============================================================
@@ -21,10 +22,11 @@ export default function Pagination({
   pageCount,
   pageRangeDisplayed,
   marginPagesDisplayed,
+  currentPage,
   ...props
 }: PaginationProps) {
   const handlePageChange = async (page: any) => {
-    if (onChange) onChange(page.selected);
+    if (onChange) onChange(page.selected + 1); // Convert 0-indexed to 1-indexed
   };
 
   const PREVIOUS_BUTTON = (
@@ -64,7 +66,7 @@ export default function Pagination({
         onPageChange={handlePageChange}
         pageRangeDisplayed={pageRangeDisplayed}
         marginPagesDisplayed={marginPagesDisplayed}
-        // subContainerClassName="pages pagination"
+        forcePage={currentPage ? currentPage - 1 : undefined}
       />
     </StyledPagination>
   );

@@ -1,21 +1,50 @@
-// Force dynamic rendering
+import { Suspense } from "react";
+
+// LAYOUT
+import AppLayout from "@component/layout";
+import Navbar from "@component/layout/navbar/Navbar";
+import Container from "@component/ui/Container";
+import Box from "@component/ui/Box";
+import Spinner from "@component/ui/Spinner";
+import FlexBox from "@component/ui/FlexBox";
+
+// PAGE SECTION COMPONENTS
+import SearchResult from "./SearchResult";
+
+// API FUNCTIONS
+import { getCategories } from "@/services/categories.service";
+import { categoriesToNavigation } from "@/utils/category-utils";
+
+// Force dynamic rendering - skip prerendering at build time
 export const dynamic = "force-dynamic";
 
 interface SearchPageProps {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<{ locale: string }>;
 }
 
-export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const params = await searchParams;
+function SearchLoading() {
+  return (
+    <FlexBox justifyContent="center" alignItems="center" minHeight="400px">
+      <Spinner size={40} />
+    </FlexBox>
+  );
+}
 
-  // TODO: Fetch ads based on search params
-  // const ads = await getAds(params);
+export default async function SearchPage({ params }: SearchPageProps) {
+  const { locale } = await params;
+
+  const categoriesData = await getCategories().catch(() => []);
+  const categories = categoriesToNavigation(categoriesData, locale as "fr" | "en");
 
   return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      <h1>Recherche</h1>
-      <p>Paramètres: {JSON.stringify(params)}</p>
-      <p>Cette page sera implémentée prochainement.</p>
-    </div>
+    <AppLayout navbar={<Navbar categories={categories} />} categories={categories}>
+      <Container py="2rem">
+        <Box pt="20px">
+          <Suspense fallback={<SearchLoading />}>
+            <SearchResult />
+          </Suspense>
+        </Box>
+      </Container>
+    </AppLayout>
   );
 }

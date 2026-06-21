@@ -2,9 +2,10 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-// THEME PROVIDER
+// PROVIDERS
 import StyledComponentsRegistry from "@lib/registry";
 import { ThemeProvider } from "@/theme";
+import { QueryProvider } from "@component/providers/QueryProvider";
 import NProgressBar from "@component/ui/NProgress";
 
 interface LocaleLayoutProps {
@@ -28,12 +29,14 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <StyledComponentsRegistry>
-        <ThemeProvider>
-          {children}
-          <NProgressBar />
-        </ThemeProvider>
-      </StyledComponentsRegistry>
+      <QueryProvider>
+        <StyledComponentsRegistry>
+          <ThemeProvider>
+            {children}
+            <NProgressBar />
+          </ThemeProvider>
+        </StyledComponentsRegistry>
+      </QueryProvider>
     </NextIntlClientProvider>
   );
 }

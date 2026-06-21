@@ -3,16 +3,15 @@
 import Link from "next/link";
 import { IconUser } from "@tabler/icons-react";
 
-import Box from "@component/ui/Box";
 import Icon from "@component/ui/icon/Icon";
 import FlexBox from "@component/ui/FlexBox";
 import Container from "@component/ui/Container";
 import { IconButton } from "@component/ui/buttons";
 import Categories from "@component/categories/Categories";
-import { SearchInputWithCategory } from "@component/search";
+import { SearchInput } from "@component/search";
 import StyledHeader from "./styles";
 import Logo from "./Logo";
-import { navigationToCategoryOptions, type NavigationItem } from "@/utils/category-utils";
+import type { NavigationItem } from "@/utils/category-utils";
 
 // ====================================================================
 type HeaderProps = {
@@ -47,7 +46,7 @@ export default function Header({ isFixed, className, categories = [] }: HeaderPr
         </FlexBox>
 
         <FlexBox justifyContent="center" flex="1 1 0">
-          <SearchInputWithCategory categories={navigationToCategoryOptions(categories)} />
+          <SearchInput />
         </FlexBox>
 
         <FlexBox className="header-right" alignItems="center">

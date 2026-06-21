@@ -67,7 +67,21 @@
     "minPrice": "Prix min",
     "maxPrice": "Prix max",
     "apply": "Appliquer",
-    "reset": "Réinitialiser"
+    "reset": "Réinitialiser",
+    "searchingFor": "Recherche pour",
+    "allProducts": "Tous les produits",
+    "view": "Vue",
+    "noResults": "Aucun produit trouvé",
+    "showing": "Affichage",
+    "of": "sur",
+    "products": "produits",
+    "sortRecent": "Plus récents",
+    "sortOldest": "Plus anciens",
+    "sortPriceLow": "Prix croissant",
+    "sortPriceHigh": "Prix décroissant",
+    "adType": "Type d'annonce",
+    "typeSale": "Vente",
+    "typeRent": "Location"
   },
   "footer": {
     "slogan": "Votre marketplace de confiance au Congo. Achetez et vendez en toute simplicité : immobilier, véhicules, électroménager et bien plus encore.",

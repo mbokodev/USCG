@@ -608,18 +608,24 @@ USCG/
 **Composants Marketplace intégrés**
 - [x] `CategoryDropdown` : Menu catégories avec sous-catégories (hover)
 - [x] `LucideIcon` : Affichage icônes Lucide par nom
-- [x] `SearchInputWithCategory` : Barre recherche avec filtre catégorie
+- [x] `SearchInputWithCategory` : Barre recherche avec filtre catégorie + autocomplete API
+- [x] `SearchInput` : Barre recherche simple + autocomplete API
 - [x] `categoriesService` : Service fetch catégories depuis API
+- [x] `adsService` : Service fetch annonces (getAds, searchAds, getLatestAds)
+- [x] `QueryProvider` : React Query provider pour cache et fetching
 
-- [ ] Liste annonces (`/ads`)
-  - Grille/liste d'annonces (status=APPROVED uniquement)
-  - Filtres sidebar :
-    - Catégorie (multi-select)
-    - Type (vente/location)
-    - Prix (min/max - Phase 2)
-  - Tri : Date, Prix (Phase 2)
+- [x] Page de recherche (`/search`) ✅ TERMINÉ
+  - Vue grille/liste toggle (ProductCard1 / ProductCard9)
+  - Filtres sidebar (ProductFilterCard) :
+    - Catégories avec sous-catégories (accordion)
+    - Type (Vente/Location checkboxes)
+    - Prix min/max
+  - Tri : Date (récent/ancien), Prix (croissant/décroissant)
   - Pagination
-  - Chaque carte annonce : Image, Titre, Prix, Catégorie, Ville (pas adresse exacte)
+  - Autocomplete dans SearchInput avec React Query
+  - i18n complet (fr/en)
+  - Sidenav mobile pour filtres
+  - Reset recherche quand clic sur catégorie
 
 - [ ] Page détail annonce (`/ads/:id`)
   - Galerie photos (carrousel)
@@ -842,6 +848,28 @@ Toute annonce publiée passe par un Operator avant d'être visible :
 | `bannersService` | `features/banners/services/banners.service.ts` | CRUD bannières |
 | `flashDealsService` | `features/flash-deals/services/flash-deals.service.ts` | CRUD flash deals |
 | `categoriesService` | `features/categories/services/categories.service.ts` | CRUD catégories |
+
+### Services Marketplace
+
+| Service | Fichier | Description |
+|---------|---------|-------------|
+| `adsService` | `marketplace/src/services/ads.service.ts` | getAds, searchAds, getLatestAds |
+| `categoriesService` | `marketplace/src/services/categories.service.ts` | getCategories |
+| `api` | `marketplace/src/lib/api.ts` | Instance Axios configurée |
+
+### Hooks Marketplace
+
+| Hook | Fichier | Description |
+|------|---------|-------------|
+| `useDebouncedValue` | `marketplace/src/hooks/useDebouncedValue.ts` | Debounce une valeur |
+| `useWindowSize` | `marketplace/src/hooks/useWindowSize.ts` | Retourne largeur fenêtre |
+| `useScroll` | `marketplace/src/hooks/useScroll.ts` | Détecte scroll |
+
+### Providers Marketplace
+
+| Provider | Fichier | Description |
+|----------|---------|-------------|
+| `QueryProvider` | `marketplace/src/components/providers/QueryProvider.tsx` | React Query provider |
 
 ### Utilitaires Backend (common/utils)
 

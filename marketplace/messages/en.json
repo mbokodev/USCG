@@ -67,7 +67,21 @@
     "minPrice": "Min price",
     "maxPrice": "Max price",
     "apply": "Apply",
-    "reset": "Reset"
+    "reset": "Reset",
+    "searchingFor": "Searching for",
+    "allProducts": "All products",
+    "view": "View",
+    "noResults": "No products found",
+    "showing": "Showing",
+    "of": "of",
+    "products": "products",
+    "sortRecent": "Most recent",
+    "sortOldest": "Oldest",
+    "sortPriceLow": "Price low to high",
+    "sortPriceHigh": "Price high to low",
+    "adType": "Ad type",
+    "typeSale": "For sale",
+    "typeRent": "For rent"
   },
   "footer": {
     "slogan": "Your trusted marketplace in Congo. Buy and sell with ease: real estate, vehicles, appliances and much more.",
