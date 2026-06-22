@@ -32,6 +32,8 @@ const userSelectWithoutPassword = {
   emailVerified: true,
   emailVerificationToken: true,
   emailVerificationExpires: true,
+  passwordResetToken: true,
+  passwordResetExpires: true,
   createdAt: true,
   updatedAt: true,
 };

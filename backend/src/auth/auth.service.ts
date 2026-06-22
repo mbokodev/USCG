@@ -189,6 +189,89 @@ export class AuthService {
     return { message: ERROR_MESSAGES.VERIFICATION_EMAIL_SENT };
   }
 
+  /**
+   * Demande de réinitialisation de mot de passe
+   * Ne révèle jamais si l'email existe ou non (sécurité)
+   */
+  async forgotPassword(email: string): Promise<{ message: string }> {
+    const user = await this.prisma.user.findUnique({
+      where: { email: email.toLowerCase() },
+    });
+
+    // Toujours retourner le même message pour ne pas révéler si l'email existe
+    const successMessage = 'Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.';
+
+    if (!user) {
+      return { message: successMessage };
+    }
+
+    if (!user.isActive) {
+      return { message: successMessage };
+    }
+
+    // Générer le token et l'expiration (1 heure)
+    const resetToken = randomUUID();
+    const resetExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 heure
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        passwordResetToken: resetToken,
+        passwordResetExpires: resetExpires,
+      },
+    });
+
+    // Envoyer l'email
+    try {
+      await this.mailService.sendPasswordResetEmail(
+        user.email,
+        user.firstName,
+        resetToken,
+      );
+      this.logger.log(`Password reset email sent to ${user.email}`);
+    } catch (error) {
+      this.logger.error(`Failed to send password reset email to ${user.email}`, error);
+      // On ne révèle pas l'erreur à l'utilisateur
+    }
+
+    return { message: successMessage };
+  }
+
+  /**
+   * Réinitialisation du mot de passe avec token
+   */
+  async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        passwordResetToken: token,
+        passwordResetExpires: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('Ce lien de réinitialisation est invalide ou a expiré.');
+    }
+
+    // Hash le nouveau mot de passe
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Mettre à jour le mot de passe et effacer le token
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        passwordResetToken: null,
+        passwordResetExpires: null,
+      },
+    });
+
+    this.logger.log(`Password reset successful for user ${user.email}`);
+
+    return { message: 'Votre mot de passe a été réinitialisé avec succès.' };
+  }
+
   async login(
     dto: LoginDto,
     ipAddress?: string,

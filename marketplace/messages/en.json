@@ -74,6 +74,31 @@
       "sending": "Sending...",
       "resendSuccess": "Verification email sent!",
       "resendError": "Unable to send email."
+    },
+    "forgotPassword": {
+      "title": "Forgot password",
+      "description": "Enter your email to receive a reset link.",
+      "email": "Your email",
+      "submit": "Send link",
+      "sending": "Sending...",
+      "successTitle": "Email sent!",
+      "successMessage": "If an account exists with this email, you will receive a reset link.",
+      "backToLogin": "Back to login"
+    },
+    "resetPassword": {
+      "title": "New password",
+      "description": "Create a new password for your account.",
+      "password": "New password",
+      "confirmPassword": "Confirm password",
+      "submit": "Reset",
+      "resetting": "Resetting...",
+      "successTitle": "Password changed!",
+      "successMessage": "Your password has been reset successfully.",
+      "goToLogin": "Sign in",
+      "invalidTitle": "Invalid link",
+      "invalidMessage": "This reset link is invalid or has expired.",
+      "requestNew": "Request a new link",
+      "backToLogin": "Back to login"
     }
   },
   "home": {

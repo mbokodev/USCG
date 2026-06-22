@@ -26,6 +26,8 @@ import {
   RefreshResponseDto,
   MessageResponseDto,
   ResendVerificationDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
 } from './dto';
 import { Public, CurrentUser } from './decorators';
 import { JwtRefreshGuard } from './guards';
@@ -144,6 +146,51 @@ export class AuthController {
     @Body() dto: ResendVerificationDto,
   ): Promise<MessageResponseDto> {
     return this.authService.resendVerificationEmail(dto.email);
+  }
+
+  @Public()
+  @Post('forgot-password')
+  @Throttle({ default: { limit: 3, ttl: 60000 } }) // 3 demandes par minute max
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Mot de passe oublié',
+    description:
+      "Envoie un email de réinitialisation de mot de passe. Pour des raisons de sécurité, le même message est retourné que l'email existe ou non.",
+  })
+  @ApiBody({ type: ForgotPasswordDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Email de réinitialisation envoyé (si le compte existe)',
+    type: MessageResponseDto,
+  })
+  async forgotPassword(
+    @Body() dto: ForgotPasswordDto,
+  ): Promise<MessageResponseDto> {
+    return this.authService.forgotPassword(dto.email);
+  }
+
+  @Public()
+  @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Réinitialiser le mot de passe',
+    description:
+      "Réinitialise le mot de passe avec le token reçu par email. Le token expire après 1 heure.",
+  })
+  @ApiBody({ type: ResetPasswordDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Mot de passe réinitialisé avec succès',
+    type: MessageResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Token invalide ou expiré',
+  })
+  async resetPassword(
+    @Body() dto: ResetPasswordDto,
+  ): Promise<MessageResponseDto> {
+    return this.authService.resetPassword(dto.token, dto.password);
   }
 
   @Public()

@@ -73,6 +73,24 @@ const authService = {
     }
   },
 
+  forgotPassword: async (email: string): Promise<ApiResult<MessageResponse>> => {
+    try {
+      const { data } = await api.post<MessageResponse>("/auth/forgot-password", { email });
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: getErrorMessage(error) };
+    }
+  },
+
+  resetPassword: async (token: string, password: string): Promise<ApiResult<MessageResponse>> => {
+    try {
+      const { data } = await api.post<MessageResponse>("/auth/reset-password", { token, password });
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: getErrorMessage(error) };
+    }
+  },
+
   logout: async (): Promise<void> => {
     try {
       await api.post("/auth/logout");

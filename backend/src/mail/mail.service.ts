@@ -97,6 +97,41 @@ export class MailService {
     }
   }
 
+  /**
+   * Email de réinitialisation de mot de passe
+   */
+  async sendPasswordResetEmail(
+    email: string,
+    firstName: string,
+    token: string,
+  ): Promise<void> {
+    const resetUrl = `${this.frontendUrl}/reset-password?token=${token}`;
+
+    if (!this.isConfigured || !this.resend) {
+      this.logger.warn('='.repeat(60));
+      this.logger.warn('EMAIL RESET MOT DE PASSE (Mode développement)');
+      this.logger.warn(`To: ${email}`);
+      this.logger.warn(`Name: ${firstName}`);
+      this.logger.warn(`URL: ${resetUrl}`);
+      this.logger.warn('='.repeat(60));
+      return;
+    }
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject: 'Réinitialisation de votre mot de passe - USCG',
+        html: this.getPasswordResetEmailTemplate(firstName, resetUrl),
+      });
+
+      this.logger.log(`Password reset email sent to ${email}`);
+    } catch (error) {
+      this.logger.error(`Failed to send password reset email to ${email}`, error);
+      // On ne throw pas l'erreur pour ne pas révéler si l'email existe
+    }
+  }
+
   async sendVerificationEmail(
     email: string,
     token: string,
@@ -446,6 +481,118 @@ export class MailService {
 
     <div class="footer">
       <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+      <p>© ${new Date().getFullYear()} Universal Services of Congo. Tous droits réservés.</p>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+  }
+
+  private getPasswordResetEmailTemplate(
+    firstName: string,
+    resetUrl: string,
+  ): string {
+    return `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Réinitialisation du mot de passe</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .container {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 40px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo h1 {
+      color: #2563eb;
+      margin: 0;
+      font-size: 28px;
+    }
+    h2 {
+      color: #1f2937;
+      margin-top: 0;
+    }
+    .button {
+      display: inline-block;
+      background: #2563eb;
+      color: #ffffff !important;
+      padding: 14px 28px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      margin: 20px 0;
+    }
+    .button:hover {
+      background: #1d4ed8;
+    }
+    .footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .warning {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .security-note {
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h1>USCG Marketplace</h1>
+    </div>
+
+    <h2>Bonjour ${firstName},</h2>
+
+    <p>Vous avez demandé la réinitialisation de votre mot de passe sur USCG Marketplace.</p>
+
+    <p>Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe :</p>
+
+    <p style="text-align: center;">
+      <a href="${resetUrl}" class="button">Réinitialiser mon mot de passe</a>
+    </p>
+
+    <p>Ou copiez ce lien dans votre navigateur :</p>
+    <p style="word-break: break-all; color: #2563eb;">${resetUrl}</p>
+
+    <div class="warning">
+      ⏰ Ce lien expire dans <strong>1 heure</strong>.
+    </div>
+
+    <div class="security-note">
+      🔒 <strong>Note de sécurité :</strong> Si vous n'avez pas demandé cette réinitialisation, ignorez cet email. Votre mot de passe restera inchangé.
+    </div>
+
+    <div class="footer">
       <p>© ${new Date().getFullYear()} Universal Services of Congo. Tous droits réservés.</p>
     </div>
   </div>

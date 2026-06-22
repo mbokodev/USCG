@@ -108,6 +108,38 @@ export async function resendVerificationAction(email: string): Promise<AuthActio
   };
 }
 
+export async function forgotPasswordAction(email: string): Promise<AuthActionResult> {
+  const response = await authService.forgotPassword(email);
+
+  if (response.success && response.data) {
+    return {
+      success: true,
+      message: response.data.message,
+    };
+  }
+
+  return {
+    success: false,
+    error: response.error,
+  };
+}
+
+export async function resetPasswordAction(token: string, password: string): Promise<AuthActionResult> {
+  const response = await authService.resetPassword(token, password);
+
+  if (response.success && response.data) {
+    return {
+      success: true,
+      message: response.data.message,
+    };
+  }
+
+  return {
+    success: false,
+    error: response.error,
+  };
+}
+
 export async function logoutAction(): Promise<AuthActionResult> {
   const session = await getSession();
 

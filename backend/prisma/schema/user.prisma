@@ -25,6 +25,10 @@ model User {
   emailVerificationToken   String?   @unique
   emailVerificationExpires DateTime?
 
+  // Password reset
+  passwordResetToken   String?   @unique
+  passwordResetExpires DateTime?
+
   // Statut compte
   isActive Boolean @default(true)
 

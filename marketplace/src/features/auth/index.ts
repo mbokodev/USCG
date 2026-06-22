@@ -13,6 +13,8 @@ export {
   registerAction,
   verifyEmailAction,
   resendVerificationAction,
+  forgotPasswordAction,
+  resetPasswordAction,
   logoutAction,
   getCurrentUser,
 } from "./actions/auth.actions";
