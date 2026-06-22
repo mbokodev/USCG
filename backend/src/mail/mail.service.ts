@@ -24,7 +24,7 @@ export class MailService {
     this.fromEmail =
       process.env.RESEND_FROM_EMAIL || 'noreply@universal-services-cg.com';
     this.frontendUrl =
-      process.env.FRONTEND_URL || 'http://localhost:3003';
+      process.env.FRONTEND_URL || 'http://localhost:3000';
   }
 
   async sendVerificationEmail(
