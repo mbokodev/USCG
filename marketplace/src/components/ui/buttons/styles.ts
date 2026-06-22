@@ -50,10 +50,14 @@ export const StyledButton = styled.button.withConfig({
           border: "1px solid",
           borderColor: color ? `${color}.main` : "text.disabled",
           "&:enabled svg path": {
-            fill: color ? `${theme.colors[color]?.main} !important` : "text.primary"
+            fill: color ? `${theme.colors[color]?.main} !important` : "text.primary",
+            stroke: color ? `${theme.colors[color]?.main} !important` : "text.primary"
           },
           "&:enabled svg polyline, svg polygon": {
             color: color ? `${theme.colors[color]?.main} !important` : "text.primary"
+          },
+          "&:enabled svg": {
+            stroke: color ? `${theme.colors[color]?.main} !important` : "text.primary"
           },
           "&:focus": {
             boxShadow: `0px 1px 4px 0px ${theme.colors[color ? color : ""]?.light}`
@@ -63,10 +67,14 @@ export const StyledButton = styled.button.withConfig({
             borderColor: color && `${color}.main`,
             color: color && `${color}.text`,
             "svg path": {
-              fill: color ? `${theme.colors[color]?.text} !important` : "text.primary"
+              fill: color ? `${theme.colors[color]?.text} !important` : "text.primary",
+              stroke: color ? `${theme.colors[color]?.text} !important` : "text.primary"
             },
             "svg polyline, svg polygon": {
               color: color ? `${theme.colors[color]?.text} !important` : "text.primary"
+            },
+            svg: {
+              stroke: color ? `${theme.colors[color]?.text} !important` : "text.primary"
             },
             ...(color === "dark" && { color: "white" })
           }

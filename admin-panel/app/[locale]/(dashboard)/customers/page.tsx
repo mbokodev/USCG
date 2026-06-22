@@ -224,7 +224,7 @@ function CustomerRow({ customer }: { customer: User }) {
       {/* Customer Info */}
       <td className="px-4 py-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center uppercase justify-center text-primary font-semibold">
             {customer.firstName.charAt(0)}
             {customer.lastName.charAt(0)}
           </div>

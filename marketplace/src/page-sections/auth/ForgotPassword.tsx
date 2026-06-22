@@ -91,19 +91,6 @@ export default function ForgotPassword() {
     <AuthWrapper>
       <StyledRoot>
         <form className="content" onSubmit={handleSubmit} style={{ paddingBottom: "2rem" }}>
-          <FlexBox justifyContent="center" mb="1.5rem">
-            <FlexBox
-              width={60}
-              height={60}
-              borderRadius="50%"
-              bg="primary.100"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <IconMail size={28} color="#2563eb" />
-            </FlexBox>
-          </FlexBox>
-
           <H3 textAlign="center" mb="0.5rem">
             {t("forgotPassword.title")}
           </H3>
@@ -144,7 +131,7 @@ export default function ForgotPassword() {
 
           <FlexBox justifyContent="center">
             <Link href="/signin">
-              <Button variant="text" color="primary" p="0">
+              <Button variant="text" color="primary" px="1rem" py="0">
                 <IconArrowLeft size={16} style={{ marginRight: 4 }} />
                 {t("forgotPassword.backToLogin")}
               </Button>

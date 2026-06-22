@@ -4,15 +4,17 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
+import { Mail } from "lucide-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 
 import useVisibility from "./useVisibility";
-import { loginAction } from "@/features/auth";
+import { loginAction, resendVerificationAction } from "@/features/auth";
 
 import FlexBox from "@component/ui/FlexBox";
+import Box from "@component/ui/Box";
 import TextField from "@component/ui/form/text-field";
 import { Button, IconButton } from "@component/ui/buttons";
 import { H3, H5, H6, SemiSpan, Paragraph } from "@component/ui/Typography";
@@ -25,6 +27,9 @@ const formSchema = yup.object({
 
 type FormValues = yup.InferType<typeof formSchema>;
 
+// Constante pour détecter l'erreur email non vérifié
+const EMAIL_NOT_VERIFIED_MESSAGE = "Veuillez vérifier votre email avant de vous connecter";
+
 export default function Signin() {
   const t = useTranslations("auth");
   const router = useRouter();
@@ -32,10 +37,20 @@ export default function Signin() {
   const { passwordVisibility, togglePasswordVisibility } = useVisibility();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isResending, setIsResending] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
+  const [resendError, setResendError] = useState<string | null>(null);
+
+  // Détecter si l'erreur est liée à l'email non vérifié
+  const isEmailNotVerified = error?.includes(EMAIL_NOT_VERIFIED_MESSAGE) ||
+    error?.toLowerCase().includes("vérifier votre email") ||
+    error?.toLowerCase().includes("verify your email");
 
   const handleFormSubmit = async (values: FormValues) => {
     setIsLoading(true);
     setError(null);
+    setResendSuccess(false);
+    setResendError(null);
 
     const result = await loginAction(values);
 
@@ -49,6 +64,25 @@ export default function Signin() {
     }
 
     setIsLoading(false);
+  };
+
+  const handleResendVerification = async () => {
+    if (!values.email) return;
+
+    setIsResending(true);
+    setResendSuccess(false);
+    setResendError(null);
+
+    const result = await resendVerificationAction(values.email);
+
+    if (result.success) {
+      setResendSuccess(true);
+      setError(null); // Effacer l'erreur principale
+    } else {
+      setResendError(result.error || t("signin.verificationSentError"));
+    }
+
+    setIsResending(false);
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -69,10 +103,45 @@ export default function Signin() {
             {t("signin.subtitle")}
           </H5>
 
-          {error && (
+          {/* Message de succès après renvoi */}
+          {resendSuccess && (
+            <Box bg="success.light" p="1rem" borderRadius="8px" mb="1rem">
+              <Paragraph color="success.main" textAlign="center" fontSize="14px" fontWeight="500">
+                {t("signin.verificationSent")}
+              </Paragraph>
+            </Box>
+          )}
+
+          {/* Erreur de renvoi */}
+          {resendError && (
             <Paragraph color="error.main" textAlign="center" mb="1rem" fontSize="14px">
-              {error}
+              {resendError}
             </Paragraph>
+          )}
+
+          {/* Erreur de login avec option de renvoi si email non vérifié */}
+          {error && (
+            <Box mb="1rem">
+              <Paragraph color="error.main" textAlign="center" fontSize="14px">
+                {isEmailNotVerified ? t("signin.emailNotVerified") : error}
+              </Paragraph>
+
+              {isEmailNotVerified && !resendSuccess && (
+                <FlexBox justifyContent="center" mt="0.75rem">
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    type="button"
+                    disabled={isResending || !values.email}
+                    onClick={handleResendVerification}
+                  >
+                    <Mail size={16} style={{ marginRight: 6 }} />
+                    {isResending ? t("signin.resendingVerification") : t("signin.resendVerification")}
+                  </Button>
+                </FlexBox>
+              )}
+            </Box>
           )}
 
           <TextField

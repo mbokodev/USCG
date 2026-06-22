@@ -93,7 +93,7 @@ export default function CustomerDetailPage() {
                 </div>
               ) : (
                 <div className="aspect-square bg-primary/10 rounded-lg flex items-center justify-center">
-                  <span className="text-6xl font-bold text-primary">
+                  <span className="text-6xl font-bold text-primary uppercase">
                     {customer.firstName.charAt(0)}
                     {customer.lastName.charAt(0)}
                   </span>

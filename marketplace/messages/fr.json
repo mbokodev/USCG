@@ -37,7 +37,12 @@
       "noAccount": "Pas encore de compte ?",
       "signup": "S'inscrire",
       "forgotPassword": "Mot de passe oublié ?",
-      "resetPassword": "Réinitialiser"
+      "resetPassword": "Réinitialiser",
+      "emailNotVerified": "Votre email n'est pas encore vérifié.",
+      "resendVerification": "Renvoyer le mail de vérification",
+      "resendingVerification": "Envoi en cours...",
+      "verificationSent": "Email de vérification envoyé ! Vérifiez votre boîte de réception.",
+      "verificationSentError": "Impossible d'envoyer l'email. Réessayez plus tard."
     },
     "signup": {
       "title": "Créer un compte",
