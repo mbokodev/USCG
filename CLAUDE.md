@@ -632,6 +632,7 @@ USCG/
     - Téléphone professionnel (businessPhone)
     - Numéro fiscal (taxId - optionnel)
     - Description de l'activité (description - textarea)
+    - Logo entreprise (optionnel, upload image via SingleImageUpload)
   - Submit → API POST /seller-requests
   - **États affichés sur la même page** (formulaire grisé + banner) :
     - PENDING : "Demande en attente" + formulaire soumis en lecture seule
@@ -690,12 +691,22 @@ USCG/
     - Sinon → `/become-seller`
   - [ ] Panier (Phase 3)
 
+- [x] Topbar (barre supérieure)
+  - Desktop : téléphone + email
+  - Mobile : logo-white.png + "USCG" en blanc (remplace phone/email)
+
 - [x] Footer (structure complète)
+  - Logo : logo-white-full.png (responsive 180px → 120px mobile)
   - Liens vers pages statiques (À propos, CGU, Contact)
   - Réseaux sociaux
   - Copyright
   - i18n complet
   - Note: Les pages de destination n'existent pas encore
+
+**Composants responsive (mobile)** ✅ TERMINÉ
+- [x] `CarouselCard1` : layout column-reverse, texte centré, bouton centré
+- [x] `ProductCard1` : hauteur images ajustée (220px → 180px → 220px selon breakpoints)
+- [x] `Section2` (Flash Deals) : Grid 1 colonne mobile (xs={12}) au lieu de carousel
 
 **Résumé Marketplace Phase 1 - Ce qui reste à faire** :
 | Fonctionnalité | Priorité | Statut |
@@ -1245,9 +1256,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.8
+**Version** : 1.9
 **Dernière mise à jour** : 22 Juin 2026
 **Changelog** :
+- v1.9 : Mobile responsive (Topbar logo, CarouselCard1, Section2 Grid, Footer logo), Logo upload dans formulaire devenir vendeur
 - v1.8 : Marketplace auth (Login, useAuth hook), Page Profil avec dashboard layout, Page Devenir vendeur complète avec tous les états
 - v1.7 : Mise à jour statut Phase 1 - Backend et Admin Panel 100% terminés, Marketplace ~60%
 - v1.6 : Rate limiting exclusions (file uploads), cache invalidation patterns, React Query config marketplace
