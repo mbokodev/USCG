@@ -16,7 +16,7 @@ import CheckBox from "@component/ui/form/CheckBox";
 import TextField from "@component/ui/form/text-field";
 import { Button, IconButton } from "@component/ui/buttons";
 import { H3, H5, H6, SemiSpan, Paragraph } from "@component/ui/Typography";
-import { StyledRoot } from "./styles";
+import { AuthWrapper, StyledRoot } from "./styles";
 
 const formSchema = yup.object().shape({
   firstName: yup.string().required("Le prénom est requis"),
@@ -90,30 +90,33 @@ export default function Signup() {
 
   if (success) {
     return (
-      <StyledRoot>
-        <div className="content" style={{ paddingBottom: "2rem" }}>
-          <H3 textAlign="center" mb="1rem" color="success.main">
-            {t("signup.successTitle")}
-          </H3>
-          <Paragraph textAlign="center" mb="1.5rem">
-            {t("signup.successMessage")}
-          </Paragraph>
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            onClick={() => router.push("/signin")}
-          >
-            {t("signup.goToSignin")}
-          </Button>
-        </div>
-      </StyledRoot>
+      <AuthWrapper>
+        <StyledRoot>
+          <div className="content" style={{ paddingBottom: "2rem" }}>
+            <H3 textAlign="center" mb="1rem" color="success.main">
+              {t("signup.successTitle")}
+            </H3>
+            <Paragraph textAlign="center" mb="1.5rem">
+              {t("signup.successMessage")}
+            </Paragraph>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={() => router.push("/signin")}
+            >
+              {t("signup.goToSignin")}
+            </Button>
+          </div>
+        </StyledRoot>
+      </AuthWrapper>
     );
   }
 
   return (
-    <StyledRoot>
-      <form className="content" onSubmit={handleSubmit}>
+    <AuthWrapper>
+      <StyledRoot>
+        <form className="content" onSubmit={handleSubmit}>
         <H3 textAlign="center" mb="0.5rem">
           {t("signup.title")}
         </H3>
@@ -261,14 +264,15 @@ export default function Signup() {
         </Button>
       </form>
 
-      <FlexBox justifyContent="center" bg="gray.200" py="19px">
-        <SemiSpan>{t("signup.hasAccount")}</SemiSpan>
-        <Link href="/signin">
-          <H6 ml="0.5rem" borderBottom="1px solid" borderColor="gray.900">
-            {t("signup.signin")}
-          </H6>
-        </Link>
-      </FlexBox>
-    </StyledRoot>
+        <FlexBox justifyContent="center" bg="gray.200" py="19px">
+          <SemiSpan>{t("signup.hasAccount")}</SemiSpan>
+          <Link href="/signin">
+            <H6 ml="0.5rem" borderBottom="1px solid" borderColor="gray.900">
+              {t("signup.signin")}
+            </H6>
+          </Link>
+        </FlexBox>
+      </StyledRoot>
+    </AuthWrapper>
   );
 }
