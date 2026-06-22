@@ -1,4 +1,4 @@
-import { useMemo, memo } from "react";
+import { useMemo, memo, useId } from "react";
 import { useTheme } from "styled-components";
 import { SpaceProps } from "styled-system";
 import ReactSelect, { Props, Theme } from "react-select";
@@ -31,6 +31,7 @@ const styles = (errorText: string) =>
 
 const Select = memo(({ options, isMulti = false, id, label, errorText, ...props }: SelectProps) => {
   const { colors } = useTheme();
+  const generatedId = useId();
 
   const selectTheme = (theme: Theme) => ({
     ...theme,
@@ -62,6 +63,7 @@ const Select = memo(({ options, isMulti = false, id, label, errorText, ...props 
       )}
 
       <ReactSelect
+        instanceId={id || generatedId}
         isMulti={isMulti}
         options={options}
         theme={selectTheme}
