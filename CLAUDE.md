@@ -712,7 +712,7 @@ USCG/
 | Fonctionnalité | Priorité | Statut |
 |----------------|----------|--------|
 | Auth Login | HAUTE | ✅ Terminé |
-| Auth Register | HAUTE | ❌ À faire |
+| Auth Register | HAUTE | ✅ Terminé |
 | Page Devenir vendeur | HAUTE | ✅ Terminé |
 | Page Profil utilisateur | HAUTE | ✅ Terminé |
 | Contact vendeur (sur page produit) | MOYENNE | ❌ À faire |
@@ -1275,5 +1275,5 @@ Si un agent IA a besoin de clarifications :
 **Statut** :
 - Backend API : ✅ 100% Phase 1
 - Admin Panel : ✅ 100% Phase 1
-- Marketplace : ⚠️ ~85% Phase 1 (Register et pages statiques manquantes)
+- Marketplace : ⚠️ ~90% Phase 1 (Pages statiques manquantes)
 **Statut déploiement** : En production
