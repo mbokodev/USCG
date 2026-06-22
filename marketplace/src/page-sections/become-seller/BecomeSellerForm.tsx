@@ -379,35 +379,37 @@ export default function BecomeSellerForm() {
           )}
 
           {/* User info (read-only) */}
-          <Paragraph fontWeight="600" mb="1rem" color="text.secondary">
-            {t("sections.personal")}
-          </Paragraph>
-          <Grid container spacing={4} mb="1.5rem">
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label={t("fields.firstName")}
-                value={user?.firstName || ""}
-                disabled
-              />
+          <Box mb="2.5rem">
+            <Paragraph fontWeight="600" mb="1rem" color="text.secondary">
+              {t("sections.personal")}
+            </Paragraph>
+            <Grid container spacing={4}>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label={t("fields.firstName")}
+                  value={user?.firstName || ""}
+                  disabled
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label={t("fields.lastName")}
+                  value={user?.lastName || ""}
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label={t("fields.email")}
+                  value={user?.email || ""}
+                  disabled
+                />
+              </Grid>
             </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label={t("fields.lastName")}
-                value={user?.lastName || ""}
-                disabled
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label={t("fields.email")}
-                value={user?.email || ""}
-                disabled
-              />
-            </Grid>
-          </Grid>
+          </Box>
 
           {/* Business info */}
           <Paragraph fontWeight="600" mb="1rem" color="text.secondary">

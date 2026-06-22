@@ -1256,9 +1256,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.10
+**Version** : 1.11
 **Dernière mise à jour** : 22 Juin 2026
 **Changelog** :
+- v1.11 : Password reset (forgot/reset password), Resend verification email sur login, Fix icônes stroke dans boutons
 - v1.10 : Email notifications pour validation demandes vendeur (approbation + refus)
 - v1.9 : Mobile responsive (Topbar logo, CarouselCard1, Section2 Grid, Footer logo), Logo upload dans formulaire devenir vendeur
 - v1.8 : Marketplace auth (Login, useAuth hook), Page Profil avec dashboard layout, Page Devenir vendeur complète avec tous les états
