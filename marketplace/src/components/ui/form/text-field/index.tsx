@@ -1,6 +1,6 @@
 "use client";
 
-import { cloneElement, InputHTMLAttributes, useMemo, JSX } from "react";
+import { cloneElement, InputHTMLAttributes, useMemo, useId, JSX } from "react";
 import { SpaceProps } from "styled-system";
 import { colorOptions } from "interfaces";
 import { StyledTextField, TextFieldWrapper } from "./styles";
@@ -28,7 +28,8 @@ export default function TextField({
   fullWidth,
   ...props
 }: TextFieldProps) {
-  const textId = useMemo(() => id || `text-field-${Math.random()}`, [id]);
+  const generatedId = useId();
+  const textId = id || `text-field-${generatedId}`;
 
   const spacingProps = useMemo(() => {
     return Object.entries(props).reduce<SpacingProps>((acc, [key, value]) => {
