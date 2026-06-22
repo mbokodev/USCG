@@ -218,6 +218,7 @@
       "businessPhone": "Téléphone professionnel",
       "businessAddress": "Adresse de l'entreprise",
       "taxId": "Numéro fiscal (optionnel)",
+      "businessLogo": "Logo de l'entreprise (optionnel)",
       "description": "Description de votre activité"
     },
     "placeholders": {
@@ -228,7 +229,8 @@
       "description": "Décrivez votre activité, vos produits ou services, et pourquoi vous souhaitez devenir vendeur..."
     },
     "hints": {
-      "descriptionMin": "Minimum 50 caractères"
+      "descriptionMin": "Minimum 50 caractères",
+      "logoOptional": "Le logo sera affiché sur votre profil vendeur"
     },
     "buttons": {
       "cancel": "Annuler",

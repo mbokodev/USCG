@@ -218,6 +218,7 @@
       "businessPhone": "Business phone",
       "businessAddress": "Business address",
       "taxId": "Tax ID (optional)",
+      "businessLogo": "Business logo (optional)",
       "description": "Description of your activity"
     },
     "placeholders": {
@@ -228,7 +229,8 @@
       "description": "Describe your business, products or services, and why you want to become a seller..."
     },
     "hints": {
-      "descriptionMin": "Minimum 50 characters"
+      "descriptionMin": "Minimum 50 characters",
+      "logoOptional": "The logo will be displayed on your seller profile"
     },
     "buttons": {
       "cancel": "Cancel",

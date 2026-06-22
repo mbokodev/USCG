@@ -12,6 +12,7 @@ import {
   getMySellerRequest,
   createSellerRequest,
 } from "@/features/seller-requests/actions/seller-requests.actions";
+import { uploadImageAction, deleteFileAction } from "@/features/files";
 import type { ISellerRequest, SellerRequestStatus } from "@uscg/shared/types";
 
 import Box from "@component/ui/Box";
@@ -22,6 +23,7 @@ import TextField from "@component/ui/form/text-field";
 import TextArea from "@component/ui/form/textarea";
 import { Button } from "@component/ui/buttons";
 import { H2, H3, Paragraph, Small } from "@component/ui/Typography";
+import { SingleImageUpload } from "@component/ui/upload";
 
 const formSchema = yup.object().shape({
   businessName: yup
@@ -201,6 +203,12 @@ export default function BecomeSellerForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  // Logo state
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [uploadedLogoId, setUploadedLogoId] = useState<string | null>(null);
+  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
+  const [existingLogoUrl, setExistingLogoUrl] = useState<string | undefined>(undefined);
+
   // Fetch existing request on mount
   useEffect(() => {
     const fetchRequest = async () => {
@@ -209,6 +217,11 @@ export default function BecomeSellerForm() {
       const result = await getMySellerRequest();
       if (result.success) {
         setExistingRequest(result.data || null);
+        // Set existing logo URL if available
+        if (result.data?.businessLogo?.url) {
+          setExistingLogoUrl(result.data.businessLogo.url);
+          setUploadedLogoId(result.data.businessLogoId || null);
+        }
       }
       setIsLoadingRequest(false);
     };
@@ -220,11 +233,52 @@ export default function BecomeSellerForm() {
     }
   }, [user, authLoading]);
 
+  // Handle logo file change
+  const handleLogoChange = (file: File | null) => {
+    setLogoFile(file);
+    // Clear existing logo URL when new file is selected
+    if (file) {
+      setExistingLogoUrl(undefined);
+    }
+  };
+
+  // Remove existing logo
+  const handleRemoveExistingLogo = async () => {
+    if (uploadedLogoId) {
+      await deleteFileAction(uploadedLogoId);
+      setUploadedLogoId(null);
+    }
+    setExistingLogoUrl(undefined);
+  };
+
   const handleFormSubmit = async (values: FormValues) => {
     setError(null);
 
+    let logoId = uploadedLogoId;
+
+    // Upload logo if new file selected
+    if (logoFile) {
+      setIsUploadingLogo(true);
+      const formData = new FormData();
+      formData.append("file", logoFile);
+
+      const uploadResult = await uploadImageAction(formData);
+      setIsUploadingLogo(false);
+
+      if (!uploadResult.success) {
+        setError(uploadResult.error || "Erreur lors de l'upload du logo");
+        return;
+      }
+
+      logoId = uploadResult.file?.id || null;
+    }
+
     // Always use createSellerRequest - backend handles resubmission automatically
-    const result = await createSellerRequest(values);
+    const result = await createSellerRequest({
+      ...values,
+      businessLogoId: logoId || undefined,
+    });
+
     if (result.success) {
       setSuccess(true);
       setExistingRequest(result.data || null);
@@ -412,6 +466,22 @@ export default function BecomeSellerForm() {
                 disabled={isReadOnly}
               />
             </Grid>
+
+            {/* Logo upload */}
+            <Grid item xs={12}>
+              <Box mb="1.5rem">
+                <SingleImageUpload
+                  value={logoFile}
+                  existingUrl={existingLogoUrl}
+                  onChange={isReadOnly ? () => {} : handleLogoChange}
+                  onRemoveExisting={isReadOnly ? undefined : handleRemoveExistingLogo}
+                  label={t("fields.businessLogo")}
+                  hint={t("hints.logoOptional")}
+                  isUploading={isUploadingLogo}
+                />
+              </Box>
+            </Grid>
+
             <Grid item xs={12}>
               <TextArea
                 fullWidth
@@ -445,9 +515,9 @@ export default function BecomeSellerForm() {
                 type="submit"
                 variant="contained"
                 color="primary"
-                disabled={formik.isSubmitting}
+                disabled={formik.isSubmitting || isUploadingLogo}
               >
-                {formik.isSubmitting ? t("buttons.submitting") : t("buttons.submit")}
+                {formik.isSubmitting || isUploadingLogo ? t("buttons.submitting") : t("buttons.submit")}
               </Button>
             </FlexBox>
           )}

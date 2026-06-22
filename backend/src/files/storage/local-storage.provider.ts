@@ -20,7 +20,7 @@ export class LocalStorageProvider implements StorageProvider {
     // Dossier de base pour les uploads (relatif à la racine du projet)
     this.uploadDir = path.resolve(process.cwd(), 'uploads');
     // URL de base pour accéder aux fichiers
-    this.baseUrl = this.configService.get<string>('API_URL', 'http://localhost:3000');
+    this.baseUrl = this.configService.get<string>('API_URL', 'http://localhost:3001');
   }
 
   async upload(
@@ -78,6 +78,6 @@ export class LocalStorageProvider implements StorageProvider {
   }
 
   getUrl(filename: string, folder: 'images' | 'documents'): string {
-    return `${this.baseUrl}/files/${folder}/${filename}`;
+    return `${this.baseUrl}/api/files/${folder}/${filename}`;
   }
 }
