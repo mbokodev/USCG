@@ -314,8 +314,8 @@ USCG/
 - [x] GET /seller-requests/:id (OPERATOR/SUPER_ADMIN - détail)
 - [x] PATCH /seller-requests/:id/validate (OPERATOR/SUPER_ADMIN)
   - Body : { status: 'APPROVED' | 'REJECTED', rejectionReason? }
-  - Si APPROVED → User.isSeller = true (transaction)
-  - Si REJECTED → SellerRequest.status = REJECTED
+  - Si APPROVED → User.isSeller = true (transaction) + email notification
+  - Si REJECTED → SellerRequest.status = REJECTED + email notification avec raison
 
 **Catégories** ✅ TERMINÉ
 - [x] GET /categories (public - inclut sous-catégories)
@@ -1256,9 +1256,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.9
+**Version** : 1.10
 **Dernière mise à jour** : 22 Juin 2026
 **Changelog** :
+- v1.10 : Email notifications pour validation demandes vendeur (approbation + refus)
 - v1.9 : Mobile responsive (Topbar logo, CarouselCard1, Section2 Grid, Footer logo), Logo upload dans formulaire devenir vendeur
 - v1.8 : Marketplace auth (Login, useAuth hook), Page Profil avec dashboard layout, Page Devenir vendeur complète avec tous les états
 - v1.7 : Mise à jour statut Phase 1 - Backend et Admin Panel 100% terminés, Marketplace ~60%

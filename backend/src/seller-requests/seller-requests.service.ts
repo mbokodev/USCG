@@ -5,6 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma';
+import { MailService } from '../mail/mail.service';
 import { RequestStatus, Prisma } from '@prisma/client';
 import {
   CreateSellerRequestDto,
@@ -39,7 +40,10 @@ const sellerRequestInclude = {
 
 @Injectable()
 export class SellerRequestsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mailService: MailService,
+  ) {}
 
   /**
    * Créer une demande vendeur (BUYER uniquement)
@@ -256,6 +260,25 @@ export class SellerRequestsService {
 
       return updatedRequest;
     });
+
+    // Envoyer l'email de notification (après la transaction)
+    const user = result.user;
+    if (user) {
+      if (dto.status === RequestStatus.APPROVED) {
+        await this.mailService.sendSellerApprovalEmail(
+          user.email,
+          user.firstName,
+          result.businessName,
+        );
+      } else if (dto.status === RequestStatus.REJECTED && dto.rejectionReason) {
+        await this.mailService.sendSellerRejectionEmail(
+          user.email,
+          user.firstName,
+          result.businessName,
+          dto.rejectionReason,
+        );
+      }
+    }
 
     return SellerRequestMapper.toResponse(result);
   }
