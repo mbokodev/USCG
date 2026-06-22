@@ -43,17 +43,18 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   /**
-   * Upload une image (SELLER uniquement)
+   * Upload une image (utilisateur authentifié)
+   * Note: Tous les utilisateurs peuvent uploader (ex: logo demande vendeur)
+   * Les images ne sont pas liées à des annonces tant que /link n'est pas appelé
    */
   @Post('upload/image')
-  @UseGuards(IsSellerGuard)
   @UseInterceptors(
     FileInterceptor('file', {
       limits: { fileSize: 5 * 1024 * 1024 }, // 5 Mo
     }),
   )
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Upload une image (SELLER)' })
+  @ApiOperation({ summary: 'Upload une image' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {

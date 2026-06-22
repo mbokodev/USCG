@@ -32,11 +32,13 @@ const Container = styled.div.withConfig({
   margin-left: auto;
   margin-right: auto;
   max-width: ${({ fluid }) => (fluid ? "100%" : layoutConstant.containerWidth)};
-  padding-left: ${({ fluid }) => fluid && "1rem"};
-  padding-right: ${({ fluid }) => fluid && "1rem"};
+  padding-left: ${({ fluid }) => (fluid ? "1rem" : "1rem")};
+  padding-right: ${({ fluid }) => (fluid ? "1rem" : "1rem")};
   @media only screen and (max-width: 1199px) {
     margin-left: 1rem;
     margin-right: 1rem;
+    padding-left: 0;
+    padding-right: 0;
   }
   ${styleProps}
 `;
