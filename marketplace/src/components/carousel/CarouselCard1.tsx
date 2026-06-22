@@ -36,20 +36,63 @@ const StyledCarouselCard1 = styled.div`
 
   @media only screen and (max-width: 900px) {
     margin-left: 0px;
-    padding-left: 0px;
+    padding: 1rem;
+    gap: 2rem;
 
-    .title {
-      font-size: 32px;
+    .content {
+      .title {
+        font-size: 32px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 1rem;
+
+    .content {
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .title {
+        font-size: 24px;
+        margin-bottom: 1rem;
+      }
+      .description {
+        max-width: 100%;
+        font-size: 14px;
+      }
+    }
+
+    .image-holder {
+      max-width: 200px;
+      margin: 0 auto;
+    }
+
+    .button-link {
+      font-size: 14px;
+      padding: 0.75rem 1.25rem;
     }
   }
 
   @media only screen and (max-width: 425px) {
-    .title {
-      font-size: 16px;
+    .content {
+      .title {
+        font-size: 20px;
+      }
+      .description {
+        font-size: 13px;
+      }
     }
-    .title + * {
-      font-size: 13px;
+
+    .image-holder {
+      max-width: 150px;
     }
+
     .button-link {
       font-size: 13px;
       padding: 0.66rem 0.95rem;

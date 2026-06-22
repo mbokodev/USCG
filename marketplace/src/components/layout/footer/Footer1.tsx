@@ -12,7 +12,7 @@ import AppStore from "@component/ui/AppStore";
 import Container from "@component/ui/Container";
 import Typography, { Paragraph } from "@component/ui/Typography";
 // STYLED COMPONENTS
-import { StyledLink } from "./styles";
+import { StyledLink, LogoWrapper } from "./styles";
 // CUSTOM DATA
 import { iconList } from "./data";
 
@@ -40,7 +40,9 @@ export default function Footer1() {
             <Grid container spacing={6}>
               <Grid item lg={4} md={6} sm={6} xs={12}>
                 <Link href="/">
-                  <Image alt="USCG" mb="1rem" src="/assets/logo/logo-white.png" width={180} />
+                  <LogoWrapper>
+                    <Image alt="USCG" mb="1rem" src="/assets/logo/logo-white-full.png" />
+                  </LogoWrapper>
                 </Link>
 
                 <Paragraph mb="1.25rem" color="gray.500" maxWidth="320px">

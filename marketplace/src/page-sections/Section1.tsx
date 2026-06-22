@@ -9,8 +9,8 @@ export default async function Section1() {
   const banners = await api.getMainCarousel();
 
   return (
-    <Box bg="gray.white" mb="3.75rem" minHeight="450px" display="flex" alignItems="center" justifyContent="center">
-      <Container pb="3rem">
+    <Box bg="gray.white" mb="2rem" minHeight={{ _: "auto", md: "450px" }} display="flex" alignItems="center" justifyContent="center">
+      <Container py={{ _: "1.5rem", md: "3rem" }}>
         <Carousel dots autoplay arrows={false} slidesToShow={1}>
           {banners.map((banner) => (
             <CarouselCard1

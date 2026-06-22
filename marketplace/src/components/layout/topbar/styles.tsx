@@ -24,9 +24,19 @@ export const StyledTopbar = styled.div`
     }
     .logo {
       display: none;
+      align-items: center;
+      gap: 8px;
+
       img {
         display: block;
-        height: 36px;
+      }
+
+      .logo-text {
+        font-size: 20px;
+        font-weight: 800;
+        color: white;
+        letter-spacing: -0.5px;
+        margin-left: 0;
       }
     }
     span {
@@ -34,9 +44,10 @@ export const StyledTopbar = styled.div`
     }
     @media only screen and (max-width: 900px) {
       .logo {
-        display: block;
+        display: flex;
       }
-      *:not(.logo) {
+      .phone,
+      .email {
         display: none;
       }
     }

@@ -68,6 +68,12 @@ const Wrapper = styled(Card)`
 
     @media only screen and (max-width: ${deviceSize.sm}px) {
       height: 180px;
+      padding: 0.5rem;
+    }
+
+    @media only screen and (max-width: 450px) {
+      height: 220px;
+      padding: 0.75rem;
     }
   }
 
@@ -79,6 +85,10 @@ const Wrapper = styled(Card)`
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+
+    @media only screen and (max-width: ${deviceSize.sm}px) {
+      padding: 0.75rem;
     }
   }
 `;

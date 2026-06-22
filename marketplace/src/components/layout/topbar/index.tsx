@@ -6,7 +6,6 @@ import { IconChevronDown, IconMail, IconPhone } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 
 import Menu from "@component/ui/menu";
-import Image from "@component/ui/Image";
 import NavLink from "@component/ui/nav-link";
 import MenuItem from "@component/ui/MenuItem";
 import Container from "@component/ui/Container";
@@ -14,8 +13,6 @@ import { Small } from "@component/ui/Typography";
 import { StyledTopbar } from "./styles";
 import { LANGUAGES } from "./data";
 import { useRouter, usePathname } from "@/i18n/routing";
-
-import logo from "../../../../public/assets/images/logo.svg";
 
 export default function Topbar() {
   const t = useTranslations("topbar");
@@ -37,7 +34,8 @@ export default function Topbar() {
       <Container className="container">
         <div className="topbar-left">
           <div className="logo">
-            <NextImage src={logo} alt="USCG" />
+            <NextImage src="/assets/logo/logo-white.png" alt="USCG" width={32} height={32} />
+            <span className="logo-text">USCG</span>
           </div>
 
           <div className="phone">
