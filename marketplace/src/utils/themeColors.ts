@@ -54,7 +54,7 @@ const dark = { main: "#222" };
 
 const warningColor = { main: "#FFCD4E", text: textColor.primary };
 
-const errorColor = { main: "#E94560", light: "#FFE1E6", text: textColor.primary };
+const errorColor = { main: "#E94560", light: "#FFE1E6", text: "#ffffff" };
 
 const successColor = {
   text: textColor.primary,

@@ -10,7 +10,7 @@ export function useAuth() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading } = useQuery<IAuthUser | null>({
+  const { data: user, isLoading, refetch } = useQuery<IAuthUser | null>({
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -41,5 +41,6 @@ export function useAuth() {
     isSeller,
     logout,
     isLoggingOut: logoutMutation.isPending,
+    refetch,
   };
 }

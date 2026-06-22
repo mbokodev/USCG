@@ -7,6 +7,7 @@ import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useTranslations } from "next-intl";
+import { useQueryClient } from "@tanstack/react-query";
 
 import useVisibility from "./useVisibility";
 import { loginAction } from "@/features/auth";
@@ -27,6 +28,7 @@ type FormValues = yup.InferType<typeof formSchema>;
 export default function Signin() {
   const t = useTranslations("auth");
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { passwordVisibility, togglePasswordVisibility } = useVisibility();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +40,8 @@ export default function Signin() {
     const result = await loginAction(values);
 
     if (result.success) {
+      // Mettre à jour le cache avec l'utilisateur connecté
+      queryClient.setQueryData(["currentUser"], result.user);
       router.push("/");
       router.refresh();
     } else {

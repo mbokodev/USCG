@@ -147,229 +147,74 @@ Phase 1 (Basique) → Phase 2 (Standard) → Phase 3 (Pro) → Post-MVP
 - [ ] Tests unitaires Ads service
 - [ ] Tests e2e endpoints critiques (login, create ad, validate ad)
 
-### Admin Panel ✅ PRIORITÉ HAUTE
+### Admin Panel ✅ TERMINÉ
 
-#### Authentification
-- [ ] Page Login (`/login`)
-  - [ ] Formulaire email + password
-  - [ ] Appel API POST /auth/login
-  - [ ] Stockage JWT token
-  - [ ] Redirection selon role/isSeller :
-    - isSeller=true → `/seller/dashboard`
-    - OPERATOR → `/operator/dashboard`
-    - SUPER_ADMIN → `/admin/dashboard`
+#### Authentification ✅
+- [x] Page Login (`/login`)
+- [x] Stockage JWT token (cookies)
+- [x] Redirection selon role/isSeller
 
-#### Espace SELLER (isSeller=true) - NOUVEAU
+#### Espace SELLER (isSeller=true) ✅
+- [x] Dashboard SELLER avec stats
+- [x] Mes annonces avec CRUD complet
+- [x] Créer/Modifier annonce (formulaire multi-step)
+- [x] Mon profil
 
-- [ ] Dashboard SELLER (`/seller/dashboard`)
-  - [ ] Stats cards : Mes annonces (total, pending, approved, rejected)
-  - [ ] Liste mes dernières annonces
-  - [ ] Graphique annonces par status (Phase 2)
+#### Espace OPERATOR ✅
+- [x] Dashboard OPERATOR avec stats
+- [x] Validation annonces (liste + détail + approve/reject)
+- [x] Validation demandes vendeur
+- [x] Gestion BUYER
 
-- [ ] Mes annonces (`/seller/ads`)
-  - [ ] Tableau : Image, Titre, Prix, Status, Catégorie, Date
-  - [ ] Filtres : Status, Catégorie
-  - [ ] Pagination
-  - [ ] Actions : Voir, Modifier, Supprimer
-  - [ ] Bouton : Créer nouvelle annonce
+#### Espace SUPER_ADMIN ✅
+- [x] Dashboard SUPER_ADMIN
+- [x] Gestion catégories, sous-catégories, variantes
+- [x] Gestion OPERATOR (CRUD)
+- [x] Gestion bannières et flash deals
+- [x] Gestion featured sections
 
-- [ ] Créer annonce (`/seller/ads/new`)
-  - [ ] Formulaire : Titre, Description, Prix, Type, Catégorie, Localisation
-  - [ ] Upload photos (max 5, drag & drop)
-  - [ ] Submit → API POST /ads
-  - [ ] Redirection → `/seller/ads`
+#### Layout & Navigation ✅
+- [x] Sidebar dynamique selon rôle
+- [x] Header avec user dropdown
+- [x] Protection routes (middleware proxy.ts)
 
-- [ ] Modifier annonce (`/seller/ads/:id/edit`)
-  - [ ] Formulaire pré-rempli
-  - [ ] Vérifier ownership (mes annonces uniquement)
-  - [ ] Submit → API PATCH /ads/:id
+### Marketplace ⚠️ ~85% TERMINÉ
 
-- [ ] Mon profil business (`/seller/profile`)
-  - [ ] Affichage infos SellerRequest (readonly)
-  - [ ] Modification coordonnées
-  - [ ] Paramètres
+**Note** : Intégration des templates bonik-react
+**IMPORTANT** : i18n (next-intl) configuré - FR et EN
 
-#### Espace OPERATOR
+#### Authentification ⚠️ PARTIEL
+- [x] Page Login (`/signin`) - Formulaire fonctionnel
+- [x] Auth hooks (useAuth) - gestion JWT côté client
+- [x] Protection routes (middleware)
+- [ ] Page Register (`/signup`) - À faire
 
-- [ ] Dashboard OPERATOR (`/operator/dashboard`)
-  - [ ] Stats globales : Total ads, Pending ads, Total BUYER, Total SELLER
-  - [ ] Widget : Demandes vendeur pending
-  - [ ] Liste dernières annonces pending
+#### Navigation & Recherche annonces ✅ TERMINÉ
+- [x] Homepage avec bannières, catégories, flash deals, sections
+- [x] Page recherche avec filtres (catégorie, type, prix)
+- [x] Page détail annonce avec galerie
+- [x] Autocomplete dans la recherche
 
-- [ ] Validation annonces (`/operator/ads/pending`)
-  - [ ] Liste TOUTES annonces pending (tous SELLER)
-  - [ ] Tableau : SELLER, Image, Titre, Prix, Catégorie, Date
-  - [ ] Filtres : Catégorie, SELLER
-  - [ ] Actions rapides : Approuver, Refuser, Voir détail
+#### Devenir vendeur ✅ TERMINÉ
+- [x] Page `/become-seller`
+  - Protection : redirect `/signin?redirect=/become-seller`
+  - Formulaire complet avec validation Yup
+  - États : PENDING (formulaire grisé), APPROVED, REJECTED (resoumission)
+  - Lien "Devenir vendeur" dans navbar avec logique auth
 
-- [ ] Détail annonce (`/operator/ads/:id`)
-  - [ ] Affichage complet avec localisation exacte
-  - [ ] Galerie photos
-  - [ ] Infos SELLER (nom business, contact)
-  - [ ] Formulaire validation :
-    - Bouton Approuver
-    - Bouton Refuser (+ textarea raison)
-    - Bouton Demander modification (+ textarea raison)
-
-- [ ] Validation demandes vendeur (`/operator/seller-requests`) - NOUVEAU
-  - [ ] Liste TOUTES demandes pending
-  - [ ] Tableau : BUYER (nom, email), Business, Téléphone, Date
-  - [ ] Actions : Approuver, Refuser, Voir détail
-  - [ ] Modal/Page détail : Toutes infos formulaire
-  - [ ] Formulaire validation :
-    - Bouton Approuver (User.isSeller → true)
-    - Bouton Refuser (+ textarea raison)
-
-- [ ] Gestion BUYER (`/operator/buyers`)
-  - [ ] Liste tous BUYER
-  - [ ] Filtres : isSeller (true/false)
-  - [ ] Tableau : Nom, Email, isSeller, Date inscription
-  - [ ] Actions : Voir détail
-  - [ ] Bloquer/Débloquer (Phase 2)
-
-#### Espace SUPER_ADMIN
-
-- [ ] Dashboard SUPER_ADMIN (`/admin/dashboard`)
-  - [ ] Stats complètes (similaire OPERATOR + plus)
-  - [ ] Total OPERATOR
-  - [ ] Logs système
-
-- [ ] Validation demandes vendeur (`/admin/seller-requests`)
-  - [ ] Identique à OPERATOR
-
-- [ ] Gestion BUYER (`/admin/buyers`)
-  - [ ] Identique à OPERATOR
-  - [ ] + Action : Supprimer BUYER
-
-- [ ] Gestion OPERATOR (`/admin/operators`)
-  - [ ] Liste OPERATOR
-  - [ ] Créer OPERATOR : Formulaire (email, password, firstName, lastName)
-  - [ ] Modifier OPERATOR
-  - [ ] Supprimer OPERATOR
-
-- [ ] Gestion catégories (`/admin/categories`) - FAIRE EN PREMIER !
-  - [ ] Liste catégories
-  - [ ] Créer : nom, slug, description, icon
-  - [ ] Modifier
-  - [ ] Supprimer (si aucune annonce liée)
-
-- [ ] Historique connexions (`/admin/login-history`)
-  - [ ] Liste TOUTES connexions
-  - [ ] Filtres : Rôle, Date, User
-  - [ ] Tableau : User, Rôle, IP, Date, User Agent
-
-#### Layout & Navigation
-
-- [ ] Sidebar dynamique selon rôle
-  - **SELLER** : Dashboard, Mes annonces, Mon profil
-  - **OPERATOR** : Dashboard, Validation annonces, Demandes vendeur, Gestion BUYER
-  - **SUPER_ADMIN** : Dashboard, Demandes vendeur, Gestion BUYER, Gestion OPERATOR, Catégories, Historique
-
-- [ ] Header
-  - Logo + Nom appli
-  - User dropdown (nom, rôle, isSeller)
-    - Mon profil
-    - (Si isSeller : "Voir Marketplace")
-    - Déconnexion
-
-- [ ] Protection routes (middleware Next.js)
-  - Vérifier JWT token
-  - Vérifier rôle/isSeller approprié
-  - Redirect si non autorisé
-
-### Marketplace (Templates fournis par client)
-
-**Note** : Intégration des templates HTML/CSS fournis par le client
-**IMPORTANT** : Remplacer tous les textes par `t('key')` (i18n dès Phase 1)
-
-#### Authentification
-- [ ] Page Register (`/register`)
-  - [ ] Formulaire : email, password, firstName, lastName, phone
-  - [ ] Checkbox CGU (obligatoire, horodatée)
-  - [ ] Submit → API POST /auth/register → User créé (role=BUYER, isSeller=false)
-  - [ ] Auto-login + redirection homepage
-
-- [ ] Page Login (`/login`)
-  - [ ] Formulaire email + password
-  - [ ] Submit → API POST /auth/login
-  - [ ] Redirection homepage (ou page précédente)
-
-#### Navigation & Recherche annonces (BUYER)
-- [ ] Homepage (`/`)
-  - [ ] Hero section
-  - [ ] Barre de recherche
-  - [ ] Catégories (grille avec icônes)
-  - [ ] Annonces à la une (Phase 2)
-
-- [ ] Liste annonces (`/ads`)
-  - [ ] Grille d'annonces (approved uniquement)
-  - [ ] Filtres : Catégorie, Type (vente/location)
-  - [ ] Pagination
-  - [ ] Carte annonce : Image, Titre, Prix, Catégorie, Ville
-
-- [ ] Détail annonce (`/ads/:id`)
-  - [ ] Galerie photos
-  - [ ] Titre, Prix, Type, Description
-  - [ ] Localisation approximative (ville, pas adresse exacte)
-  - [ ] Infos vendeur (nom business)
-  - [ ] Bouton : Contacter vendeur (nécessite login)
-  - [ ] Bouton : Ajouter au panier (Phase 3)
-
-#### Devenir vendeur - NOUVEAU (Phase 1)
-- [ ] Page Devenir vendeur (`/become-seller`)
-  - [ ] Protection : Redirect `/login?redirect=/become-seller` si non connecté
-  - [ ] Vérification : Message si déjà isSeller=true
-  - [ ] Formulaire :
-    - Email (pré-rempli, disabled)
-    - Nom/Prénom (pré-remplis, disabled)
-    - Nom entreprise (businessName)
-    - Adresse entreprise (businessAddress)
-    - Téléphone professionnel (businessPhone)
-    - Numéro fiscal (taxId - optionnel)
-    - Description activité (textarea)
-  - [ ] Submit → API POST /seller-requests
-  - [ ] Success → Redirect `/seller-requests/status`
-
-- [ ] Page Statut demande (`/seller-requests/status`)
-  - [ ] Affiche MA demande (API GET /seller-requests/me)
-  - [ ] PENDING : "En attente de validation"
-  - [ ] APPROVED : "Approuvé ! Accédez à votre espace vendeur" + lien Admin Panel
-  - [ ] REJECTED : "Refusé : {raison}"
-
-#### Mon compte BUYER
-- [ ] Page Mon profil (`/profile`)
-  - [ ] Affichage infos : email, nom, prénom, téléphone
-  - [ ] Modifier profil
-  - [ ] Si isSeller=false : Bouton "Devenir vendeur" → `/become-seller`
-  - [ ] Si isSeller=true : Lien "Mon espace vendeur" → Admin Panel
-
+#### Mon compte BUYER ✅ TERMINÉ
+- [x] Page profil (`/profile`) avec dashboard layout
+- [x] Page édition profil (`/profile/edit`)
+- [x] Sidebar navigation (orders, wishlist, addresses préparés)
 - [ ] Mes commandes (`/profile/orders`) - Phase 3
+- [ ] Mes favoris (`/profile/wishlist`) - Phase 2
 
-- [ ] Mes favoris (`/profile/favorites`) - Phase 2
+#### Header/Footer ✅ TERMINÉ
+- [x] Header avec UserButton (login/profile selon auth)
+- [x] Lien "Devenir vendeur" avec logique conditionnelle
+- [x] Footer avec i18n
 
-#### Contact vendeur
-- [ ] Formulaire contact (sur page détail annonce)
-  - [ ] Nécessite d'être connecté (BUYER)
-  - [ ] Textarea message
-  - [ ] Submit → API POST /contacts (Phase 2, email au SELLER)
-
-#### Header/Footer
-- [ ] Header
-  - Logo
-  - Barre recherche
-  - Navigation : Accueil, Catégories, Annonces
-  - **Bouton "Devenir vendeur"** (visible pour tous)
-  - User dropdown (si connecté) :
-    - Mon profil
-    - (Si isSeller : "Mon espace vendeur")
-    - Déconnexion
-  - Login/Register (si non connecté)
-
-- [ ] Footer
-  - Liens : À propos, Contact, CGU
-  - Copyright
-
-#### Pages statiques
+#### Pages statiques - À FAIRE
 - [ ] Page CGU (`/terms`)
 - [ ] Page À propos (`/about`)
 - [ ] Page Contact (`/contact`)
@@ -769,6 +614,10 @@ Semaine 12    : Phase 3 - Tests et déploiement
 
 ---
 
-**Version** : 1.1
-**Dernière mise à jour** : 12 Juin 2026
-**Phase actuelle** : Phase 1 (MVP Basique) - Backend API quasi-complet
+**Version** : 1.2
+**Dernière mise à jour** : 22 Juin 2026
+**Phase actuelle** : Phase 1 (MVP Basique) - ~95% complet
+**Statut** :
+- Backend API : ✅ 100%
+- Admin Panel : ✅ 100%
+- Marketplace : ⚠️ ~85% (Register et pages statiques manquantes)

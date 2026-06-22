@@ -19,7 +19,8 @@
     "flashDeals": "Flash Deals",
     "newArrivals": "New Arrivals",
     "contact": "Contact",
-    "about": "About"
+    "about": "About",
+    "becomeSeller": "Become a seller"
   },
   "auth": {
     "login": "Login",
@@ -159,5 +160,106 @@
     "supportDesc": "Assistance available anytime",
     "returns": "Easy Returns",
     "returnsDesc": "Flexible return policy"
+  },
+  "profile": {
+    "title": "My Profile",
+    "editTitle": "Edit my profile",
+    "editProfile": "Edit",
+    "back": "Back",
+    "loading": "Loading...",
+    "notFound": "User not found",
+    "save": "Save",
+    "saving": "Saving...",
+    "updateSuccess": "Profile updated successfully!",
+    "nav": {
+      "dashboard": "DASHBOARD",
+      "orders": "My orders",
+      "wishlist": "Wishlist",
+      "addresses": "Addresses",
+      "account": "ACCOUNT SETTINGS",
+      "myProfile": "My profile",
+      "seller": "SELLER",
+      "becomeSeller": "Become a seller",
+      "sellerDashboard": "Seller dashboard",
+      "session": "SESSION",
+      "logout": "Logout",
+      "loggingOut": "Logging out..."
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "sellerStatus": "Seller status",
+      "seller": "Seller",
+      "buyer": "Buyer"
+    },
+    "stats": {
+      "allOrders": "All Orders",
+      "pendingOrders": "Pending Orders",
+      "cancelledOrders": "Cancelled Orders"
+    }
+  },
+  "becomeSeller": {
+    "title": "Become a Seller",
+    "subtitle": "Fill out the form to submit your application",
+    "loading": "Loading...",
+    "sections": {
+      "personal": "Personal Information",
+      "business": "Business Information",
+      "activity": "Activity Description"
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "businessName": "Business name",
+      "businessPhone": "Business phone",
+      "businessAddress": "Business address",
+      "taxId": "Tax ID (optional)",
+      "description": "Description of your activity"
+    },
+    "placeholders": {
+      "businessName": "My Congo Store",
+      "businessPhone": "+242 06 123 45 67",
+      "businessAddress": "123 Peace Avenue, Brazzaville",
+      "taxId": "NIF-12345678",
+      "description": "Describe your business, products or services, and why you want to become a seller..."
+    },
+    "hints": {
+      "descriptionMin": "Minimum 50 characters"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "submit": "Submit my application",
+      "submitting": "Submitting...",
+      "backToHome": "Back to home"
+    },
+    "alreadySeller": {
+      "title": "You are already a seller!",
+      "description": "You already have access to the seller dashboard.",
+      "goToPanel": "Go to seller dashboard"
+    },
+    "status": {
+      "pending": {
+        "title": "Application pending",
+        "description": "Your application is being reviewed. We will contact you soon."
+      },
+      "approved": {
+        "title": "Application approved!",
+        "description": "Congratulations! Your application has been approved. You can now access the seller dashboard.",
+        "goToPanel": "Go to seller dashboard"
+      },
+      "rejected": {
+        "title": "Application rejected",
+        "description": "Your application has been rejected. You can modify it and submit again.",
+        "reason": "Rejection reason"
+      }
+    },
+    "resubmit": {
+      "title": "Your previous application was rejected",
+      "description": "Modify the information and submit your application again."
+    }
   }
 }

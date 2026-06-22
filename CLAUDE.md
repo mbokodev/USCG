@@ -561,21 +561,22 @@ USCG/
 
 #### Marketplace (templates fournis par client) ⚠️ PARTIEL
 
-**Authentification** ❌ NON IMPLÉMENTÉ
-- [ ] Page Register (`/register`)
+**Authentification** ✅ TERMINÉ
+- [x] Page Login (`/signin`)
+  - Formulaire email + password
+  - Submit → API POST /auth/login
+  - Stockage JWT dans cookies (accessToken, refreshToken)
+  - Redirection homepage (ou page précédente via ?redirect=)
+
+- [x] Auth context/hooks (gestion JWT côté client)
+  - `useAuth` hook : user, isAuthenticated, isLoading, isSeller, logout
+  - Server actions pour API calls avec token
+  - Protection routes via middleware
+
+- [ ] Page Register (`/signup`) - À implémenter
   - Formulaire : email, password, firstName, lastName, phone
   - Checkbox CGU (obligatoire)
-  - Submit → API POST /auth/register → User créé (role=BUYER, isSeller=false)
-  - Auto-login → Redirection homepage
-
-- [ ] Page Login (`/login`)
-  - Page existe mais stub seulement ("Cette page sera implémentée prochainement")
-  - Formulaire email + password à créer
-  - Submit → API POST /auth/login
-  - Redirection homepage (ou page précédente)
-
-- [ ] Auth context/hooks (gestion JWT côté client)
-- [ ] Protection routes auth (middleware)
+  - Submit → API POST /auth/register
 
 **Navigation & Recherche**
 - [x] Homepage (`/`)
@@ -618,11 +619,11 @@ USCG/
   - [ ] Bouton : Contacter vendeur (nécessite login - Phase 1)
   - [ ] Bouton : Ajouter au panier (Phase 3)
 
-**Devenir vendeur (IMPORTANT - Phase 1)**
-- [ ] Page Devenir vendeur (`/become-seller`)
+**Devenir vendeur** ✅ TERMINÉ
+- [x] Page Devenir vendeur (`/become-seller`)
   - **Protection** : Nécessite d'être connecté
-    - Si non connecté → Redirect `/login?redirect=/become-seller`
-  - **Vérification** : Si déjà isSeller=true → Message "Vous êtes déjà vendeur"
+    - Si non connecté → Redirect `/signin?redirect=/become-seller`
+  - **Vérification** : Si déjà isSeller=true → Formulaire grisé + message "Vous êtes déjà vendeur"
   - **Formulaire** :
     - Email (pré-rempli, disabled)
     - Nom/Prénom (pré-remplis, disabled)
@@ -632,28 +633,31 @@ USCG/
     - Numéro fiscal (taxId - optionnel)
     - Description de l'activité (description - textarea)
   - Submit → API POST /seller-requests
-  - Success → Message "Demande envoyée, en attente de validation"
-  - Redirection → `/seller-requests/status`
+  - **États affichés sur la même page** (formulaire grisé + banner) :
+    - PENDING : "Demande en attente" + formulaire soumis en lecture seule
+    - APPROVED : "Demande approuvée !" + lien vers Admin Panel
+    - REJECTED : "Demande refusée" + raison + formulaire éditable pour resoumission
+  - **Resoumission** : Backend gère automatiquement (POST crée ou met à jour si REJECTED)
 
-- [ ] Page Statut demande vendeur (`/seller-requests/status`)
-  - Affiche status de MA demande
-  - PENDING : "En attente de validation"
-  - APPROVED : "Approuvé ! Vous pouvez accéder à l'Admin Panel" + lien
-  - REJECTED : "Refusé" + raison
+**Mon compte BUYER** ✅ TERMINÉ
+- [x] Page Mon profil (`/profile`)
+  - Layout dashboard avec sidebar navigation
+  - Affichage infos : email, nom, prénom, téléphone, rôle
+  - Stats commandes (All orders, Pending, Cancelled) - valeurs à 0 (Phase 3)
+  - Navigation sidebar :
+    - Dashboard : Orders, Wishlist, Addresses (liens préparés)
+    - Account : My Profile
+    - Seller : Devenir vendeur ou Espace vendeur (selon isSeller)
+    - Logout
+  - Si isSeller=true : Lien "Espace vendeur" → Admin Panel
 
-**Mon compte BUYER**
-- [ ] Page Mon profil (`/profile`)
-  - Affichage infos : email, nom, prénom, téléphone
-  - Modifier profil
-  - Si isSeller=false : Bouton "Devenir vendeur" → `/become-seller`
-  - Si isSeller=true : Lien "Accéder à mon espace vendeur" → Admin Panel
+- [x] Page Modifier profil (`/profile/edit`)
+  - Formulaire édition : firstName, lastName, phone
+  - Submit → API PATCH /users/me
 
 - [ ] Mes commandes (`/profile/orders`) - Phase 3
-  - Liste mes commandes
-  - Status paiement
-
-- [ ] Mes favoris (`/profile/favorites`) - Phase 2
-  - Liste annonces sauvegardées
+- [ ] Mes favoris (`/profile/wishlist`) - Phase 2
+- [ ] Mes adresses (`/profile/addresses`) - Phase 2
 
 **Contact vendeur**
 - [ ] Formulaire contact vendeur (sur page détail annonce)
@@ -672,13 +676,18 @@ USCG/
 - [ ] Page À propos (`/about`)
 - [ ] Page Contact (`/contact`)
 
-**Header/Footer** ⚠️ PARTIEL
+**Header/Footer** ✅ TERMINÉ
 - [x] Header (structure complète)
   - Logo
   - Barre recherche avec autocomplete
-  - Navigation : Accueil, Catégories, Flash Deals, Contact
-  - Bouton Login (lien vers /login)
-  - [ ] User dropdown (si connecté) - nécessite auth context
+  - Navigation : Accueil, Catégories, Devenir vendeur, Contact
+  - **UserButton** : Icône utilisateur
+    - Si non connecté → `/signin`
+    - Si connecté → `/profile`
+  - **Lien "Devenir vendeur"** dans navbar :
+    - Si non connecté → `/signin?redirect=/become-seller`
+    - Si isSeller=true → Ouvre Admin Panel (nouvel onglet)
+    - Sinon → `/become-seller`
   - [ ] Panier (Phase 3)
 
 - [x] Footer (structure complète)
@@ -689,14 +698,14 @@ USCG/
   - Note: Les pages de destination n'existent pas encore
 
 **Résumé Marketplace Phase 1 - Ce qui reste à faire** :
-| Fonctionnalité | Priorité |
-|----------------|----------|
-| Auth (Login/Register) avec context | HAUTE |
-| Page Devenir vendeur | HAUTE |
-| Page Statut demande vendeur | HAUTE |
-| Page Profil utilisateur | HAUTE |
-| Contact vendeur (sur page produit) | MOYENNE |
-| Pages statiques (CGU, À propos, Contact) | BASSE |
+| Fonctionnalité | Priorité | Statut |
+|----------------|----------|--------|
+| Auth Login | HAUTE | ✅ Terminé |
+| Auth Register | HAUTE | ❌ À faire |
+| Page Devenir vendeur | HAUTE | ✅ Terminé |
+| Page Profil utilisateur | HAUTE | ✅ Terminé |
+| Contact vendeur (sur page produit) | MOYENNE | ❌ À faire |
+| Pages statiques (CGU, À propos, Contact) | BASSE | ❌ À faire |
 
 **IMPORTANT lors de l'intégration des templates** :
 - Remplacer TOUS les textes en dur par `t('key')` (i18n)
@@ -1236,9 +1245,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.7
-**Dernière mise à jour** : 21 Juin 2026
+**Version** : 1.8
+**Dernière mise à jour** : 22 Juin 2026
 **Changelog** :
+- v1.8 : Marketplace auth (Login, useAuth hook), Page Profil avec dashboard layout, Page Devenir vendeur complète avec tous les états
 - v1.7 : Mise à jour statut Phase 1 - Backend et Admin Panel 100% terminés, Marketplace ~60%
 - v1.6 : Rate limiting exclusions (file uploads), cache invalidation patterns, React Query config marketplace
 - v1.5 : FeaturedSections (sections homepage configurables), Product model étend IAdListItem, documentation URLs images
@@ -1250,5 +1260,5 @@ Si un agent IA a besoin de clarifications :
 **Statut** :
 - Backend API : ✅ 100% Phase 1
 - Admin Panel : ✅ 100% Phase 1
-- Marketplace : ⚠️ ~60% Phase 1 (auth et pages user manquantes)
+- Marketplace : ⚠️ ~85% Phase 1 (Register et pages statiques manquantes)
 **Statut déploiement** : En production

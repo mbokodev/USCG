@@ -60,7 +60,7 @@ const warningColor = {
 const errorColor = {
   main: "#E94560",
   light: "#FFE1E6",
-  text: textColor.primary
+  text: "#ffffff"
 };
 
 const successColor = {

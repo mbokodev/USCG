@@ -91,6 +91,19 @@ const authService = {
       return { success: false, error: getErrorMessage(error) };
     }
   },
+
+  updateProfile: async (profileData: {
+    firstName: string;
+    lastName: string;
+    phone?: string;
+  }): Promise<ApiResult<IAuthUser>> => {
+    try {
+      const { data } = await api.patch<IAuthUser>("/users/me", profileData);
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: getErrorMessage(error) };
+    }
+  },
 };
 
 export default authService;

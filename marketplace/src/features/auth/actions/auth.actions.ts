@@ -139,3 +139,38 @@ export async function getCurrentUser(): Promise<IAuthUser | null> {
     return null;
   }
 }
+
+export interface UpdateProfileDto {
+  firstName: string;
+  lastName: string;
+  phone?: string;
+}
+
+export async function updateProfileAction(data: UpdateProfileDto): Promise<AuthActionResult> {
+  const response = await authService.updateProfile(data);
+
+  if (response.success && response.data) {
+    // Mettre à jour le cookie user
+    const session = await getSession();
+    const cookieDomain = process.env.COOKIE_DOMAIN || undefined;
+
+    session.set("user", JSON.stringify(response.data), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+      sameSite: "lax",
+      domain: cookieDomain,
+    });
+
+    return {
+      success: true,
+      user: response.data,
+    };
+  }
+
+  return {
+    success: false,
+    error: response.error,
+  };
+}

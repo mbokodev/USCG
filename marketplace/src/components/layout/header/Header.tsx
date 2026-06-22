@@ -1,16 +1,13 @@
-"use client";
-
 import Link from "next/link";
-import { IconUser } from "@tabler/icons-react";
 
 import Icon from "@component/ui/icon/Icon";
 import FlexBox from "@component/ui/FlexBox";
 import Container from "@component/ui/Container";
-import { IconButton } from "@component/ui/buttons";
 import Categories from "@component/categories/Categories";
 import { SearchInput } from "@component/search";
 import StyledHeader from "./styles";
 import Logo from "./Logo";
+import UserButton from "./UserButton";
 import type { NavigationItem } from "@/utils/category-utils";
 
 // ====================================================================
@@ -50,11 +47,7 @@ export default function Header({ isFixed, className, categories = [] }: HeaderPr
         </FlexBox>
 
         <FlexBox className="header-right" alignItems="center">
-          <Link href="/signin">
-            <IconButton borderRadius={8} ml="1rem" bg="gray.200" p="12px">
-              <IconUser size={16} stroke={1.5} />
-            </IconButton>
-          </Link>
+          <UserButton />
         </FlexBox>
       </Container>
     </StyledHeader>

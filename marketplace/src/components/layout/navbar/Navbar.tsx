@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "styled-components";
+import { useRouter } from "next/navigation";
 import { IconCategoryFilled, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 
@@ -14,6 +15,7 @@ import { Button } from "@component/ui/buttons";
 import Container from "@component/ui/Container";
 import Typography, { Span } from "@component/ui/Typography";
 import Categories from "@component/categories/Categories";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 import StyledNavbar from "./styles";
 
@@ -116,13 +118,35 @@ const renderNestedNav = (list: Nav[], isRoot = false) => {
   return <NestedNav list={list} isRoot={isRoot} />;
 };
 
+// Composant pour le lien "Devenir vendeur" avec vérification auth
+const BecomeSellerLink = ({ title }: { title: string }) => {
+  const router = useRouter();
+  const { isAuthenticated, isSeller } = useAuth();
+
+  const handleClick = () => {
+    if (!isAuthenticated) {
+      router.push("/signin?redirect=/become-seller");
+    } else if (isSeller) {
+      // Si déjà vendeur, rediriger vers l'admin panel
+      window.open(process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3002", "_blank");
+    } else {
+      router.push("/become-seller");
+    }
+  };
+
+  return (
+    <Span className="nav-link" onClick={handleClick} style={{ cursor: "pointer" }}>
+      {title}
+    </Span>
+  );
+};
+
 export default function Navbar({ navListOpen, categories = [] }: NavbarProps) {
   const theme = useTheme();
   const t = useTranslations("nav");
 
   const navbarNavigations: Nav[] = [
     { title: t("home"), url: "/" },
-    { title: t("flashDeals"), url: "/search?flashDeals=true" },
     { title: t("contact"), url: "/contact" },
   ];
 
@@ -155,7 +179,10 @@ export default function Navbar({ navListOpen, categories = [] }: NavbarProps) {
           )}
         />
 
-        <FlexBox style={{ gap: 32 }}>{renderNestedNav(navbarNavigations, true)}</FlexBox>
+        <FlexBox style={{ gap: 32 }}>
+          {renderNestedNav(navbarNavigations, true)}
+          <BecomeSellerLink title={t("becomeSeller")} />
+        </FlexBox>
       </Container>
     </StyledNavbar>
   );

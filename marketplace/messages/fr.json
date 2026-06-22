@@ -19,7 +19,8 @@
     "flashDeals": "Ventes Flash",
     "newArrivals": "Nouveautés",
     "contact": "Contact",
-    "about": "À propos"
+    "about": "À propos",
+    "becomeSeller": "Devenir vendeur"
   },
   "auth": {
     "login": "Connexion",
@@ -159,5 +160,106 @@
     "supportDesc": "Assistance disponible à tout moment",
     "returns": "Retours faciles",
     "returnsDesc": "Politique de retour flexible"
+  },
+  "profile": {
+    "title": "Mon Profil",
+    "editTitle": "Modifier mon profil",
+    "editProfile": "Modifier",
+    "back": "Retour",
+    "loading": "Chargement...",
+    "notFound": "Utilisateur non trouvé",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "updateSuccess": "Profil mis à jour avec succès !",
+    "nav": {
+      "dashboard": "TABLEAU DE BORD",
+      "orders": "Mes commandes",
+      "wishlist": "Favoris",
+      "addresses": "Adresses",
+      "account": "PARAMÈTRES DU COMPTE",
+      "myProfile": "Mon profil",
+      "seller": "VENDEUR",
+      "becomeSeller": "Devenir vendeur",
+      "sellerDashboard": "Espace vendeur",
+      "session": "SESSION",
+      "logout": "Déconnexion",
+      "loggingOut": "Déconnexion..."
+    },
+    "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "role": "Rôle",
+      "sellerStatus": "Statut vendeur",
+      "seller": "Vendeur",
+      "buyer": "Acheteur"
+    },
+    "stats": {
+      "allOrders": "Toutes les commandes",
+      "pendingOrders": "Commandes en attente",
+      "cancelledOrders": "Commandes annulées"
+    }
+  },
+  "becomeSeller": {
+    "title": "Devenir vendeur",
+    "subtitle": "Remplissez le formulaire pour soumettre votre demande",
+    "loading": "Chargement...",
+    "sections": {
+      "personal": "Informations personnelles",
+      "business": "Informations de l'entreprise",
+      "activity": "Description de l'activité"
+    },
+    "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "businessName": "Nom de l'entreprise",
+      "businessPhone": "Téléphone professionnel",
+      "businessAddress": "Adresse de l'entreprise",
+      "taxId": "Numéro fiscal (optionnel)",
+      "description": "Description de votre activité"
+    },
+    "placeholders": {
+      "businessName": "Ma Boutique Congo",
+      "businessPhone": "+242 06 123 45 67",
+      "businessAddress": "123 Avenue de la Paix, Brazzaville",
+      "taxId": "NIF-12345678",
+      "description": "Décrivez votre activité, vos produits ou services, et pourquoi vous souhaitez devenir vendeur..."
+    },
+    "hints": {
+      "descriptionMin": "Minimum 50 caractères"
+    },
+    "buttons": {
+      "cancel": "Annuler",
+      "submit": "Soumettre ma demande",
+      "submitting": "Envoi en cours...",
+      "backToHome": "Retour à l'accueil"
+    },
+    "alreadySeller": {
+      "title": "Vous êtes déjà vendeur !",
+      "description": "Vous avez déjà accès à l'espace vendeur.",
+      "goToPanel": "Accéder à l'espace vendeur"
+    },
+    "status": {
+      "pending": {
+        "title": "Demande en attente",
+        "description": "Votre demande est en cours d'examen. Nous vous contacterons bientôt."
+      },
+      "approved": {
+        "title": "Demande approuvée !",
+        "description": "Félicitations ! Votre demande a été approuvée. Vous pouvez maintenant accéder à l'espace vendeur.",
+        "goToPanel": "Accéder à l'espace vendeur"
+      },
+      "rejected": {
+        "title": "Demande refusée",
+        "description": "Votre demande a été refusée. Vous pouvez la modifier et la soumettre à nouveau.",
+        "reason": "Raison du refus"
+      }
+    },
+    "resubmit": {
+      "title": "Votre précédente demande a été refusée",
+      "description": "Modifiez les informations et soumettez à nouveau votre demande."
+    }
   }
 }
