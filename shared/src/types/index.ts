@@ -139,6 +139,23 @@ export {
 } from "./featured-section.types";
 
 // ============================================
+// Static Page types
+// ============================================
+export {
+  type TiptapContent,
+  type I18nContent,
+  type ITermsPage,
+  type IUpdateTermsDto,
+  type IPrivacyPage,
+  type IUpdatePrivacyDto,
+  type IAboutValue,
+  type IAboutValueInput,
+  type IAboutTeamMember,
+  type IAboutPage,
+  type IUpdateAboutDto,
+} from "./static-page.types";
+
+// ============================================
 // API types (pagination, responses)
 // ============================================
 export {

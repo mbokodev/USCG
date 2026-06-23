@@ -17,6 +17,7 @@ import { SellerRequestsModule } from './seller-requests';
 import { BannersModule } from './banners';
 import { FlashDealsModule } from './flash-deals';
 import { FeaturedSectionsModule } from './featured-sections';
+import { StaticPagesModule } from './static-pages';
 import { MailModule } from './mail/mail.module';
 
 @Module({
@@ -55,6 +56,7 @@ import { MailModule } from './mail/mail.module';
     BannersModule,
     FlashDealsModule,
     FeaturedSectionsModule,
+    StaticPagesModule,
     MailModule,
   ],
   controllers: [AppController],

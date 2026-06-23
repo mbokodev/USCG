@@ -23,7 +23,8 @@
     "sellerRequests": "Seller Requests",
     "logout": "Logout",
     "adminPanel": "USCG Admin",
-    "version": "Admin Panel v1.0"
+    "version": "Admin Panel v1.0",
+    "staticPages": "Static Pages"
   },
   "login": {
     "title": "Login",
@@ -595,6 +596,7 @@
   "common": {
     "loading": "Loading...",
     "saving": "Saving...",
+    "success": "Saved successfully",
     "create": "Create",
     "actions": "Actions",
     "save": "Save",
@@ -629,6 +631,37 @@
       "generic": "An error occurred",
       "network": "Server connection error",
       "unauthorized": "Session expired, please login again"
+    }
+  },
+  "staticPages": {
+    "title": "Static Pages",
+    "description": "Manage content for Terms and About pages",
+    "terms": {
+      "title": "Terms of use",
+      "description": "Edit the terms of use content",
+      "content": "Terms Content"
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "Edit the Privacy Policy content",
+      "content": "Privacy Policy Content"
+    },
+    "about": {
+      "title": "About",
+      "description": "Edit the About page content",
+      "introduction": "Introduction",
+      "mission": "Our Mission",
+      "vision": "Our Vision",
+      "values": "Our Values",
+      "team": "Our Team",
+      "addValue": "Add a value",
+      "addMember": "Add a member"
+    },
+    "form": {
+      "contentFr": "Content (French)",
+      "contentEn": "Content (English)",
+      "tabFr": "French",
+      "tabEn": "English"
     }
   }
 }

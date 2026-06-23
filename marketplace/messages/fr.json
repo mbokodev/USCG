@@ -293,5 +293,45 @@
       "title": "Votre précédente demande a été refusée",
       "description": "Modifiez les informations et soumettez à nouveau votre demande."
     }
+  },
+  "staticPages": {
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "subtitle": "Les règles qui régissent l'utilisation de notre plateforme",
+      "lastUpdated": "Dernière mise à jour : Juin 2026",
+      "comingSoonTitle": "Contenu à venir",
+      "comingSoonText": "Les conditions d'utilisation seront disponibles prochainement."
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "subtitle": "Comment nous protégeons vos données et votre vie privée",
+      "lastUpdated": "Dernière mise à jour : Juin 2026",
+      "comingSoonTitle": "Contenu à venir",
+      "comingSoonText": "La politique de confidentialité sera disponible prochainement."
+    },
+    "about": {
+      "title": "À propos de USCG",
+      "subtitle": "Découvrez qui nous sommes et notre engagement envers vous",
+      "mission": "Notre Mission",
+      "vision": "Notre Vision",
+      "values": "Nos Valeurs",
+      "team": "Notre Équipe"
+    },
+    "questions": "Des questions ?",
+    "contactUs": "Contactez-nous",
+    "contact": {
+      "title": "Contactez-nous",
+      "subtitle": "Nous sommes là pour vous aider",
+      "info": {
+        "title": "Nos coordonnées",
+        "address": "Adresse",
+        "email": "Email",
+        "phone": "Téléphone"
+      },
+      "form": {
+        "title": "Envoyez-nous un message",
+        "comingSoon": "Formulaire bientôt disponible"
+      }
+    }
   }
 }

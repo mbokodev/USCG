@@ -23,7 +23,8 @@
     "sellerRequests": "Demandes vendeur",
     "logout": "Deconnexion",
     "adminPanel": "USCG Admin",
-    "version": "Admin Panel v1.0"
+    "version": "Admin Panel v1.0",
+    "staticPages": "Pages statiques"
   },
   "login": {
     "title": "Connexion",
@@ -595,6 +596,7 @@
   "common": {
     "loading": "Chargement...",
     "saving": "Enregistrement...",
+    "success": "Enregistre avec succes",
     "create": "Creer",
     "actions": "Actions",
     "save": "Enregistrer",
@@ -629,6 +631,37 @@
       "generic": "Une erreur est survenue",
       "network": "Erreur de connexion au serveur",
       "unauthorized": "Session expiree, veuillez vous reconnecter"
+    }
+  },
+  "staticPages": {
+    "title": "Pages statiques",
+    "description": "Gerez le contenu des pages CGU et A propos",
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "description": "Editez le contenu des CGU",
+      "content": "Contenu des CGU"
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "description": "Editez le contenu des politiques de confidentialité",
+      "content": "Contenu des politiques de confidentialité"
+    },
+    "about": {
+      "title": "A propos",
+      "description": "Editez le contenu de la page A propos",
+      "introduction": "Introduction",
+      "mission": "Notre Mission",
+      "vision": "Notre Vision",
+      "values": "Nos Valeurs",
+      "team": "Notre Equipe",
+      "addValue": "Ajouter une valeur",
+      "addMember": "Ajouter un membre"
+    },
+    "form": {
+      "contentFr": "Contenu (Francais)",
+      "contentEn": "Contenu (Anglais)",
+      "tabFr": "Francais",
+      "tabEn": "English"
     }
   }
 }

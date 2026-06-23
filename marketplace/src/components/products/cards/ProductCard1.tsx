@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import styled, { useTheme } from "styled-components";
-import { IconEye, IconHeart } from "@tabler/icons-react";
+import { IconHeart } from "@tabler/icons-react";
 
+import { useAuth } from "@/features/auth";
 import Box from "@component/ui/Box";
-import Rating from "@component/ui/rating";
 import Chip from "@component/ui/Chip";
 import FlexBox from "@component/ui/FlexBox";
 import NextImage from "@component/ui/NextImage";
@@ -119,6 +119,7 @@ export default function ProductCard1({
   ...props
 }: ProductCard1Props) {
   const theme = useTheme();
+  const { isAuthenticated } = useAuth();
 
   return (
     <Wrapper borderRadius={12} {...props}>
@@ -138,15 +139,13 @@ export default function ProductCard1({
           </Chip>
         )}
 
-        <FlexBox className="extra-icons">
-          <IconButton size="small" style={{ width: 35, height: 35, padding: "0.5rem" }}>
-            <IconEye size={18} color={theme.colors.gray[500]} />
-          </IconButton>
-
-          <IconButton size="small" style={{ width: 35, height: 35, padding: "0.5rem" }}>
-            <IconHeart size={18} color={theme.colors.gray[500]} />
-          </IconButton>
-        </FlexBox>
+        {isAuthenticated && (
+          <FlexBox className="extra-icons">
+            <IconButton size="small" style={{ width: 35, height: 35, padding: "0.5rem" }}>
+              <IconHeart size={18} color={theme.colors.gray[500]} />
+            </IconButton>
+          </FlexBox>
+        )}
 
         <Link href={`/product/${slug}`}>
           {imgUrl ? (

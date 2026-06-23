@@ -293,5 +293,45 @@
       "title": "Your previous application was rejected",
       "description": "Modify the information and submit your application again."
     }
+  },
+  "staticPages": {
+    "terms": {
+      "title": "Terms of Use",
+      "subtitle": "The rules that govern the use of our platform",
+      "lastUpdated": "Last updated: June 2026",
+      "comingSoonTitle": "Content Coming Soon",
+      "comingSoonText": "Terms of use will be available soon."
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "subtitle": "How we protect your data and privacy",
+      "lastUpdated": "Last updated: June 2026",
+      "comingSoonTitle": "Content Coming Soon",
+      "comingSoonText": "Privacy policy will be available soon."
+    },
+    "about": {
+      "title": "About USCG",
+      "subtitle": "Discover who we are and our commitment to you",
+      "mission": "Our Mission",
+      "vision": "Our Vision",
+      "values": "Our Values",
+      "team": "Our Team"
+    },
+    "questions": "Questions?",
+    "contactUs": "Contact us",
+    "contact": {
+      "title": "Contact Us",
+      "subtitle": "We're here to help",
+      "info": {
+        "title": "Our Contact Information",
+        "address": "Address",
+        "email": "Email",
+        "phone": "Phone"
+      },
+      "form": {
+        "title": "Send us a message",
+        "comingSoon": "Form coming soon"
+      }
+    }
   }
 }

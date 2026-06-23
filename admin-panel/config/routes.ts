@@ -60,6 +60,14 @@ export const ROUTES = {
     EDIT: (id: string) => `/featured-sections/${id}` as const,
   },
 
+  // Store - Static Pages (ADMIN)
+  STATIC_PAGES: {
+    LIST: "/static-pages",
+    TERMS: "/static-pages/terms",
+    PRIVACY: "/static-pages/privacy",
+    ABOUT: "/static-pages/about",
+  },
+
   // Sales - Orders (Phase 3 placeholder)
   ORDERS: "/orders",
 

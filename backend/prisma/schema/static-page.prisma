@@ -1,0 +1,28 @@
+// ============================================================================
+// STATIC PAGES - Terms, Privacy and About
+// ============================================================================
+
+// TermsPage - CGU (Conditions Générales d'Utilisation) avec TiptapContent i18n
+model TermsPage {
+  id        String   @id @default(cuid())
+  content   Json     // { fr: TiptapContent, en: TiptapContent }
+  updatedAt DateTime @updatedAt
+}
+
+// PrivacyPage - Conditions d'utilisation avec TiptapContent i18n
+model PrivacyPage {
+  id        String   @id @default(cuid())
+  content   Json     // { fr: TiptapContent, en: TiptapContent }
+  updatedAt DateTime @updatedAt
+}
+
+// AboutPage - Contenu structuré
+model AboutPage {
+  id           String   @id @default(cuid())
+  introduction Json     // { fr: TiptapContent, en: TiptapContent }
+  mission      Json     // { fr: TiptapContent, en: TiptapContent }
+  vision       Json     // { fr: TiptapContent, en: TiptapContent }
+  values       Json     // [{ icon, titleFr, titleEn, descFr, descEn }]
+  team         Json?    // [{ name, role, photoUrl }] - optional
+  updatedAt    DateTime @updatedAt
+}

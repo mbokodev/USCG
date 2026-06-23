@@ -419,6 +419,18 @@ USCG/
 - [x] **Marketplace** : Section6 dynamique avec sidebar filtres (max 7), premier filtre présélectionné
 - [x] **Lien "Voir tout"** : Redirige vers /search avec paramètres de filtre
 
+**Pages Statiques (Static Pages)** ✅ TERMINÉ
+- [x] GET /static-pages/terms (public - CGU pour marketplace)
+- [x] PATCH /static-pages/terms (SUPER_ADMIN - modifier CGU)
+- [x] GET /static-pages/privacy (public - Politique de confidentialité)
+- [x] PATCH /static-pages/privacy (SUPER_ADMIN - modifier Privacy)
+- [x] GET /static-pages/about (public - À propos)
+- [x] PATCH /static-pages/about (SUPER_ADMIN - modifier About)
+- [x] **Modèles Prisma** : TermsPage, PrivacyPage, AboutPage
+- [x] **Contenu i18n** : `{ fr: TiptapContent, en: TiptapContent }`
+- [x] **Traduction automatique** : CREATE duplique vers les 2 langues, UPDATE ne modifie que la langue source
+- [x] **About structuré** : introduction, mission, vision, values (avec icônes), team (optionnel)
+
 **Historique connexions** ⚠️ PARTIEL
 - [x] Enregistrement automatique à chaque login (OPERATOR/SUPER_ADMIN)
   - userId, ipAddress, userAgent, timestamp
@@ -539,6 +551,14 @@ USCG/
 
 - [x] Gestion featured sections (`/featured-sections`)
   - CRUD complet avec filtres dynamiques
+
+- [x] Gestion pages statiques (`/static-pages`)
+  - Liste avec cartes : Terms, Privacy, About
+  - Page Terms (`/static-pages/terms`) : TiptapEditor, édition locale-aware
+  - Page Privacy (`/static-pages/privacy`) : TiptapEditor, édition locale-aware
+  - Page About (`/static-pages/about`) : Formulaire structuré (intro, mission, vision, values, team)
+  - Indicateur de langue en cours d'édition
+  - Sauvegarde indépendante FR/EN
 
 - [ ] Historique connexions (`/login-history`)
   - Page créée mais affiche "Coming soon"
@@ -672,10 +692,24 @@ USCG/
 - [ ] Page Checkout (`/checkout`)
 - [ ] Choix paiement (MoMo/Cash)
 
-**Pages statiques**
-- [ ] Page CGU (`/terms`)
-- [ ] Page À propos (`/about`)
-- [ ] Page Contact (`/contact`)
+**Pages statiques** ✅ TERMINÉ
+- [x] Page CGU (`/terms`)
+  - Contenu depuis API /static-pages/terms
+  - TiptapViewer pour rendu rich text
+  - i18n complet (titre, sous-titre, date mise à jour)
+- [x] Page Confidentialité (`/privacy`)
+  - Contenu depuis API /static-pages/privacy
+  - TiptapViewer pour rendu rich text
+  - i18n complet
+- [x] Page À propos (`/about`)
+  - Contenu structuré depuis API /static-pages/about
+  - Sections : Introduction, Mission, Vision, Valeurs, Équipe
+  - Icônes Lucide pour les valeurs
+  - i18n complet
+- [x] Page Contact (`/contact`)
+  - Contenu statique (adresse, email, téléphone)
+  - Formulaire placeholder "bientôt disponible"
+  - i18n complet
 
 **Header/Footer** ✅ TERMINÉ
 - [x] Header (structure complète)
@@ -697,11 +731,10 @@ USCG/
 
 - [x] Footer (structure complète)
   - Logo : logo-white-full.png (responsive 180px → 120px mobile)
-  - Liens vers pages statiques (À propos, CGU, Contact)
+  - Liens vers pages statiques (À propos, CGU, Privacy, Contact)
   - Réseaux sociaux
   - Copyright
   - i18n complet
-  - Note: Les pages de destination n'existent pas encore
 
 **Composants responsive (mobile)** ✅ TERMINÉ
 - [x] `CarouselCard1` : layout column-reverse, texte centré, bouton centré
@@ -715,8 +748,8 @@ USCG/
 | Auth Register | HAUTE | ✅ Terminé |
 | Page Devenir vendeur | HAUTE | ✅ Terminé |
 | Page Profil utilisateur | HAUTE | ✅ Terminé |
+| Pages statiques (CGU, Privacy, About, Contact) | BASSE | ✅ Terminé |
 | Contact vendeur (sur page produit) | MOYENNE | ❌ À faire |
-| Pages statiques (CGU, À propos, Contact) | BASSE | ❌ À faire |
 
 **IMPORTANT lors de l'intégration des templates** :
 - Remplacer TOUS les textes en dur par `t('key')` (i18n)
@@ -1256,9 +1289,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.12
-**Dernière mise à jour** : 22 Juin 2026
+**Version** : 1.13
+**Dernière mise à jour** : 23 Juin 2026
 **Changelog** :
+- v1.13 : Pages statiques (Terms, Privacy, About, Contact) - API backend, Admin Panel avec édition locale-aware, Marketplace avec i18n complet
 - v1.12 : Fix upload image pour BUYER (formulaire devenir vendeur), Container padding écrans larges
 - v1.11 : Password reset (forgot/reset password), Resend verification email sur login, Fix icônes stroke dans boutons
 - v1.10 : Email notifications pour validation demandes vendeur (approbation + refus)
@@ -1275,5 +1309,5 @@ Si un agent IA a besoin de clarifications :
 **Statut** :
 - Backend API : ✅ 100% Phase 1
 - Admin Panel : ✅ 100% Phase 1
-- Marketplace : ⚠️ ~90% Phase 1 (Pages statiques manquantes)
+- Marketplace : ✅ ~95% Phase 1 (Contact vendeur manquant)
 **Statut déploiement** : En production
