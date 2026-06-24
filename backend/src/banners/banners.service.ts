@@ -9,7 +9,7 @@ const DEFAULT_BANNER: BannerResponseDto = {
   description: 'Trouvez les meilleures annonces au Congo',
   imageUrl: '/assets/images/banners/default-hero.jpg',
   buttonText: 'Parcourir les annonces',
-  buttonLink: '/ads',
+  buttonLink: '/search',
   isActive: true,
   order: 0,
   createdAt: new Date(),
