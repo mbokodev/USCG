@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 // GLOBAL CUSTOM COMPONENTS
 import { Button } from "@component/ui/buttons";
@@ -105,11 +106,12 @@ interface Props {
   title: string;
   image: string;
   buttonText: string;
+  buttonLink?: string;
   description: string;
 }
 // ===============================================
 
-export default function CarouselCard1({ title, image, buttonText, description }: Props) {
+export default function CarouselCard1({ title, image, buttonText, buttonLink, description }: Props) {
   return (
     <StyledCarouselCard1>
       <div className="content">
@@ -118,9 +120,11 @@ export default function CarouselCard1({ title, image, buttonText, description }:
           {description}
         </Typography>
 
-        <Button className="button-link" variant="contained" color="primary" p="1rem 1.5rem">
-          {buttonText}
-        </Button>
+        <Link href={buttonLink || "/search"}>
+          <Button className="button-link" variant="contained" color="primary" p="1rem 1.5rem">
+            {buttonText}
+          </Button>
+        </Link>
       </div>
 
       <div className="image-holder">
