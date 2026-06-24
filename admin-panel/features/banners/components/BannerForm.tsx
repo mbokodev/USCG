@@ -27,7 +27,7 @@ function parseLinkType(buttonLink: string | null): { type: LinkType; productId: 
     return { type: "product", productId: "", pageLink: "" };
   }
 
-  const productMatch = buttonLink.match(/^\/ads\/([a-zA-Z0-9_-]+)$/);
+  const productMatch = buttonLink.match(/^\/product\/([a-zA-Z0-9_-]+)$/);
   if (productMatch) {
     return { type: "product", productId: productMatch[1], pageLink: "" };
   }
@@ -89,7 +89,7 @@ export function BannerForm({ banner, isEditing = false }: BannerFormProps) {
       // 2. Build the final buttonLink
       let finalButtonLink = "";
       if (values.buttonLinkType === "product" && values.buttonLinkProductId) {
-        finalButtonLink = `/ads/${values.buttonLinkProductId}`;
+        finalButtonLink = `/product/${values.buttonLinkProductId}`;
       } else if (values.buttonLinkType === "page" && values.buttonLink) {
         finalButtonLink = values.buttonLink;
       }
