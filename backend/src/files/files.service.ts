@@ -34,6 +34,7 @@ export class FilesService {
     file: Express.Multer.File,
     userId: string,
     adId?: string,
+    isDefault?: boolean,
   ): Promise<FileResponseDto> {
     // Valider le type MIME
     if (!ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
@@ -54,6 +55,14 @@ export class FilesService {
       await this.validateAdOwnership(adId, userId);
     }
 
+    // Si isDefault=true, retirer le statut default des autres images de l'annonce
+    if (isDefault && adId) {
+      await this.prisma.file.updateMany({
+        where: { adId, isDefault: true },
+        data: { isDefault: false },
+      });
+    }
+
     // Upload le fichier
     const storedFile = await this.storage.upload(file, 'images');
 
@@ -69,6 +78,7 @@ export class FilesService {
         type: FileType.IMAGE,
         userId,
         adId: adId || null,
+        isDefault: isDefault || false,
       },
     });
 

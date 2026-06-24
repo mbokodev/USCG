@@ -137,7 +137,13 @@
     "views": "views",
     "seller": "Seller",
     "postedOn": "Posted on",
-    "notFound": "Ad not found"
+    "notFound": "Ad not found",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "available": "available",
+    "type": "Type",
+    "home": "Home",
+    "products": "Ads"
   },
   "search": {
     "title": "Search",

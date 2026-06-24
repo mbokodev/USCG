@@ -137,7 +137,13 @@
     "views": "vues",
     "seller": "Vendeur",
     "postedOn": "Publié le",
-    "notFound": "Annonce non trouvée"
+    "notFound": "Annonce non trouvée",
+    "showMore": "Voir plus",
+    "showLess": "Voir moins",
+    "available": "disponible(s)",
+    "type": "Type",
+    "home": "Accueil",
+    "products": "Annonces"
   },
   "search": {
     "title": "Recherche",

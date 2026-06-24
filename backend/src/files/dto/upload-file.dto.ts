@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString, IsUUID } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class UploadFileDto {
   @ApiPropertyOptional({
@@ -9,6 +10,15 @@ export class UploadFileDto {
   @IsOptional()
   @IsString()
   adId?: string;
+
+  @ApiPropertyOptional({
+    description: 'Définir comme image principale de l\'annonce',
+    example: true,
+  })
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true' || value === true)
+  isDefault?: boolean;
 }
 
 export class LinkFileToAdDto {

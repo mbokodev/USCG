@@ -77,7 +77,7 @@ export default function ProductView({ ad, relatedProducts = [] }: ProductViewPro
 
   return (
     <Fragment>
-      {/* Tabs */}
+      {/* Tabs - Commented out (description moved to ProductIntro)
       <FlexBox borderBottom="1px solid" borderColor="gray.400" mt="80px" mb="26px">
         <H6
           mr="25px"
@@ -108,7 +108,7 @@ export default function ProductView({ ad, relatedProducts = [] }: ProductViewPro
       </FlexBox>
 
       {/* Tab Content */}
-      <Box mb="50px">
+      {/* <Box mb="50px">
         {selectedOption === "description" && hasDescription && (
           <TiptapViewer content={ad.description} />
         )}
@@ -125,11 +125,11 @@ export default function ProductView({ ad, relatedProducts = [] }: ProductViewPro
             ))}
           </VariantTable>
         )}
-      </Box>
+      </Box> */}
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <Box mb="50px">
+        <Box mt="60px" mb="50px">
           <H3 mb="24px">{t("relatedProducts")}</H3>
           <Grid container spacing={6}>
             {relatedProducts.slice(0, 4).map((product) => (

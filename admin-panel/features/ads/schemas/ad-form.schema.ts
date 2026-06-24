@@ -21,6 +21,7 @@ export interface AdFormValues {
   description: TiptapContent;
   // Step 3: Images
   images: ImagePreview[];
+  defaultImageIndex: number | null; // Index de l'image principale parmi les nouvelles images
   // Edit mode: existing images
   existingImages: ExistingImage[];
   removedImageIds: string[];
@@ -39,6 +40,7 @@ export const adFormInitialValues: AdFormValues = {
   quantity: null,
   description: { type: "doc", content: [] },
   images: [],
+  defaultImageIndex: null,
   existingImages: [],
   removedImageIds: [],
 };
@@ -94,6 +96,7 @@ export const stepInformationSchema = Yup.object().shape({
 // Step 3 validation: Images (optional)
 export const stepImagesSchema = Yup.object().shape({
   images: Yup.array().max(10, "Maximum 10 images"),
+  defaultImageIndex: Yup.number().nullable(),
   existingImages: Yup.array(),
   removedImageIds: Yup.array(),
 });
@@ -127,7 +130,7 @@ export const getStepFields = (step: number): (keyof AdFormValues)[] => {
     case 2:
       return ["title", "type", "price", "discountedPrice", "quantity", "description"];
     case 3:
-      return ["images", "existingImages", "removedImageIds"];
+      return ["images", "defaultImageIndex", "existingImages", "removedImageIds"];
     default:
       return [];
   }

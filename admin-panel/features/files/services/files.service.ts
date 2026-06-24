@@ -24,11 +24,14 @@ const filesService = {
   /**
    * Upload an image file
    */
-  uploadImage: async (file: File, adId?: string): Promise<UploadedFile> => {
+  uploadImage: async (file: File, adId?: string, isDefault?: boolean): Promise<UploadedFile> => {
     const formData = new FormData();
     formData.append("file", file);
     if (adId) {
       formData.append("adId", adId);
+    }
+    if (isDefault) {
+      formData.append("isDefault", "true");
     }
 
     const response = await http.post<UploadResponse>("/files/upload/image", formData, {
@@ -40,10 +43,13 @@ const filesService = {
   },
 
   /**
-   * Upload multiple images
+   * Upload multiple images with optional default index
    */
-  uploadImages: async (files: File[], adId?: string): Promise<UploadedFile[]> => {
-    const uploadPromises = files.map((file) => filesService.uploadImage(file, adId));
+  uploadImages: async (files: File[], adId?: string, defaultIndex?: number | null): Promise<UploadedFile[]> => {
+    const uploadPromises = files.map((file, index) => {
+      const isDefault = defaultIndex !== null && defaultIndex !== undefined && index === defaultIndex;
+      return filesService.uploadImage(file, adId, isDefault);
+    });
     return Promise.all(uploadPromises);
   },
 

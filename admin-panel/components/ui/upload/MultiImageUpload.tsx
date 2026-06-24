@@ -11,6 +11,9 @@ interface MultiImageUploadProps {
   onRemoveExisting?: (imageId: string) => void;
   onSetDefault?: (imageId: string) => void;
   onUnsetDefault?: (imageId: string) => void;
+  // Props pour sélection default sur nouvelles images (mode CREATE)
+  defaultNewIndex?: number | null;
+  onSetDefaultNew?: (index: number) => void;
   maxImages?: number;
   maxSizeMB?: number;
   error?: string;
@@ -23,6 +26,8 @@ export function MultiImageUpload({
   onRemoveExisting,
   onSetDefault,
   onUnsetDefault,
+  defaultNewIndex,
+  onSetDefaultNew,
   maxImages = 10,
   maxSizeMB = 5,
   error,
@@ -203,30 +208,54 @@ export function MultiImageUpload({
             </div>
           ))}
           {/* New images */}
-          {images.map((img, index) => (
-            <div key={`new-${index}`} className="relative group">
-              <div className="aspect-square rounded-xl overflow-hidden bg-neutral-100 border-2 border-blue-200">
-                <img
-                  src={img.preview}
-                  alt={`Preview ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
+          {images.map((img, index) => {
+            const isDefaultNew = defaultNewIndex === index;
+            return (
+              <div key={`new-${index}`} className="relative group">
+                <div className={`aspect-square rounded-xl overflow-hidden bg-neutral-100 border-2 ${isDefaultNew ? "border-primary" : "border-blue-200"}`}>
+                  <img
+                    src={img.preview}
+                    alt={`Preview ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {/* Bouton supprimer */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeImage(index);
+                  }}
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+                {/* Bouton étoile pour définir comme principale */}
+                {onSetDefaultNew && !isDefaultNew && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSetDefaultNew(index);
+                    }}
+                    className="absolute -top-2 -left-2 w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Definir comme principale"
+                  >
+                    <Star className="w-3 h-3" />
+                  </button>
+                )}
+                {/* Badge "Principale" si sélectionné */}
+                {isDefaultNew && (
+                  <span className="absolute bottom-2 left-2 text-xs bg-primary text-white px-2 py-0.5 rounded flex items-center gap-1">
+                    <Star className="w-3 h-3" /> Principale
+                  </span>
+                )}
+                <span className="absolute top-2 left-2 text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
+                  Nouvelle
+                </span>
               </div>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeImage(index);
-                }}
-                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <X className="w-4 h-4" />
-              </button>
-              <span className="absolute top-2 left-2 text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
-                Nouvelle
-              </span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

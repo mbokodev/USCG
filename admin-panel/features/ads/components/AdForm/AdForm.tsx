@@ -121,7 +121,8 @@ export function AdForm({
           setSubmitProgress(t("form.uploadingImages"));
           await filesService.uploadImages(
             values.images.map((img) => img.file),
-            adId
+            adId,
+            values.defaultImageIndex
           );
         }
 
@@ -129,6 +130,8 @@ export function AdForm({
         queryClient.invalidateQueries({ queryKey: ["ads-admin"] });
         queryClient.invalidateQueries({ queryKey: ["my-ads"] });
         queryClient.invalidateQueries({ queryKey: ["admin-ad", adId] });
+        queryClient.invalidateQueries({ queryKey: ["seller-stats"] });
+        queryClient.invalidateQueries({ queryKey: ["operator-stats"] });
         router.push(ROUTES.ADS.DETAIL(adId));
       } else {
         // CREATE MODE
@@ -152,13 +155,16 @@ export function AdForm({
           setSubmitProgress(t("form.uploadingImages"));
           await filesService.uploadImages(
             values.images.map((img) => img.file),
-            createdAd.id
+            createdAd.id,
+            values.defaultImageIndex
           );
         }
 
         // Success - invalidate caches and redirect
         queryClient.invalidateQueries({ queryKey: ["ads-admin"] });
         queryClient.invalidateQueries({ queryKey: ["my-ads"] });
+        queryClient.invalidateQueries({ queryKey: ["seller-stats"] });
+        queryClient.invalidateQueries({ queryKey: ["operator-stats"] });
         router.push(ROUTES.ADS.LIST);
       }
     } catch (error) {

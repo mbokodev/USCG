@@ -69,6 +69,10 @@ export class FilesController {
           type: 'string',
           description: 'ID de l\'annonce (optionnel)',
         },
+        isDefault: {
+          type: 'boolean',
+          description: 'Définir comme image principale (optionnel)',
+        },
       },
       required: ['file'],
     },
@@ -88,6 +92,7 @@ export class FilesController {
       file,
       req.user.id,
       dto.adId,
+      dto.isDefault,
     );
     return {
       message: 'Image uploadée avec succès',

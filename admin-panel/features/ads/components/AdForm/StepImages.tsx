@@ -92,11 +92,23 @@ export function StepImages({ isEditMode = false, adId }: StepImagesProps) {
 
       <MultiImageUpload
         images={values.images}
-        onChange={(images) => setFieldValue("images", images)}
+        onChange={(newImages) => {
+          setFieldValue("images", newImages);
+          // Ajuster defaultImageIndex si nécessaire
+          if (values.defaultImageIndex !== null && values.defaultImageIndex !== undefined) {
+            if (values.defaultImageIndex >= newImages.length) {
+              // L'image par défaut a été supprimée
+              setFieldValue("defaultImageIndex", null);
+            }
+          }
+        }}
         existingImages={values.existingImages}
         onRemoveExisting={handleRemoveExistingClick}
         onSetDefault={isEditMode && adId ? handleSetDefault : undefined}
         onUnsetDefault={isEditMode && adId ? handleUnsetDefault : undefined}
+        // Props pour sélection default sur nouvelles images
+        defaultNewIndex={values.defaultImageIndex}
+        onSetDefaultNew={(index) => setFieldValue("defaultImageIndex", index)}
         maxImages={10}
         maxSizeMB={5}
         error={
