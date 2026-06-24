@@ -736,6 +736,16 @@
       "addValue": "Ajouter une valeur",
       "addMember": "Ajouter un membre"
     },
+    "sellerTerms": {
+      "title": "CGU Vendeur",
+      "description": "Conditions d'utilisation pour les vendeurs",
+      "content": "Contenu des CGU vendeur"
+    },
+    "sellerPrivacy": {
+      "title": "Politique vendeur",
+      "description": "Politique de confidentialité pour les vendeurs",
+      "content": "Contenu de la politique vendeur"
+    },
     "form": {
       "contentFr": "Contenu (Francais)",
       "contentEn": "Contenu (Anglais)",

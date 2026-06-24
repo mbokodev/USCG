@@ -299,6 +299,12 @@
     "resubmit": {
       "title": "Votre précédente demande a été refusée",
       "description": "Modifiez les informations et soumettez à nouveau votre demande."
+    },
+    "terms": {
+      "accept": "J'accepte les",
+      "termsLink": "Conditions d'utilisation vendeur",
+      "and": "et la",
+      "privacyLink": "Politique de confidentialité vendeur"
     }
   },
   "staticPages": {
@@ -323,6 +329,20 @@
       "vision": "Notre Vision",
       "values": "Nos Valeurs",
       "team": "Notre Équipe"
+    },
+    "sellerTerms": {
+      "title": "Conditions d'utilisation vendeur",
+      "subtitle": "Les règles qui régissent votre activité de vendeur sur notre plateforme",
+      "lastUpdated": "Dernière mise à jour : Juin 2026",
+      "comingSoonTitle": "Contenu à venir",
+      "comingSoonText": "Les conditions d'utilisation vendeur seront disponibles prochainement."
+    },
+    "sellerPrivacy": {
+      "title": "Politique de confidentialité vendeur",
+      "subtitle": "Comment nous protégeons vos données en tant que vendeur",
+      "lastUpdated": "Dernière mise à jour : Juin 2026",
+      "comingSoonTitle": "Contenu à venir",
+      "comingSoonText": "La politique de confidentialité vendeur sera disponible prochainement."
     },
     "questions": "Des questions ?",
     "contactUs": "Contactez-nous",

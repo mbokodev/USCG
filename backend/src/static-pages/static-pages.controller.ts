@@ -14,7 +14,13 @@ import {
 import { SkipThrottle } from '@nestjs/throttler';
 import { Role } from '@prisma/client';
 import { StaticPagesService } from './static-pages.service';
-import { UpdateTermsDto, UpdatePrivacyDto, UpdateAboutDto } from './dto';
+import {
+  UpdateTermsDto,
+  UpdatePrivacyDto,
+  UpdateAboutDto,
+  UpdateSellerTermsDto,
+  UpdateSellerPrivacyDto,
+} from './dto';
 import { Public, Roles } from '../auth/decorators';
 import { RolesGuard } from '../auth/guards';
 
@@ -130,5 +136,77 @@ export class StaticPagesController {
   @ApiResponse({ status: 403, description: 'Accès refusé - SUPER_ADMIN requis' })
   async updateAbout(@Body() dto: UpdateAboutDto) {
     return this.staticPagesService.updateAbout(dto);
+  }
+
+  // ============================================
+  // Seller Terms Page
+  // ============================================
+
+  @Get('seller-terms')
+  @Public()
+  @ApiOperation({
+    summary: 'Récupérer les CGU vendeur',
+    description: "Récupère le contenu de la page Conditions Générales d'Utilisation pour les vendeurs.",
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'CGU vendeur récupérées avec succès',
+  })
+  async getSellerTerms() {
+    return this.staticPagesService.getSellerTerms();
+  }
+
+  @Patch('seller-terms')
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Modifier les CGU vendeur',
+    description: 'Modifie le contenu de la page CGU vendeur. CREATE: traduit automatiquement. UPDATE: modifie langue source uniquement.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'CGU vendeur modifiées avec succès',
+  })
+  @ApiResponse({ status: 401, description: 'Non authentifié' })
+  @ApiResponse({ status: 403, description: 'Accès refusé - ADMIN/SUPER_ADMIN requis' })
+  async updateSellerTerms(@Body() dto: UpdateSellerTermsDto) {
+    return this.staticPagesService.updateSellerTerms(dto);
+  }
+
+  // ============================================
+  // Seller Privacy Page
+  // ============================================
+
+  @Get('seller-privacy')
+  @Public()
+  @ApiOperation({
+    summary: 'Récupérer la politique de confidentialité vendeur',
+    description: 'Récupère le contenu de la page Politique de confidentialité pour les vendeurs.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Politique de confidentialité vendeur récupérée avec succès',
+  })
+  async getSellerPrivacy() {
+    return this.staticPagesService.getSellerPrivacy();
+  }
+
+  @Patch('seller-privacy')
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Modifier la politique de confidentialité vendeur',
+    description: 'Modifie la politique de confidentialité vendeur. CREATE: traduit automatiquement. UPDATE: modifie langue source uniquement.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Politique de confidentialité vendeur modifiée avec succès',
+  })
+  @ApiResponse({ status: 401, description: 'Non authentifié' })
+  @ApiResponse({ status: 403, description: 'Accès refusé - ADMIN/SUPER_ADMIN requis' })
+  async updateSellerPrivacy(@Body() dto: UpdateSellerPrivacyDto) {
+    return this.staticPagesService.updateSellerPrivacy(dto);
   }
 }

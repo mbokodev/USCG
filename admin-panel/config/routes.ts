@@ -67,6 +67,8 @@ export const ROUTES = {
     TERMS: "/static-pages/terms",
     PRIVACY: "/static-pages/privacy",
     ABOUT: "/static-pages/about",
+    SELLER_TERMS: "/static-pages/seller-terms",
+    SELLER_PRIVACY: "/static-pages/seller-privacy",
   },
 
   // Sales - Orders (Phase 3 placeholder)

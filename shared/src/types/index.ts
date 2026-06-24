@@ -155,6 +155,10 @@ export {
   type IAboutTeamMember,
   type IAboutPage,
   type IUpdateAboutDto,
+  type ISellerTermsPage,
+  type IUpdateSellerTermsDto,
+  type ISellerPrivacyPage,
+  type IUpdateSellerPrivacyDto,
 } from "./static-page.types";
 
 // ============================================

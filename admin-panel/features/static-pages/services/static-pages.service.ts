@@ -1,5 +1,16 @@
 import { http } from "@/shared/api/http";
-import type { ITermsPage, IPrivacyPage, IAboutPage, IUpdateTermsDto, IUpdatePrivacyDto, IUpdateAboutDto } from "../types";
+import type {
+  ITermsPage,
+  IPrivacyPage,
+  IAboutPage,
+  ISellerTermsPage,
+  ISellerPrivacyPage,
+  IUpdateTermsDto,
+  IUpdatePrivacyDto,
+  IUpdateAboutDto,
+  IUpdateSellerTermsDto,
+  IUpdateSellerPrivacyDto,
+} from "../types";
 
 export const staticPagesService = {
   // Terms
@@ -32,6 +43,28 @@ export const staticPagesService = {
 
   updateAbout: async (data: IUpdateAboutDto): Promise<IAboutPage> => {
     const response = await http.patch<IAboutPage>("/static-pages/about", data);
+    return response.data;
+  },
+
+  // Seller Terms
+  getSellerTerms: async (): Promise<ISellerTermsPage> => {
+    const response = await http.get<ISellerTermsPage>("/static-pages/seller-terms");
+    return response.data;
+  },
+
+  updateSellerTerms: async (data: IUpdateSellerTermsDto): Promise<ISellerTermsPage> => {
+    const response = await http.patch<ISellerTermsPage>("/static-pages/seller-terms", data);
+    return response.data;
+  },
+
+  // Seller Privacy
+  getSellerPrivacy: async (): Promise<ISellerPrivacyPage> => {
+    const response = await http.get<ISellerPrivacyPage>("/static-pages/seller-privacy");
+    return response.data;
+  },
+
+  updateSellerPrivacy: async (data: IUpdateSellerPrivacyDto): Promise<ISellerPrivacyPage> => {
+    const response = await http.patch<ISellerPrivacyPage>("/static-pages/seller-privacy", data);
     return response.data;
   },
 };

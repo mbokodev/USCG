@@ -736,6 +736,16 @@
       "addValue": "Add a value",
       "addMember": "Add a member"
     },
+    "sellerTerms": {
+      "title": "Seller Terms",
+      "description": "Terms of service for sellers",
+      "content": "Seller Terms Content"
+    },
+    "sellerPrivacy": {
+      "title": "Seller Privacy",
+      "description": "Privacy policy for sellers",
+      "content": "Seller Privacy Content"
+    },
     "form": {
       "contentFr": "Content (French)",
       "contentEn": "Content (English)",

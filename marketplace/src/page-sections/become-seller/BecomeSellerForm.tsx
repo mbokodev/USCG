@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { IconBuildingStore, IconCheck, IconClock, IconX } from "@tabler/icons-react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -44,6 +44,10 @@ const formSchema = yup.object().shape({
     .string()
     .min(20, "La description doit contenir au moins 50 caractères")
     .required("La description est requise"),
+  acceptTerms: yup
+    .boolean()
+    .oneOf([true], "Vous devez accepter les conditions")
+    .required("Vous devez accepter les conditions"),
 });
 
 type FormValues = yup.InferType<typeof formSchema>;
@@ -117,7 +121,7 @@ function StatusBanner({
         </FlexBox>
 
         <FlexBox justifyContent="center" style={{ gap: 12 }} flexWrap="wrap">
-          <Link href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3002"} target="_blank">
+          <Link href={process.env.ADMIN_PANEL_URL || "http://localhost:3002"} target="_blank">
             <Button color="primary" variant="contained">
               {t("alreadySeller.goToPanel")}
             </Button>
@@ -178,7 +182,7 @@ function StatusBanner({
 
       <FlexBox justifyContent="center" style={{ gap: 12 }} flexWrap="wrap">
         {status === "APPROVED" && (
-          <Link href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3002"} target="_blank">
+          <Link href={process.env.ADMIN_PANEL_URL || "http://localhost:3002"} target="_blank">
             <Button color="primary" variant="contained">
               {t("status.approved.goToPanel")}
             </Button>
@@ -196,6 +200,7 @@ function StatusBanner({
 
 export default function BecomeSellerForm() {
   const t = useTranslations("becomeSeller");
+  const locale = useLocale();
   const { user, isLoading: authLoading, isSeller } = useAuth();
 
   const [existingRequest, setExistingRequest] = useState<ISellerRequest | null>(null);
@@ -274,8 +279,13 @@ export default function BecomeSellerForm() {
     }
 
     // Always use createSellerRequest - backend handles resubmission automatically
+    // Exclude acceptTerms from API payload (only used for form validation)
     const result = await createSellerRequest({
-      ...values,
+      businessName: values.businessName,
+      businessAddress: values.businessAddress,
+      businessPhone: values.businessPhone,
+      taxId: values.taxId || undefined,
+      description: values.description,
       businessLogoId: logoId || undefined,
     });
 
@@ -295,6 +305,7 @@ export default function BecomeSellerForm() {
       businessPhone: existingRequest?.businessPhone || "",
       taxId: existingRequest?.taxId || "",
       description: existingRequest?.description || "",
+      acceptTerms: false,
     },
     onSubmit: handleFormSubmit,
     validationSchema: formSchema,
@@ -505,6 +516,60 @@ export default function BecomeSellerForm() {
             </Grid>
           </Grid>
 
+          {/* Terms acceptance - only show when form is editable */}
+          {!isReadOnly && (
+            <Box mt="1.5rem" mb="1.5rem">
+              <FlexBox alignItems="center" style={{ gap: 10 }}>
+                <input
+                  type="checkbox"
+                  id="acceptTerms"
+                  name="acceptTerms"
+                  checked={formik.values.acceptTerms}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  style={{
+                    width: 18,
+                    height: 18,
+                    cursor: "pointer",
+                    marginTop: 1,
+                    accentColor: "#E94560",
+                    flexShrink: 0,
+                  }}
+                />
+                <label
+                  htmlFor="acceptTerms"
+                  style={{
+                    fontSize: 14,
+                    color: "#666",
+                    cursor: "pointer",
+                  }}
+                >
+                  {t("terms.accept")}{" "}
+                  <Link
+                    href={`/${locale}/seller-terms`}
+                    style={{ color: "#E94560", textDecoration: "underline" }}
+                    target="_blank"
+                  >
+                    {t("terms.termsLink")}
+                  </Link>{" "}
+                  {t("terms.and")}{" "}
+                  <Link
+                    href={`/${locale}/seller-privacy`}
+                    style={{ color: "#E94560", textDecoration: "underline" }}
+                    target="_blank"
+                  >
+                    {t("terms.privacyLink")}
+                  </Link>
+                </label>
+              </FlexBox>
+              {formik.touched.acceptTerms && formik.errors.acceptTerms && (
+                <Small color="error.main" mt="0.5rem" display="block">
+                  {formik.errors.acceptTerms}
+                </Small>
+              )}
+            </Box>
+          )}
+
           {/* Submit buttons - only show when form is editable */}
           {!isReadOnly && (
             <FlexBox justifyContent="flex-end" mt="2rem" style={{ gap: 12 }}>
@@ -517,7 +582,7 @@ export default function BecomeSellerForm() {
                 type="submit"
                 variant="contained"
                 color="primary"
-                disabled={formik.isSubmitting || isUploadingLogo}
+                disabled={formik.isSubmitting || isUploadingLogo || !formik.values.acceptTerms}
               >
                 {formik.isSubmitting || isUploadingLogo ? t("buttons.submitting") : t("buttons.submit")}
               </Button>

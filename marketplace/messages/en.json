@@ -299,6 +299,12 @@
     "resubmit": {
       "title": "Your previous application was rejected",
       "description": "Modify the information and submit your application again."
+    },
+    "terms": {
+      "accept": "I accept the",
+      "termsLink": "Seller Terms of Use",
+      "and": "and the",
+      "privacyLink": "Seller Privacy Policy"
     }
   },
   "staticPages": {
@@ -323,6 +329,20 @@
       "vision": "Our Vision",
       "values": "Our Values",
       "team": "Our Team"
+    },
+    "sellerTerms": {
+      "title": "Seller Terms of Use",
+      "subtitle": "The rules that govern your selling activity on our platform",
+      "lastUpdated": "Last updated: June 2026",
+      "comingSoonTitle": "Content Coming Soon",
+      "comingSoonText": "Seller terms of use will be available soon."
+    },
+    "sellerPrivacy": {
+      "title": "Seller Privacy Policy",
+      "subtitle": "How we protect your data as a seller",
+      "lastUpdated": "Last updated: June 2026",
+      "comingSoonTitle": "Content Coming Soon",
+      "comingSoonText": "Seller privacy policy will be available soon."
     },
     "questions": "Questions?",
     "contactUs": "Contact us",

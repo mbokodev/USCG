@@ -8,13 +8,18 @@ import type { SellerRequestResponseDto, SellerRequestUserDto, BusinessLogoDto } 
 // Type pour User dans SellerRequest
 type SellerRequestUser = Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'phone'>;
 
-// Type pour Logo
-type BusinessLogo = Pick<File, 'id' | 'url' | 'originalName'>;
+// Type pour Logo (path is needed to build URL dynamically)
+type BusinessLogo = Pick<File, 'id' | 'url' | 'originalName' | 'path'>;
 
 // Type pour SellerRequest avec User et Logo
 type SellerRequestWithRelations = SellerRequest & {
   user?: SellerRequestUser;
   businessLogo?: BusinessLogo | null;
+};
+
+// Get API URL from environment
+const getApiUrl = (): string => {
+  return process.env.API_URL || 'http://localhost:3001';
 };
 
 export const SellerRequestMapper = {
@@ -33,11 +38,13 @@ export const SellerRequestMapper = {
 
   /**
    * Convertit un Logo en BusinessLogoDto
+   * Build URL dynamically using current API_URL
    */
   toLogoDto(logo: BusinessLogo): BusinessLogoDto {
+    const apiUrl = getApiUrl();
     return {
       id: logo.id,
-      url: logo.url,
+      url: `${apiUrl}/api/files/${logo.path}`,
       originalName: logo.originalName,
     };
   },

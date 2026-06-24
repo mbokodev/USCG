@@ -5,4 +5,4 @@ export * from "./types";
 export { staticPagesService } from "./services";
 
 // Components
-export { TermsForm, PrivacyForm, AboutForm } from "./components";
+export { TermsForm, PrivacyForm, AboutForm, SellerTermsForm, SellerPrivacyForm } from "./components";

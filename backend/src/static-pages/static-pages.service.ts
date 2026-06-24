@@ -4,6 +4,8 @@ import { TranslationService, SourceLang } from '../translation';
 import { UpdateTermsDto } from './dto/update-terms.dto';
 import { UpdatePrivacyDto } from './dto/update-privacy.dto';
 import { UpdateAboutDto } from './dto/update-about.dto';
+import { UpdateSellerTermsDto } from './dto/update-seller-terms.dto';
+import { UpdateSellerPrivacyDto } from './dto/update-seller-privacy.dto';
 
 // Local type definitions (matching shared types)
 export interface TiptapContent {
@@ -52,6 +54,18 @@ export interface IAboutPage {
   updatedAt: string;
 }
 
+export interface ISellerTermsPage {
+  id: string;
+  content: I18nContent<TiptapContent>;
+  updatedAt: string;
+}
+
+export interface ISellerPrivacyPage {
+  id: string;
+  content: I18nContent<TiptapContent>;
+  updatedAt: string;
+}
+
 // Default TipTap content structure
 const createEmptyTiptapContent = (text: string): TiptapContent => ({
   type: 'doc',
@@ -79,6 +93,26 @@ const DEFAULT_PRIVACY: IPrivacyPage = {
   content: {
     fr: createEmptyTiptapContent("Contenu des conditions d'utilisation à définir..."),
     en: createEmptyTiptapContent('Privacy policy content to be defined...'),
+  },
+  updatedAt: new Date().toISOString(),
+};
+
+// Default Seller Terms page content
+const DEFAULT_SELLER_TERMS: ISellerTermsPage = {
+  id: 'default-seller-terms',
+  content: {
+    fr: createEmptyTiptapContent("Conditions générales d'utilisation pour les vendeurs à définir..."),
+    en: createEmptyTiptapContent('Terms of service for sellers to be defined...'),
+  },
+  updatedAt: new Date().toISOString(),
+};
+
+// Default Seller Privacy page content
+const DEFAULT_SELLER_PRIVACY: ISellerPrivacyPage = {
+  id: 'default-seller-privacy',
+  content: {
+    fr: createEmptyTiptapContent('Politique de confidentialité pour les vendeurs à définir...'),
+    en: createEmptyTiptapContent('Privacy policy for sellers to be defined...'),
   },
   updatedAt: new Date().toISOString(),
 };
@@ -435,5 +469,190 @@ export class StaticPagesService {
       team: (about.team as unknown as IAboutPage['team']) || [],
       updatedAt: about.updatedAt.toISOString(),
     };
+  }
+
+  // ============================================
+  // Seller Terms Page
+  // ============================================
+
+  async getSellerTerms(): Promise<ISellerTermsPage> {
+    const sellerTerms = await this.prisma.sellerTermsPage.findFirst();
+
+    if (!sellerTerms) {
+      return DEFAULT_SELLER_TERMS;
+    }
+
+    return {
+      id: sellerTerms.id,
+      content: sellerTerms.content as unknown as ISellerTermsPage['content'],
+      updatedAt: sellerTerms.updatedAt.toISOString(),
+    };
+  }
+
+  /**
+   * Update Seller Terms page content
+   * - CREATE (no existing data): Auto-translate via TranslationService
+   * - UPDATE (existing data): Update only source language, keep other
+   */
+  async updateSellerTerms(dto: UpdateSellerTermsDto): Promise<ISellerTermsPage> {
+    const existingSellerTerms = await this.prisma.sellerTermsPage.findFirst();
+    const isCreate = !existingSellerTerms;
+    const sourceLang = (dto.sourceLang || 'fr') as SourceLang;
+    const targetLang: SourceLang = sourceLang === 'fr' ? 'en' : 'fr';
+
+    let content: any;
+
+    if (isCreate) {
+      // CREATE: auto-translate content
+      const translatedContent = await this.translateTiptapContent(
+        dto.content as TiptapContent,
+        sourceLang,
+        targetLang,
+      );
+      content = {
+        [sourceLang]: dto.content,
+        [targetLang]: translatedContent,
+      };
+    } else {
+      // UPDATE: update only source language, keep other
+      const existing = await this.getSellerTerms();
+      content = {
+        ...existing.content,
+        [sourceLang]: dto.content,
+      };
+    }
+
+    let sellerTerms;
+    if (existingSellerTerms) {
+      sellerTerms = await this.prisma.sellerTermsPage.update({
+        where: { id: existingSellerTerms.id },
+        data: { content },
+      });
+    } else {
+      sellerTerms = await this.prisma.sellerTermsPage.create({
+        data: { content },
+      });
+    }
+
+    return {
+      id: sellerTerms.id,
+      content: sellerTerms.content as unknown as ISellerTermsPage['content'],
+      updatedAt: sellerTerms.updatedAt.toISOString(),
+    };
+  }
+
+  // ============================================
+  // Seller Privacy Page
+  // ============================================
+
+  async getSellerPrivacy(): Promise<ISellerPrivacyPage> {
+    const sellerPrivacy = await this.prisma.sellerPrivacyPage.findFirst();
+
+    if (!sellerPrivacy) {
+      return DEFAULT_SELLER_PRIVACY;
+    }
+
+    return {
+      id: sellerPrivacy.id,
+      content: sellerPrivacy.content as unknown as ISellerPrivacyPage['content'],
+      updatedAt: sellerPrivacy.updatedAt.toISOString(),
+    };
+  }
+
+  /**
+   * Update Seller Privacy page content
+   * - CREATE (no existing data): Auto-translate via TranslationService
+   * - UPDATE (existing data): Update only source language, keep other
+   */
+  async updateSellerPrivacy(dto: UpdateSellerPrivacyDto): Promise<ISellerPrivacyPage> {
+    const existingSellerPrivacy = await this.prisma.sellerPrivacyPage.findFirst();
+    const isCreate = !existingSellerPrivacy;
+    const sourceLang = (dto.sourceLang || 'fr') as SourceLang;
+    const targetLang: SourceLang = sourceLang === 'fr' ? 'en' : 'fr';
+
+    let content: any;
+
+    if (isCreate) {
+      // CREATE: auto-translate content
+      const translatedContent = await this.translateTiptapContent(
+        dto.content as TiptapContent,
+        sourceLang,
+        targetLang,
+      );
+      content = {
+        [sourceLang]: dto.content,
+        [targetLang]: translatedContent,
+      };
+    } else {
+      // UPDATE: update only source language, keep other
+      const existing = await this.getSellerPrivacy();
+      content = {
+        ...existing.content,
+        [sourceLang]: dto.content,
+      };
+    }
+
+    let sellerPrivacy;
+    if (existingSellerPrivacy) {
+      sellerPrivacy = await this.prisma.sellerPrivacyPage.update({
+        where: { id: existingSellerPrivacy.id },
+        data: { content },
+      });
+    } else {
+      sellerPrivacy = await this.prisma.sellerPrivacyPage.create({
+        data: { content },
+      });
+    }
+
+    return {
+      id: sellerPrivacy.id,
+      content: sellerPrivacy.content as unknown as ISellerPrivacyPage['content'],
+      updatedAt: sellerPrivacy.updatedAt.toISOString(),
+    };
+  }
+
+  // ============================================
+  // Helper: Translate TipTap Content
+  // ============================================
+
+  /**
+   * Recursively translate all text nodes in TipTap content
+   */
+  private async translateTiptapContent(
+    content: TiptapContent,
+    sourceLang: SourceLang,
+    targetLang: SourceLang,
+  ): Promise<TiptapContent> {
+    const translateNode = async (node: any): Promise<any> => {
+      if (!node) return node;
+
+      // If it's a text node, translate it
+      if (node.type === 'text' && node.text) {
+        const translatedText = await this.translationService.translateText(
+          node.text,
+          sourceLang,
+          targetLang,
+        );
+        return {
+          ...node,
+          text: translatedText || node.text,
+        };
+      }
+
+      // If it has content array, recursively translate
+      if (node.content && Array.isArray(node.content)) {
+        const translatedContent = await Promise.all(
+          node.content.map((child: any) => translateNode(child)),
+        );
+        return {
+          ...node,
+          content: translatedContent,
+        };
+      }
+
+      return node;
+    };
+
+    return translateNode(content);
   }
 }

@@ -100,3 +100,33 @@ export interface IUpdateAboutDto {
   values?: IAboutValueInput[];
   team?: IAboutTeamMember[];
 }
+
+// ============================================
+// Seller Terms Page
+// ============================================
+
+export interface ISellerTermsPage {
+  id: string;
+  content: I18nContent<TiptapContent>;
+  updatedAt: string;
+}
+
+export interface IUpdateSellerTermsDto {
+  sourceLang?: 'fr' | 'en'; // Source language - auto-translates on CREATE
+  content: TiptapContent; // Single language content
+}
+
+// ============================================
+// Seller Privacy Page
+// ============================================
+
+export interface ISellerPrivacyPage {
+  id: string;
+  content: I18nContent<TiptapContent>;
+  updatedAt: string;
+}
+
+export interface IUpdateSellerPrivacyDto {
+  sourceLang?: 'fr' | 'en'; // Source language - auto-translates on CREATE
+  content: TiptapContent; // Single language content
+}

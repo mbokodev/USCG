@@ -9,6 +9,10 @@ export type {
   IAboutValueInput,
   IAboutTeamMember,
   IUpdateAboutDto,
+  ISellerTermsPage,
+  IUpdateSellerTermsDto,
+  ISellerPrivacyPage,
+  IUpdateSellerPrivacyDto,
   TiptapContent,
   I18nContent,
 } from "@uscg/shared/types";
@@ -23,6 +27,14 @@ export interface TermsFormValues {
 }
 
 export interface PrivacyFormValues {
+  content: EditorTiptapContent | string;
+}
+
+export interface SellerTermsFormValues {
+  content: EditorTiptapContent | string;
+}
+
+export interface SellerPrivacyFormValues {
   content: EditorTiptapContent | string;
 }
 

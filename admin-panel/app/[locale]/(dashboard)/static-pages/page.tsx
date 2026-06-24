@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { FileText, Shield, Building2, ArrowRight } from "lucide-react";
+import { FileText, Shield, Building2, ArrowRight, FileCheck, ShieldCheck } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { PageTitle } from "@/components/ui/page-title";
 import { ROUTES } from "@/config/routes";
@@ -30,6 +30,20 @@ export default function StaticPagesPage() {
       description: t("about.description"),
       icon: Building2,
       href: ROUTES.STATIC_PAGES.ABOUT,
+    },
+    {
+      key: "sellerTerms",
+      title: t("sellerTerms.title"),
+      description: t("sellerTerms.description"),
+      icon: FileCheck,
+      href: ROUTES.STATIC_PAGES.SELLER_TERMS,
+    },
+    {
+      key: "sellerPrivacy",
+      title: t("sellerPrivacy.title"),
+      description: t("sellerPrivacy.description"),
+      icon: ShieldCheck,
+      href: ROUTES.STATIC_PAGES.SELLER_PRIVACY,
     },
   ];
 

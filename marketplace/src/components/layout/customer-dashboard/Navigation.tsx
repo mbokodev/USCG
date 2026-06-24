@@ -66,7 +66,7 @@ export default function DashboardNavigation() {
             title: t("nav.seller"),
             links: [
               {
-                href: process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3002",
+                href: process.env.ADMIN_PANEL_URL || "http://localhost:3002",
                 title: t("nav.sellerDashboard"),
                 Icon: IconBuildingStore,
                 external: true,

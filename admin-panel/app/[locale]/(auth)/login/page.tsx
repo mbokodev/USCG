@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Formik, Form } from "formik";
+import { Eye, EyeOff } from "lucide-react";
 import { Input, Button } from "@/components/ui";
 import { loginSchema, LoginRequest, loginAction } from "@/features/auth";
 import { ROUTES } from "@/config/routes";
@@ -13,6 +15,7 @@ export default function LoginPage() {
   const t = useTranslations("login");
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [showPassword, setShowPassword] = useState(false);
 
   const loginMutation = useMutation({
     mutationFn: loginAction,
@@ -97,17 +100,30 @@ export default function LoginPage() {
                   disabled={loginMutation.isPending}
                 />
 
-                <Input
-                  name="password"
-                  type="password"
-                  label={t("password")}
-                  placeholder={t("passwordPlaceholder")}
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.password ? errors.password : undefined}
-                  disabled={loginMutation.isPending}
-                />
+                <div className="relative">
+                  <Input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    label={t("password")}
+                    placeholder={t("passwordPlaceholder")}
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.password ? errors.password : undefined}
+                    disabled={loginMutation.isPending}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-9 text-neutral-400 hover:text-neutral-600"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
 
                 <Button
                   type="submit"

@@ -1,5 +1,5 @@
 import api from "@/lib/api";
-import type { ITermsPage, IPrivacyPage, IAboutPage } from "@uscg/shared/types";
+import type { ITermsPage, IPrivacyPage, IAboutPage, ISellerTermsPage, ISellerPrivacyPage } from "@uscg/shared/types";
 
 /**
  * Fetch Terms page content
@@ -34,8 +34,32 @@ export async function getAboutPage(): Promise<IAboutPage> {
   return response.data;
 }
 
+/**
+ * Fetch Seller Terms page content
+ */
+export async function getSellerTermsPage(): Promise<ISellerTermsPage> {
+  const response = await api.get<ISellerTermsPage>("/static-pages/seller-terms", {
+    headers: { "Cache-Control": "no-cache" },
+    params: { _t: Date.now() },
+  });
+  return response.data;
+}
+
+/**
+ * Fetch Seller Privacy page content
+ */
+export async function getSellerPrivacyPage(): Promise<ISellerPrivacyPage> {
+  const response = await api.get<ISellerPrivacyPage>("/static-pages/seller-privacy", {
+    headers: { "Cache-Control": "no-cache" },
+    params: { _t: Date.now() },
+  });
+  return response.data;
+}
+
 export const staticPagesService = {
   getTermsPage,
   getPrivacyPage,
   getAboutPage,
+  getSellerTermsPage,
+  getSellerPrivacyPage,
 };

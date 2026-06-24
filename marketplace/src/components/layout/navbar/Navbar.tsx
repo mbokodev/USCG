@@ -128,7 +128,7 @@ const BecomeSellerLink = ({ title }: { title: string }) => {
       router.push("/signin?redirect=/become-seller");
     } else if (isSeller) {
       // Si déjà vendeur, rediriger vers l'admin panel
-      window.open(process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3002", "_blank");
+      window.open(process.env.ADMIN_PANEL_URL || "http://localhost:3002", "_blank");
     } else {
       router.push("/become-seller");
     }

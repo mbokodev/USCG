@@ -33,6 +33,7 @@ const sellerRequestInclude = {
     select: {
       id: true,
       url: true,
+      path: true,
       originalName: true,
     },
   },

@@ -26,3 +26,21 @@ model AboutPage {
   team         Json?    // [{ name, role, photoUrl }] - optional
   updatedAt    DateTime @updatedAt
 }
+
+// ============================================================================
+// SELLER STATIC PAGES - Terms and Privacy for sellers
+// ============================================================================
+
+// SellerTermsPage - CGU Vendeur avec TiptapContent i18n
+model SellerTermsPage {
+  id        String   @id @default(cuid())
+  content   Json     // { fr: TiptapContent, en: TiptapContent }
+  updatedAt DateTime @updatedAt
+}
+
+// SellerPrivacyPage - Politique de confidentialité Vendeur avec TiptapContent i18n
+model SellerPrivacyPage {
+  id        String   @id @default(cuid())
+  content   Json     // { fr: TiptapContent, en: TiptapContent }
+  updatedAt DateTime @updatedAt
+}
