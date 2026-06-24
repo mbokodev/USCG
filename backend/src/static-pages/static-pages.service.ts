@@ -186,21 +186,27 @@ export class StaticPagesService {
 
   /**
    * Update Terms page content
-   * - CREATE (no existing data): Duplicate content for both languages
+   * - CREATE (no existing data): Auto-translate via TranslationService
    * - UPDATE (existing data): Update only source language, keep other
    */
   async updateTerms(dto: UpdateTermsDto): Promise<ITermsPage> {
     const existingTerms = await this.prisma.termsPage.findFirst();
     const isCreate = !existingTerms;
-    const sourceLang = dto.sourceLang || 'fr';
+    const sourceLang = (dto.sourceLang || 'fr') as SourceLang;
+    const targetLang: SourceLang = sourceLang === 'fr' ? 'en' : 'fr';
 
     let content: any;
 
     if (isCreate) {
-      // CREATE: duplicate content for both languages
+      // CREATE: auto-translate content
+      const translatedContent = await this.translateTiptapContent(
+        dto.content as TiptapContent,
+        sourceLang,
+        targetLang,
+      );
       content = {
-        fr: dto.content,
-        en: dto.content,
+        [sourceLang]: dto.content,
+        [targetLang]: translatedContent,
       };
     } else {
       // UPDATE: update only source language, keep other
@@ -250,21 +256,27 @@ export class StaticPagesService {
 
   /**
    * Update Privacy page content
-   * - CREATE (no existing data): Duplicate content for both languages
+   * - CREATE (no existing data): Auto-translate via TranslationService
    * - UPDATE (existing data): Update only source language, keep other
    */
   async updatePrivacy(dto: UpdatePrivacyDto): Promise<IPrivacyPage> {
     const existingPrivacy = await this.prisma.privacyPage.findFirst();
     const isCreate = !existingPrivacy;
-    const sourceLang = dto.sourceLang || 'fr';
+    const sourceLang = (dto.sourceLang || 'fr') as SourceLang;
+    const targetLang: SourceLang = sourceLang === 'fr' ? 'en' : 'fr';
 
     let content: any;
 
     if (isCreate) {
-      // CREATE: duplicate content for both languages
+      // CREATE: auto-translate content
+      const translatedContent = await this.translateTiptapContent(
+        dto.content as TiptapContent,
+        sourceLang,
+        targetLang,
+      );
       content = {
-        fr: dto.content,
-        en: dto.content,
+        [sourceLang]: dto.content,
+        [targetLang]: translatedContent,
       };
     } else {
       // UPDATE: update only source language, keep other
