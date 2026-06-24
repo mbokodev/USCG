@@ -78,7 +78,7 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
         </Span>
       </FlexBox>
 
-      <Grid container justifyContent="center" alignItems="stretch" spacing={6}>
+      <Grid container justifyContent="center" alignItems="flex-start" spacing={6}>
         {/* Image Gallery - 65% */}
         <Grid item md={8} xs={12} alignItems="center">
           <div>
@@ -175,7 +175,6 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
             bg="white"
             borderRadius={16}
             p="24px"
-            height="100%"
             style={{
               boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
               border: "1px solid #f0f0f0",
@@ -186,13 +185,8 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
               {ad.title}
             </H1>
 
-            {/* Price Badge */}
-            <Box
-              mb="20px"
-              p="16px"
-              borderRadius={12}
-              bg="gray.100"
-            >
+            {/* Price */}
+            <Box mb="20px">
               {ad.price !== null ? (
                 <FlexBox alignItems="baseline" flexWrap="wrap">
                   <H2
@@ -221,7 +215,7 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
               )}
               {ad.quantity !== null && ad.quantity !== undefined && (
                 <SemiSpan color="gray.600" fontSize="14px" mt="8px" display="block">
-                  {t("quantity")}: {ad.quantity} {t("available")}
+                  {ad.quantity} {t("available")}
                 </SemiSpan>
               )}
             </Box>
