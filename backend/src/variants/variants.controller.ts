@@ -80,7 +80,7 @@ export class VariantsController {
 
   @Post()
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Créer une variante (SUPER_ADMIN)' })
   @ApiResponse({ status: 201, type: VariantResponseDto })
@@ -92,7 +92,7 @@ export class VariantsController {
 
   @Patch(':id')
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Modifier une variante (SUPER_ADMIN)' })
   @ApiParam({ name: 'id' })
@@ -104,7 +104,7 @@ export class VariantsController {
 
   @Delete(':id')
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Supprimer une variante (SUPER_ADMIN)' })
   @ApiParam({ name: 'id' })

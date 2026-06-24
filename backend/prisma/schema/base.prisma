@@ -17,6 +17,7 @@ datasource db {
 enum Role {
   BUYER
   OPERATOR
+  ADMIN
   SUPER_ADMIN
 }
 

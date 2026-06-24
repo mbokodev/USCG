@@ -68,7 +68,7 @@ export class FeaturedSectionsController {
 
   @Get('admin')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Liste admin de toutes les sections' })
   @ApiQuery({ name: 'page', required: false, type: Number })
@@ -86,7 +86,7 @@ export class FeaturedSectionsController {
 
   @Get('admin/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: "Détail d'une section" })
   @ApiResponse({ status: 200 })
@@ -96,7 +96,7 @@ export class FeaturedSectionsController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Créer une section' })
   @ApiResponse({ status: 201 })
@@ -106,7 +106,7 @@ export class FeaturedSectionsController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Modifier une section' })
   @ApiResponse({ status: 200 })
@@ -116,7 +116,7 @@ export class FeaturedSectionsController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Supprimer une section' })
   @ApiResponse({ status: 200 })

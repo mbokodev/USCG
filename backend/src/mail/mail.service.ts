@@ -98,6 +98,41 @@ export class MailService {
   }
 
   /**
+   * Email de credentials pour un nouvel OPERATOR
+   */
+  async sendOperatorCredentialsEmail(
+    email: string,
+    firstName: string,
+    password: string,
+  ): Promise<void> {
+    const adminPanelUrl = process.env.ADMIN_PANEL_URL || 'http://localhost:3000';
+
+    if (!this.isConfigured || !this.resend) {
+      this.logger.warn('='.repeat(60));
+      this.logger.warn('EMAIL CREDENTIALS OPERATOR (Mode développement)');
+      this.logger.warn(`To: ${email}`);
+      this.logger.warn(`Name: ${firstName}`);
+      this.logger.warn(`Password: ${password}`);
+      this.logger.warn(`Admin Panel: ${adminPanelUrl}`);
+      this.logger.warn('='.repeat(60));
+      return;
+    }
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject: 'Votre compte Opérateur USCG a été créé',
+        html: this.getOperatorCredentialsEmailTemplate(firstName, email, password, adminPanelUrl),
+      });
+
+      this.logger.log(`Operator credentials email sent to ${email}`);
+    } catch (error) {
+      this.logger.error(`Failed to send operator credentials email to ${email}`, error);
+    }
+  }
+
+  /**
    * Email de réinitialisation de mot de passe
    */
   async sendPasswordResetEmail(
@@ -593,6 +628,156 @@ export class MailService {
     </div>
 
     <div class="footer">
+      <p>© ${new Date().getFullYear()} Universal Services of Congo. Tous droits réservés.</p>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+  }
+
+  private getOperatorCredentialsEmailTemplate(
+    firstName: string,
+    email: string,
+    password: string,
+    adminPanelUrl: string,
+  ): string {
+    return `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votre compte Opérateur</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .container {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 40px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo h1 {
+      color: #2563eb;
+      margin: 0;
+      font-size: 28px;
+    }
+    h2 {
+      color: #1f2937;
+      margin-top: 0;
+    }
+    .credentials-box {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .credentials-box p {
+      margin: 8px 0;
+    }
+    .credentials-box strong {
+      color: #1f2937;
+    }
+    .credentials-box code {
+      background: #e5e7eb;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .button {
+      display: inline-block;
+      background: #2563eb;
+      color: #ffffff !important;
+      padding: 14px 28px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      margin: 20px 0;
+    }
+    .warning {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+    }
+    .warning-icon {
+      font-size: 20px;
+    }
+    .warning strong {
+      color: #b45309;
+    }
+    .security-note {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .security-note strong {
+      color: #dc2626;
+    }
+    .footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 14px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h1>USCG Admin</h1>
+    </div>
+
+    <h2>Bienvenue ${firstName} !</h2>
+
+    <p>Un compte <strong>Opérateur</strong> a été créé pour vous sur la plateforme USCG.</p>
+
+    <p>En tant qu'opérateur, vous pourrez :</p>
+    <ul>
+      <li>Valider ou refuser les annonces des vendeurs</li>
+      <li>Traiter les demandes pour devenir vendeur</li>
+      <li>Gérer les utilisateurs de la plateforme</li>
+    </ul>
+
+    <div class="credentials-box">
+      <p><strong>Vos identifiants de connexion :</strong></p>
+      <p>📧 Email : <code>${email}</code></p>
+      <p>🔑 Mot de passe : <code>${password}</code></p>
+    </div>
+
+    <div class="warning">
+      <span class="warning-icon">⚠️</span>
+      <strong>IMPORTANT :</strong>
+      <p style="margin: 8px 0 0 0;">Lors de votre première connexion, vous serez obligé de changer votre mot de passe. Choisissez un mot de passe fort et unique que vous seul connaissez.</p>
+    </div>
+
+    <p style="text-align: center;">
+      <a href="${adminPanelUrl}" class="button">Se connecter au panel admin</a>
+    </p>
+
+    <div class="security-note">
+      🔒 <strong>Sécurité :</strong> Ne partagez jamais vos identifiants avec qui que ce soit. L'équipe USCG ne vous demandera jamais votre mot de passe.
+    </div>
+
+    <div class="footer">
+      <p>Cet email a été envoyé automatiquement. Merci de ne pas y répondre.</p>
       <p>© ${new Date().getFullYear()} Universal Services of Congo. Tous droits réservés.</p>
     </div>
   </div>

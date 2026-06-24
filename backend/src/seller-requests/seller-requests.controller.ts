@@ -70,7 +70,7 @@ export class SellerRequestsController {
    * Liste toutes les demandes (OPERATOR/SUPER_ADMIN)
    */
   @Get()
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiOperation({
     summary: 'Liste toutes les demandes (OPERATOR/SUPER_ADMIN)',
     description: 'Récupère la liste de toutes les demandes vendeur avec pagination et filtres',
@@ -86,7 +86,7 @@ export class SellerRequestsController {
    * Demandes en attente (OPERATOR/SUPER_ADMIN)
    */
   @Get('pending')
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiOperation({
     summary: 'Demandes en attente (OPERATOR/SUPER_ADMIN)',
     description: 'Récupère uniquement les demandes en attente de validation',
@@ -102,7 +102,7 @@ export class SellerRequestsController {
    * Statistiques des demandes (OPERATOR/SUPER_ADMIN)
    */
   @Get('stats')
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiOperation({
     summary: 'Statistiques des demandes (OPERATOR/SUPER_ADMIN)',
   })
@@ -114,7 +114,7 @@ export class SellerRequestsController {
    * Demande vendeur par userId (OPERATOR/SUPER_ADMIN)
    */
   @Get('user/:userId')
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiOperation({
     summary: 'Demande vendeur par userId (OPERATOR/SUPER_ADMIN)',
     description: 'Récupère la demande vendeur d\'un utilisateur spécifique',
@@ -130,7 +130,7 @@ export class SellerRequestsController {
    * Détail d'une demande (OPERATOR/SUPER_ADMIN)
    */
   @Get(':id')
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiOperation({
     summary: 'Détail d\'une demande (OPERATOR/SUPER_ADMIN)',
   })
@@ -145,7 +145,7 @@ export class SellerRequestsController {
    * Valider/Refuser une demande (OPERATOR/SUPER_ADMIN)
    */
   @Patch(':id/validate')
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiOperation({
     summary: 'Valider ou refuser une demande (OPERATOR/SUPER_ADMIN)',
     description: 'Approuve ou refuse une demande vendeur. Si approuvée, l\'utilisateur devient vendeur.',

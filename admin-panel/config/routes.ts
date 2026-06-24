@@ -8,6 +8,7 @@ export const ROUTES = {
   // Auth
   AUTH: {
     LOGIN: "/login",
+    CHANGE_PASSWORD: "/change-password",
   },
 
   // Dashboard (tous les rôles authentifiés)
@@ -79,6 +80,9 @@ export const ROUTES = {
     LIST: "/seller-requests",
     DETAIL: (id: string) => `/seller-requests/${id}` as const,
   },
+
+  // Staff Management (ADMIN/SUPER_ADMIN)
+  STAFF: "/staff",
 } as const;
 
 // Type-safe route helper

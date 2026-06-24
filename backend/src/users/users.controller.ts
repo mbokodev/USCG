@@ -21,7 +21,9 @@ import { UsersService } from './users.service';
 import {
   UpdateProfileDto,
   CreateOperatorDto,
+  CreateStaffDto,
   QueryUsersDto,
+  QueryStaffDto,
   UserProfileResponseDto,
   UsersListResponseDto,
 } from './dto';
@@ -72,11 +74,11 @@ export class UsersController {
 
   @Get()
   @UseGuards(RolesGuard)
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiOperation({
     summary: 'Liste des utilisateurs',
     description:
-      'Récupère la liste paginée des utilisateurs. Réservé aux OPERATOR et SUPER_ADMIN.',
+      'Récupère la liste paginée des utilisateurs. Réservé aux OPERATOR, ADMIN et SUPER_ADMIN.',
   })
   @ApiResponse({
     status: 200,
@@ -89,13 +91,87 @@ export class UsersController {
     return this.usersService.findAll(query);
   }
 
+  // ============================================================================
+  // STAFF MANAGEMENT (OPERATOR + ADMIN)
+  // ============================================================================
+
+  @Get('staff')
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiOperation({
+    summary: 'Liste du staff',
+    description:
+      'Récupère la liste paginée du staff. ADMIN voit les OPERATOR, SUPER_ADMIN voit OPERATOR + ADMIN.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Liste récupérée avec succès',
+    type: UsersListResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'Non authentifié' })
+  @ApiResponse({ status: 403, description: 'Accès refusé' })
+  async getStaff(
+    @CurrentUser('role') callerRole: Role,
+    @Query() query: QueryStaffDto,
+  ): Promise<UsersListResponseDto> {
+    return this.usersService.findStaff(callerRole, query);
+  }
+
+  @Post('staff')
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiOperation({
+    summary: 'Créer un membre du staff',
+    description:
+      'Crée un OPERATOR ou ADMIN. ADMIN peut créer OPERATOR seulement. SUPER_ADMIN peut créer les deux.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Staff créé avec succès',
+    type: UserProfileResponseDto,
+  })
+  @ApiResponse({ status: 400, description: 'Données invalides' })
+  @ApiResponse({ status: 401, description: 'Non authentifié' })
+  @ApiResponse({ status: 403, description: 'Accès refusé ou action non autorisée' })
+  @ApiResponse({ status: 409, description: 'Email déjà utilisé' })
+  async createStaff(
+    @CurrentUser('role') callerRole: Role,
+    @Body() dto: CreateStaffDto,
+  ): Promise<UserProfileResponseDto> {
+    return this.usersService.createStaff(callerRole, dto);
+  }
+
+  @Delete('staff/:id')
+  @UseGuards(RolesGuard)
+  @Roles(Role.SUPER_ADMIN)
+  @ApiOperation({
+    summary: 'Supprimer un membre du staff',
+    description:
+      'Supprime un OPERATOR ou ADMIN. Réservé au SUPER_ADMIN uniquement.',
+  })
+  @ApiParam({ name: 'id', description: 'ID du membre du staff à supprimer' })
+  @ApiResponse({
+    status: 200,
+    description: 'Staff supprimé avec succès',
+  })
+  @ApiResponse({ status: 401, description: 'Non authentifié' })
+  @ApiResponse({ status: 403, description: 'Accès refusé ou action non autorisée' })
+  @ApiResponse({ status: 404, description: 'Utilisateur non trouvé' })
+  async deleteStaff(
+    @Param('id') id: string,
+    @CurrentUser('id') callerId: string,
+    @CurrentUser('role') callerRole: Role,
+  ): Promise<{ message: string }> {
+    return this.usersService.deleteStaff(callerId, callerRole, id);
+  }
+
   @Get(':id')
   @UseGuards(RolesGuard)
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiOperation({
     summary: "Détail d'un utilisateur",
     description:
-      "Récupère le détail d'un utilisateur par son ID. Réservé aux OPERATOR et SUPER_ADMIN.",
+      "Récupère le détail d'un utilisateur par son ID. Réservé aux OPERATOR, ADMIN et SUPER_ADMIN.",
   })
   @ApiParam({ name: 'id', description: "ID de l'utilisateur" })
   @ApiResponse({
@@ -154,5 +230,57 @@ export class UsersController {
     @CurrentUser('id') currentUserId: string,
   ): Promise<{ message: string }> {
     return this.usersService.remove(id, currentUserId);
+  }
+
+  // ============================================================================
+  // BLOCKING / UNBLOCKING USERS
+  // ============================================================================
+
+  @Patch(':id/block')
+  @UseGuards(RolesGuard)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiOperation({
+    summary: 'Bloquer un utilisateur',
+    description:
+      "Bloque un utilisateur (isActive=false). L'utilisateur ne pourra plus se connecter. OPERATOR peut bloquer BUYER, ADMIN peut bloquer OPERATOR, SUPER_ADMIN peut bloquer tous sauf SUPER_ADMIN.",
+  })
+  @ApiParam({ name: 'id', description: "ID de l'utilisateur à bloquer" })
+  @ApiResponse({
+    status: 200,
+    description: 'Utilisateur bloqué avec succès',
+  })
+  @ApiResponse({ status: 401, description: 'Non authentifié' })
+  @ApiResponse({ status: 403, description: 'Accès refusé ou action interdite' })
+  @ApiResponse({ status: 404, description: 'Utilisateur non trouvé' })
+  async blockUser(
+    @Param('id') id: string,
+    @CurrentUser('id') callerId: string,
+    @CurrentUser('role') callerRole: Role,
+  ): Promise<{ message: string }> {
+    return this.usersService.blockUser(callerId, callerRole, id);
+  }
+
+  @Patch(':id/unblock')
+  @UseGuards(RolesGuard)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiOperation({
+    summary: 'Débloquer un utilisateur',
+    description:
+      "Débloque un utilisateur (isActive=true). L'utilisateur pourra à nouveau se connecter. Mêmes restrictions de rôle que pour le blocage.",
+  })
+  @ApiParam({ name: 'id', description: "ID de l'utilisateur à débloquer" })
+  @ApiResponse({
+    status: 200,
+    description: 'Utilisateur débloqué avec succès',
+  })
+  @ApiResponse({ status: 401, description: 'Non authentifié' })
+  @ApiResponse({ status: 403, description: 'Accès refusé ou action interdite' })
+  @ApiResponse({ status: 404, description: 'Utilisateur non trouvé' })
+  async unblockUser(
+    @Param('id') id: string,
+    @CurrentUser('id') callerId: string,
+    @CurrentUser('role') callerRole: Role,
+  ): Promise<{ message: string }> {
+    return this.usersService.unblockUser(callerId, callerRole, id);
   }
 }

@@ -16,6 +16,8 @@ export {
   type IUserQueryParams,
   type ICreateOperatorDto,
   type IUpdateProfileDto,
+  type ICreateStaffDto,
+  type IStaffQueryParams,
 } from "./user.types";
 
 // ============================================

@@ -44,7 +44,7 @@ export class StaticPagesController {
 
   @Patch('terms')
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Modifier les CGU',
@@ -80,7 +80,7 @@ export class StaticPagesController {
 
   @Patch('privacy')
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: "Modifier les conditions d'utilisation",
@@ -116,7 +116,7 @@ export class StaticPagesController {
 
   @Patch('about')
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Modifier la page À propos',

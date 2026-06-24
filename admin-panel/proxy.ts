@@ -10,6 +10,9 @@ const intlMiddleware = createIntlMiddleware(routing);
 // Routes publiques (pas besoin d'auth)
 const publicRoutes = [ROUTES.AUTH.LOGIN];
 
+// Routes accessibles quand mustChangePassword est true
+const changePasswordRoutes = [ROUTES.AUTH.CHANGE_PASSWORD];
+
 // Permissions par route
 interface RoutePermission {
   requireSeller?: boolean;
@@ -21,15 +24,24 @@ const routePermissions: Record<string, RoutePermission> = {
   "/my-ads": { requireSeller: true },
   "/user/profile": { requireSeller: true },
 
-  // OPERATOR + ADMIN routes
-  "/ads/pending": { roles: [UserRole.OPERATOR, UserRole.SUPER_ADMIN] },
-  "/ads": { roles: [UserRole.OPERATOR, UserRole.SUPER_ADMIN] },
-  "/seller-requests": { roles: [UserRole.OPERATOR, UserRole.SUPER_ADMIN] },
-  "/users/buyers": { roles: [UserRole.OPERATOR, UserRole.SUPER_ADMIN] },
+  // OPERATOR + ADMIN + SUPER_ADMIN routes
+  "/ads/pending": { roles: [UserRole.OPERATOR, UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/ads": { roles: [UserRole.OPERATOR, UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/seller-requests": { roles: [UserRole.OPERATOR, UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/users/buyers": { roles: [UserRole.OPERATOR, UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/customers": { roles: [UserRole.OPERATOR, UserRole.ADMIN, UserRole.SUPER_ADMIN] },
 
-  // ADMIN only routes
-  "/users/operators": { roles: [UserRole.SUPER_ADMIN] },
-  "/categories": { roles: [UserRole.SUPER_ADMIN] },
+  // ADMIN + SUPER_ADMIN routes
+  "/staff": { roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/categories": { roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/subcategories": { roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/variants": { roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/banners": { roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/flash-deals": { roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/featured-sections": { roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  "/static-pages": { roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+
+  // SUPER_ADMIN only routes
   "/login-history": { roles: [UserRole.SUPER_ADMIN] },
 };
 
@@ -118,6 +130,13 @@ function redirectToDashboard(request: NextRequest) {
   );
 }
 
+function redirectToChangePassword(request: NextRequest) {
+  const locale = request.nextUrl.pathname.match(/^\/(fr|en)/)?.[1] || "fr";
+  return NextResponse.redirect(
+    new URL(`/${locale}${ROUTES.AUTH.CHANGE_PASSWORD}`, request.url)
+  );
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -180,7 +199,29 @@ export async function proxy(request: NextRequest) {
   if (userCookie) {
     try {
       const user = JSON.parse(userCookie);
-      const { role, isSeller } = user;
+      const { role, isSeller, mustChangePassword } = user;
+
+      // Si mustChangePassword est true, forcer la redirection vers change-password
+      // sauf si on est déjà sur la page change-password
+      if (mustChangePassword) {
+        const isOnChangePasswordPage = changePasswordRoutes.some(
+          (route) => pathnameWithoutLocale.startsWith(route)
+        );
+        if (!isOnChangePasswordPage) {
+          return redirectToChangePassword(request);
+        }
+        // Si on est sur change-password, laisser passer
+        return response;
+      }
+
+      // Si on tente d'accéder à change-password sans mustChangePassword,
+      // rediriger vers le dashboard (sécurité)
+      const isOnChangePasswordPage = changePasswordRoutes.some(
+        (route) => pathnameWithoutLocale.startsWith(route)
+      );
+      if (isOnChangePasswordPage && !mustChangePassword) {
+        return redirectToDashboard(request);
+      }
 
       const permission = getRoutePermission(pathnameWithoutLocale);
 

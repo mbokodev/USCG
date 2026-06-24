@@ -8,6 +8,7 @@
 export enum UserRole {
   BUYER = "BUYER",
   OPERATOR = "OPERATOR",
+  ADMIN = "ADMIN",
   SUPER_ADMIN = "SUPER_ADMIN",
 }
 
@@ -40,6 +41,7 @@ export interface IAuthUser {
   phone?: string | null;
   role: UserRole;
   isSeller: boolean;
+  mustChangePassword: boolean;
 }
 
 /**
@@ -86,6 +88,7 @@ export interface IUserQueryParams {
 
 /**
  * DTO for creating an operator (SUPER_ADMIN only)
+ * @deprecated Use ICreateStaffDto instead
  */
 export interface ICreateOperatorDto {
   email: string;
@@ -93,6 +96,29 @@ export interface ICreateOperatorDto {
   firstName: string;
   lastName: string;
   phone?: string;
+}
+
+/**
+ * DTO for creating staff (OPERATOR or ADMIN)
+ * - ADMIN can only create OPERATOR
+ * - SUPER_ADMIN can create OPERATOR and ADMIN
+ */
+export interface ICreateStaffDto {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  role: UserRole.OPERATOR | UserRole.ADMIN;
+}
+
+/**
+ * Query params for staff list
+ */
+export interface IStaffQueryParams {
+  page?: number;
+  limit?: number;
+  search?: string;
 }
 
 /**

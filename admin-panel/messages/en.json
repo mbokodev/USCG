@@ -21,10 +21,25 @@
     "orders": "Orders",
     "customers": "Customers",
     "sellerRequests": "Seller Requests",
+    "staff": "Staff",
     "logout": "Logout",
     "adminPanel": "USCG Admin",
     "version": "Admin Panel v1.0",
     "staticPages": "Static Pages"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "subtitle": "Choose a new secure password",
+    "required": "Password change required",
+    "requiredDescription": "For security reasons, you must change your temporary password before continuing.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "submit": "Change password",
+    "loading": "Changing...",
+    "success": "Password changed successfully!",
+    "error": "An error occurred",
+    "hint": "Use at least 8 characters with uppercase, lowercase, number and special character"
   },
   "login": {
     "title": "Login",
@@ -295,6 +310,14 @@
       "termsAccepted": "Terms accepted on",
       "isSeller": "Approved seller",
       "isActive": "Active account"
+    },
+    "blockModal": {
+      "title": "Block customer",
+      "message": "Are you sure you want to block {name}? This customer will no longer be able to log in."
+    },
+    "unblockModal": {
+      "title": "Unblock customer",
+      "message": "Are you sure you want to unblock {name}? This customer will be able to log in again."
     }
   },
   "users": {
@@ -328,6 +351,60 @@
     "empty": {
       "title": "No users",
       "description": "No users found."
+    },
+    "blockModal": {
+      "title": "Block user",
+      "message": "Are you sure you want to block {name}? This user will no longer be able to log in."
+    },
+    "unblockModal": {
+      "title": "Unblock user",
+      "message": "Are you sure you want to unblock {name}? This user will be able to log in again."
+    },
+    "status": {
+      "active": "Active",
+      "blocked": "Blocked"
+    }
+  },
+  "staff": {
+    "title": "Staff",
+    "description": "Manage staff accounts (Operators and Admins)",
+    "totalStaff": "staff members",
+    "addStaff": "New member",
+    "searchPlaceholder": "Search for a member...",
+    "noStaff": "No staff members found",
+    "table": {
+      "member": "Member",
+      "contact": "Contact",
+      "role": "Role",
+      "date": "Registered",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "New member",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "phone": "Phone (optional)",
+      "role": "Role",
+      "submit": "Create",
+      "cancel": "Cancel"
+    },
+    "deleteModal": {
+      "title": "Delete member",
+      "message": "Are you sure you want to delete {name}? This action cannot be undone."
+    },
+    "blockModal": {
+      "title": "Block member",
+      "message": "Are you sure you want to block {name}? This member will no longer be able to log in."
+    },
+    "unblockModal": {
+      "title": "Unblock member",
+      "message": "Are you sure you want to unblock {name}? This member will be able to log in again."
+    },
+    "status": {
+      "active": "Active",
+      "blocked": "Blocked"
     }
   },
   "categories": {
@@ -615,6 +692,8 @@
     "no": "No",
     "active": "Active",
     "inactive": "Inactive",
+    "block": "Block",
+    "unblock": "Unblock",
     "all": "All",
     "currency": "FCFA",
     "admin": "Administrator",

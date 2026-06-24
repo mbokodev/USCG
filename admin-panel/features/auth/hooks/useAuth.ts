@@ -36,6 +36,7 @@ export function useAuth() {
   const isAuthenticated = !!user;
   const isSeller = user?.isSeller ?? false;
   const isOperator = user?.role === UserRole.OPERATOR;
+  const isAdmin = user?.role === UserRole.ADMIN;
   const isSuperAdmin = user?.role === UserRole.SUPER_ADMIN;
 
   return {
@@ -44,6 +45,7 @@ export function useAuth() {
     isAuthenticated,
     isSeller,
     isOperator,
+    isAdmin,
     isSuperAdmin,
     logout,
     isLoggingOut: logoutMutation.isPending,

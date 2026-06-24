@@ -7,6 +7,7 @@ import {
   ShoppingCart,
   Users,
   UserPlus,
+  UserCheck,
   Image,
   Zap,
   LayoutGrid,
@@ -63,6 +64,7 @@ export const adminSidebarGroups: SidebarGroup[] = [
     items: [
       { path: ROUTES.CUSTOMERS, icon: Users, name: "customers" },
       { path: ROUTES.SELLER_REQUESTS.LIST, icon: UserPlus, name: "sellerRequests" },
+      { path: ROUTES.STAFF, icon: UserCheck, name: "staff" },
     ],
   },
   {
@@ -92,7 +94,7 @@ export function getSidebarByRole(
   role: UserRole,
   isSeller: boolean
 ): { type: "flat"; items: SidebarItem[] } | { type: "grouped"; groups: SidebarGroup[] } {
-  if (role === UserRole.SUPER_ADMIN) {
+  if (role === UserRole.SUPER_ADMIN || role === UserRole.ADMIN) {
     return { type: "grouped", groups: adminSidebarGroups };
   }
   if (role === UserRole.OPERATOR) {

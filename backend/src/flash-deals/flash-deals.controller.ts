@@ -50,7 +50,7 @@ export class FlashDealsController {
 
   @Get('admin')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Liste admin de tous les flash deals' })
   @ApiResponse({ status: 200, type: FlashDealsListResponseDto })
@@ -60,7 +60,7 @@ export class FlashDealsController {
 
   @Get('eligible-ads')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Liste des annonces éligibles pour devenir Flash Deals' })
   @ApiQuery({ name: 'search', required: false, description: 'Recherche par titre' })
@@ -75,7 +75,7 @@ export class FlashDealsController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: "Détail d'un flash deal" })
   @ApiResponse({ status: 200, type: FlashDealResponseDto })
@@ -85,7 +85,7 @@ export class FlashDealsController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Créer un flash deal' })
   @ApiResponse({ status: 201, type: FlashDealResponseDto })
@@ -95,7 +95,7 @@ export class FlashDealsController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Modifier un flash deal' })
   @ApiResponse({ status: 200, type: FlashDealResponseDto })
@@ -108,7 +108,7 @@ export class FlashDealsController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Supprimer un flash deal' })
   @ApiResponse({ status: 200 })

@@ -90,3 +90,39 @@ export async function getCurrentUser() {
   }
 }
 
+export async function changePasswordAction(
+  currentPassword: string,
+  newPassword: string,
+) {
+  const response = await authService.changePassword(currentPassword, newPassword);
+
+  if (response.success) {
+    // Mettre à jour le user dans la session pour désactiver mustChangePassword
+    const session = await getSession();
+    const userJson = session.get("user");
+
+    if (userJson) {
+      try {
+        const user = JSON.parse(userJson);
+        user.mustChangePassword = false;
+
+        const cookieDomain = process.env.COOKIE_DOMAIN || undefined;
+        session.set("user", JSON.stringify(user), {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: 60 * 60 * 24 * 7,
+          path: "/",
+          sameSite: "lax",
+          domain: cookieDomain,
+        });
+      } catch {
+        // Ignore parsing errors
+      }
+    }
+
+    return { success: true, message: response.data.message };
+  }
+
+  return { success: false, error: response.error };
+}
+

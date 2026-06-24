@@ -8,7 +8,7 @@ import type { UserResponseDto, LoginResponseDto, RefreshResponseDto } from '../d
 import type { Tokens, UserPayload, AuthResult } from '../auth.service';
 
 // Type pour un User partiel (select Prisma)
-type UserBasic = Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'role' | 'isSeller'>;
+type UserBasic = Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'role' | 'isSeller' | 'mustChangePassword'>;
 
 export const AuthMapper = {
   /**
@@ -22,6 +22,7 @@ export const AuthMapper = {
       lastName: user.lastName,
       role: user.role,
       isSeller: user.isSeller,
+      mustChangePassword: user.mustChangePassword,
     };
   },
 
@@ -36,6 +37,7 @@ export const AuthMapper = {
       lastName: user.lastName,
       role: user.role,
       isSeller: user.isSeller,
+      mustChangePassword: user.mustChangePassword,
     };
   },
 

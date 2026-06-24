@@ -2,7 +2,7 @@
 
 import { useCallback, useState, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { IconMapPin, IconUser, IconChevronDown, IconChevronUp, IconChevronRight, IconHome } from "@tabler/icons-react";
+import { IconMapPin, IconUser, IconChevronDown, IconChevronUp, IconChevronRight, IconHome, IconX, IconChevronLeft } from "@tabler/icons-react";
 import Link from "next/link";
 
 import Box from "@component/ui/Box";
@@ -31,6 +31,8 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [isDescriptionTruncated, setIsDescriptionTruncated] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState(0);
   const descriptionRef = useRef<HTMLDivElement>(null);
 
   const MAX_DESCRIPTION_HEIGHT = 240; // ~10 lines
@@ -43,6 +45,21 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
     }
   }, [ad.description]);
 
+  // Close lightbox on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsLightboxOpen(false);
+    };
+    if (isLightboxOpen) {
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "auto";
+    };
+  }, [isLightboxOpen]);
+
   // Build image URLs
   const images = ad.files?.map((f) => buildFileUrl(f)) || [];
   const hasImages = images.length > 0;
@@ -53,6 +70,19 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
   const remainingCount = images.length - MAX_VISIBLE_THUMBNAILS;
 
   const handleImageClick = useCallback((ind: number) => () => setSelectedImage(ind), []);
+
+  const openLightbox = (index: number) => {
+    setLightboxImage(index);
+    setIsLightboxOpen(true);
+  };
+
+  const navigateLightbox = (direction: "prev" | "next") => {
+    if (direction === "prev") {
+      setLightboxImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    } else {
+      setLightboxImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }
+  };
 
   return (
     <Box overflow="hidden">
@@ -88,6 +118,8 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
               borderRadius={12}
               overflow="hidden"
               mb="12px"
+              cursor={hasImages ? "pointer" : "default"}
+              onClick={() => hasImages && openLightbox(selectedImage)}
               style={{
                 aspectRatio: "4/3",
               }}
@@ -339,6 +371,160 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
           </Box>
         </Grid>
       </Grid>
+
+      {/* Image Lightbox */}
+      {isLightboxOpen && hasImages && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9999,
+            backgroundColor: "rgba(0, 0, 0, 0.95)",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {/* Header */}
+          <FlexBox
+            justifyContent="space-between"
+            alignItems="center"
+            p="16px 24px"
+            style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}
+          >
+            <Span color="white" fontSize="16px" fontWeight={500}>
+              {t("imageGallery")} : {lightboxImage + 1}/{images.length}
+            </Span>
+            <FlexBox
+              alignItems="center"
+              justifyContent="center"
+              width={40}
+              height={40}
+              borderRadius="50%"
+              cursor="pointer"
+              onClick={() => setIsLightboxOpen(false)}
+              style={{
+                backgroundColor: "rgba(255,255,255,0.1)",
+                transition: "background-color 0.2s",
+              }}
+              className="hover:bg-white/20"
+            >
+              <IconX size={24} color="white" />
+            </FlexBox>
+          </FlexBox>
+
+          {/* Main Image Area */}
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+              padding: "20px",
+            }}
+          >
+            {/* Previous Button */}
+            {images.length > 1 && (
+              <FlexBox
+                position="absolute"
+                left="20px"
+                alignItems="center"
+                justifyContent="center"
+                width={48}
+                height={48}
+                borderRadius="50%"
+                cursor="pointer"
+                onClick={() => navigateLightbox("prev")}
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  transition: "background-color 0.2s",
+                }}
+              >
+                <IconChevronLeft size={28} color="white" />
+              </FlexBox>
+            )}
+
+            {/* Image */}
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                maxWidth: "900px",
+                height: "100%",
+                maxHeight: "70vh",
+              }}
+            >
+              <NextImage
+                src={images[lightboxImage]}
+                alt={`${ad.title} - ${lightboxImage + 1}`}
+                fill
+                style={{ objectFit: "contain" }}
+                priority
+              />
+            </div>
+
+            {/* Next Button */}
+            {images.length > 1 && (
+              <FlexBox
+                position="absolute"
+                right="20px"
+                alignItems="center"
+                justifyContent="center"
+                width={48}
+                height={48}
+                borderRadius="50%"
+                cursor="pointer"
+                onClick={() => navigateLightbox("next")}
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  transition: "background-color 0.2s",
+                }}
+              >
+                <IconChevronRight size={28} color="white" />
+              </FlexBox>
+            )}
+          </div>
+
+          {/* Thumbnails */}
+          {images.length > 1 && (
+            <FlexBox
+              justifyContent="center"
+              p="16px"
+              style={{
+                gap: "12px",
+                borderTop: "1px solid rgba(255,255,255,0.1)",
+                overflowX: "auto",
+              }}
+            >
+              {images.map((url, ind) => (
+                <div
+                  key={ind}
+                  onClick={() => setLightboxImage(ind)}
+                  style={{
+                    position: "relative",
+                    width: "80px",
+                    height: "60px",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    border: lightboxImage === ind ? "2px solid #D23F57" : "2px solid transparent",
+                    opacity: lightboxImage === ind ? 1 : 0.6,
+                    transition: "opacity 0.2s, border 0.2s",
+                    flexShrink: 0,
+                  }}
+                >
+                  <NextImage
+                    src={url}
+                    alt={`${ad.title} - ${ind + 1}`}
+                    fill
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+              ))}
+            </FlexBox>
+          )}
+        </div>
+      )}
     </Box>
   );
 }

@@ -35,6 +35,9 @@ export class UserProfileResponseDto {
   @ApiProperty({ example: true })
   emailVerified: boolean;
 
+  @ApiProperty({ example: false, description: 'Si true, l\'utilisateur doit changer son mot de passe' })
+  mustChangePassword: boolean;
+
   @ApiProperty({ example: '2026-05-18T10:00:00.000Z' })
   createdAt: Date;
 

@@ -36,7 +36,7 @@ export function useDashboardStats() {
   const sellerQuery = useQuery({
     queryKey: ["seller-stats"],
     queryFn: dashboardService.getSellerStats,
-    enabled: role !== UserRole.SUPER_ADMIN && role !== UserRole.OPERATOR && isSeller === true,
+    enabled: role !== UserRole.SUPER_ADMIN && role !== UserRole.ADMIN && role !== UserRole.OPERATOR && isSeller === true,
   });
 
   const operatorQuery = useQuery({
@@ -48,7 +48,7 @@ export function useDashboardStats() {
   const adminQuery = useQuery({
     queryKey: ["admin-stats"],
     queryFn: dashboardService.getAdminStats,
-    enabled: role === UserRole.SUPER_ADMIN,
+    enabled: role === UserRole.SUPER_ADMIN || role === UserRole.ADMIN,
   });
 
   // If auth is still loading, return loading state
@@ -61,7 +61,7 @@ export function useDashboardStats() {
     };
   }
 
-  if (role === UserRole.SUPER_ADMIN) {
+  if (role === UserRole.SUPER_ADMIN || role === UserRole.ADMIN) {
     return {
       data: adminQuery.data,
       isLoading: adminQuery.isLoading,

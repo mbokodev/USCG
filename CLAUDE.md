@@ -33,13 +33,18 @@ Ce document contient des instructions pour les agents IA (Claude, etc.) travaill
    - Rôle : `OPERATOR` - Validateurs
      - Validation/refus annonces
      - Validation/refus demandes vendeur (SellerRequest)
-     - Gestion utilisateurs BUYER
+     - Gestion utilisateurs BUYER (bloquer/débloquer)
      - Dashboard global
-   - Rôle : `SUPER_ADMIN` - Administrateur système
-     - Validation demandes vendeur (SellerRequest)
-     - Gestion catégories
-     - Gestion complète plateforme
+   - Rôle : `ADMIN` - Administrateur
+     - Toutes les permissions OPERATOR +
+     - Gestion catégories, variantes, bannières, etc.
      - Création comptes OPERATOR
+     - Gestion staff (OPERATOR seulement)
+   - Rôle : `SUPER_ADMIN` - Super Administrateur
+     - Toutes les permissions ADMIN +
+     - Création comptes ADMIN
+     - Suppression staff (OPERATOR et ADMIN)
+     - Historique des connexions
 
 ### Workflow "Devenir vendeur"
 
@@ -159,16 +164,21 @@ USCG/
 └── shared/           # Utilitaires partagés
 ```
 
-### Rôles utilisateurs (3 rôles système + 1 statut)
+### Rôles utilisateurs (4 rôles système + 1 statut)
 
 **Rôle système (champ `role` dans DB)** :
 1. **BUYER** (par défaut)
 2. **OPERATOR**
-3. **SUPER_ADMIN**
+3. **ADMIN**
+4. **SUPER_ADMIN**
 
 **Statut vendeur (champ `isSeller` boolean)** :
 - `false` : Simple acheteur
 - `true` : Acheteur ET vendeur (accès Admin Panel)
+
+**Statut compte (champ `isActive` boolean)** :
+- `true` : Compte actif (peut se connecter)
+- `false` : Compte bloqué (ne peut plus se connecter)
 
 #### 1. BUYER (isSeller = false)
 - Inscription libre sur Marketplace
@@ -188,21 +198,49 @@ USCG/
 - **Accès** : Marketplace (achat) ET Admin Panel (vente)
 
 #### 3. OPERATOR
-- Créés manuellement par SUPER_ADMIN
+- Créés par ADMIN ou SUPER_ADMIN
+- Reçoit email avec credentials + obligation de changer le mot de passe
 - Validation/refus annonces de tous les SELLER
 - Validation/refus SellerRequest (devenir vendeur)
-- Gestion des utilisateurs BUYER
+- Bloquer/débloquer utilisateurs BUYER
 - Dashboard statistiques globales
 - **Accès** : Admin Panel uniquement
 
-#### 4. SUPER_ADMIN
-- Créé lors du setup initial
-- Toutes les permissions
-- Validation SellerRequest
-- Création des comptes OPERATOR
-- Gestion des catégories
-- Gestion complète de la plateforme
+#### 4. ADMIN
+- Créés par SUPER_ADMIN uniquement
+- Toutes les permissions OPERATOR +
+- Gestion catégories, sous-catégories, variantes
+- Gestion bannières, flash deals, featured sections
+- Gestion pages statiques
+- Création comptes OPERATOR
+- Bloquer/débloquer OPERATOR
 - **Accès** : Admin Panel uniquement
+
+#### 5. SUPER_ADMIN
+- Créé lors du setup initial (seed)
+- Toutes les permissions ADMIN +
+- Création comptes ADMIN
+- Suppression staff (OPERATOR et ADMIN)
+- Historique des connexions
+- **Accès** : Admin Panel uniquement
+
+### Hiérarchie des permissions Staff
+
+| Action | OPERATOR | ADMIN | SUPER_ADMIN |
+|--------|----------|-------|-------------|
+| Voir OPERATOR | ❌ | ✅ | ✅ |
+| Voir ADMIN | ❌ | ❌ | ✅ |
+| Créer OPERATOR | ❌ | ✅ | ✅ |
+| Créer ADMIN | ❌ | ❌ | ✅ |
+| Bloquer OPERATOR | ❌ | ✅ | ✅ |
+| Bloquer ADMIN | ❌ | ❌ | ✅ |
+| Supprimer staff | ❌ | ❌ | ✅ |
+
+### Blocage utilisateurs
+
+Quand un utilisateur est bloqué (`isActive = false`) :
+- Ne peut plus se connecter (erreur "Compte désactivé")
+- Si déjà connecté, sera déconnecté au prochain refresh token (max 15 min)
 
 ## Technologies
 
@@ -298,9 +336,15 @@ USCG/
 - [x] PATCH /users/me (tous - modifier mon profil)
 - [x] GET /users (OPERATOR/SUPER_ADMIN - liste BUYER)
 - [x] GET /users/:id (OPERATOR/SUPER_ADMIN - détail)
-- [x] POST /users/operator (SUPER_ADMIN - créer OPERATOR)
+- [x] POST /users/operator (SUPER_ADMIN - créer OPERATOR) @deprecated
 - [x] DELETE /users/:id (SUPER_ADMIN - supprimer)
 - [x] CGU acceptance BUYER avec horodatage (termsAcceptedAt)
+- [x] GET /users/staff (ADMIN/SUPER_ADMIN - liste staff)
+- [x] POST /users/staff (ADMIN/SUPER_ADMIN - créer OPERATOR ou ADMIN)
+- [x] DELETE /users/staff/:id (SUPER_ADMIN - supprimer staff)
+- [x] PATCH /users/:id/block (bloquer utilisateur)
+- [x] PATCH /users/:id/unblock (débloquer utilisateur)
+- [x] POST /auth/change-password (changer mot de passe, obligatoire pour OPERATOR)
 
 **Demandes vendeur (SellerRequest)** ✅ TERMINÉ
 - [x] POST /seller-requests (BUYER authentifié)
@@ -1289,9 +1333,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.13
-**Dernière mise à jour** : 23 Juin 2026
+**Version** : 1.14
+**Dernière mise à jour** : 24 Juin 2026
 **Changelog** :
+- v1.14 : Rôle ADMIN ajouté, Staff management (/staff), Blocage utilisateurs (block/unblock), mustChangePassword pour OPERATOR, Hiérarchie des permissions
 - v1.13 : Pages statiques (Terms, Privacy, About, Contact) - API backend, Admin Panel avec édition locale-aware, Marketplace avec i18n complet
 - v1.12 : Fix upload image pour BUYER (formulaire devenir vendeur), Container padding écrans larges
 - v1.11 : Password reset (forgot/reset password), Resend verification email sur login, Fix icônes stroke dans boutons

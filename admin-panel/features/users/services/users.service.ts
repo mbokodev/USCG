@@ -3,6 +3,8 @@ import { PaginatedResponse } from "@/shared/types";
 import {
   User,
   CreateOperatorDto,
+  CreateStaffDto,
+  StaffQueryParams,
   UpdateUserDto,
   UserQueryParams,
 } from "../types/users.types";
@@ -37,6 +39,34 @@ const usersService = {
 
   delete: async (id: string): Promise<void> => {
     await http.delete(`/users/${id}`);
+  },
+
+  // Staff management endpoints
+  getStaff: async (params?: StaffQueryParams): Promise<PaginatedResponse<User>> => {
+    const response = await http.get<PaginatedResponse<User>>("/users/staff", {
+      params,
+    });
+    return response.data;
+  },
+
+  createStaff: async (data: CreateStaffDto): Promise<User> => {
+    const response = await http.post<User>("/users/staff", data);
+    return response.data;
+  },
+
+  deleteStaff: async (id: string): Promise<void> => {
+    await http.delete(`/users/staff/${id}`);
+  },
+
+  // Block/Unblock users
+  blockUser: async (id: string): Promise<{ message: string }> => {
+    const response = await http.patch<{ message: string }>(`/users/${id}/block`);
+    return response.data;
+  },
+
+  unblockUser: async (id: string): Promise<{ message: string }> => {
+    const response = await http.patch<{ message: string }>(`/users/${id}/unblock`);
+    return response.data;
   },
 };
 

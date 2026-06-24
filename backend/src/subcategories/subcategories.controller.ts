@@ -130,7 +130,7 @@ export class SubCategoriesController {
 
   @Post()
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Créer une sous-catégorie',
@@ -152,7 +152,7 @@ export class SubCategoriesController {
 
   @Patch(':id')
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Modifier une sous-catégorie',
@@ -178,7 +178,7 @@ export class SubCategoriesController {
 
   @Delete(':id')
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Supprimer une sous-catégorie',

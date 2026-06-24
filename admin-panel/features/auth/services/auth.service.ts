@@ -33,6 +33,21 @@ const authService = {
       return { success: false, error: getApiErrorMessage(error) };
     }
   },
+
+  changePassword: async (
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<ApiResult<{ message: string }>> => {
+    try {
+      const { data } = await http.post<{ message: string }>("/auth/change-password", {
+        currentPassword,
+        newPassword,
+      });
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: getApiErrorMessage(error) };
+    }
+  },
 };
 
 export default authService;

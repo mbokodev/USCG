@@ -446,6 +446,47 @@ async function main() {
   console.log(`Created OPERATOR: ${operator.email}`);
 
   // =========================================================================
+  // 3.5. SEED ADMIN (pour tests)
+  // =========================================================================
+  console.log('Seeding ADMIN users (for testing)...');
+
+  const adminPassword = await bcrypt.hash('Admin@123456', 10);
+
+  const admin1 = await prisma.user.upsert({
+    where: { email: 'admin1@uscg.com' },
+    update: {},
+    create: {
+      email: 'admin1@uscg.com',
+      password: adminPassword,
+      firstName: 'Admin',
+      lastName: 'One',
+      role: Role.ADMIN,
+      isSeller: false,
+      termsAcceptedAt: new Date(),
+      isActive: true,
+    },
+  });
+
+  console.log(`Created ADMIN: ${admin1.email}`);
+
+  const admin2 = await prisma.user.upsert({
+    where: { email: 'admin2@uscg.com' },
+    update: {},
+    create: {
+      email: 'admin2@uscg.com',
+      password: adminPassword,
+      firstName: 'Admin',
+      lastName: 'Two',
+      role: Role.ADMIN,
+      isSeller: false,
+      termsAcceptedAt: new Date(),
+      isActive: true,
+    },
+  });
+
+  console.log(`Created ADMIN: ${admin2.email}`);
+
+  // =========================================================================
   // 4. SEED BUYER/SELLER (pour tests)
   // =========================================================================
   console.log('Seeding test BUYER and SELLER users...');
@@ -862,6 +903,8 @@ async function main() {
   console.log('========================================');
   console.log('\nTest accounts:');
   console.log('- SUPER_ADMIN: admin@uscg.com / Admin@123456');
+  console.log('- ADMIN: admin1@uscg.com / Admin@123456');
+  console.log('- ADMIN: admin2@uscg.com / Admin@123456');
   console.log('- OPERATOR: operator@uscg.com / Operator@123456');
   console.log('- BUYER: buyer@test.com / Buyer@123456');
   console.log('- SELLER: seller@test.com / Buyer@123456');

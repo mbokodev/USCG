@@ -29,6 +29,9 @@ model User {
   passwordResetToken   String?   @unique
   passwordResetExpires DateTime?
 
+  // Force password change on first login (for OPERATOR created by admin)
+  mustChangePassword Boolean @default(false)
+
   // Statut compte
   isActive Boolean @default(true)
 

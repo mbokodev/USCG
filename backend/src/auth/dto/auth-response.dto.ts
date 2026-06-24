@@ -19,6 +19,9 @@ export class UserResponseDto {
 
   @ApiProperty({ example: false })
   isSeller: boolean;
+
+  @ApiProperty({ example: false, description: 'Si true, l\'utilisateur doit changer son mot de passe' })
+  mustChangePassword: boolean;
 }
 
 export class LoginResponseDto {

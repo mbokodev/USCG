@@ -21,8 +21,12 @@ export default function LoginPage() {
         // Mettre à jour le cache React Query avec le nouvel utilisateur
         queryClient.setQueryData(["currentUser"], result.user);
 
-        // Rediriger vers le dashboard
-        router.push(ROUTES.DASHBOARD);
+        // Rediriger vers change-password si nécessaire, sinon dashboard
+        if (result.user.mustChangePassword) {
+          router.push(ROUTES.AUTH.CHANGE_PASSWORD);
+        } else {
+          router.push(ROUTES.DASHBOARD);
+        }
         router.refresh();
       }
     },
@@ -67,7 +71,7 @@ export default function LoginPage() {
 
           {/* Login error message (inclut erreur 403 pour accès refusé) */}
           {loginMutation.data && !loginMutation.data.success && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-center">
               <p className="text-sm text-red-600">
                 {loginMutation.data.error || t("error.invalid")}
               </p>

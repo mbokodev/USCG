@@ -28,6 +28,7 @@ import {
   ResendVerificationDto,
   ForgotPasswordDto,
   ResetPasswordDto,
+  ChangePasswordDto,
 } from './dto';
 import { Public, CurrentUser } from './decorators';
 import { JwtRefreshGuard } from './guards';
@@ -277,5 +278,37 @@ export class AuthController {
   async logout(): Promise<MessageResponseDto> {
     // Les cookies httpOnly sont supprimés par le frontend (Server Actions)
     return { message: 'Déconnexion réussie' };
+  }
+
+  @Post('change-password')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Changer le mot de passe',
+    description:
+      "Change le mot de passe de l'utilisateur connecté. Utilisé notamment pour le changement obligatoire à la première connexion des OPERATOR.",
+  })
+  @ApiBody({ type: ChangePasswordDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Mot de passe modifié avec succès',
+    type: MessageResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Mot de passe actuel incorrect ou nouveau mot de passe invalide',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Non authentifié',
+  })
+  async changePassword(
+    @CurrentUser('id') userId: string,
+    @Body() dto: ChangePasswordDto,
+  ): Promise<MessageResponseDto> {
+    return this.authService.changePassword(
+      userId,
+      dto.currentPassword,
+      dto.newPassword,
+    );
   }
 }

@@ -163,7 +163,7 @@ export class AdsController {
 
   @Get('admin')
   @UseGuards(RolesGuard)
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Toutes les annonces (ADMIN)',
@@ -176,7 +176,7 @@ export class AdsController {
 
   @Get('pending')
   @UseGuards(RolesGuard)
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Annonces en attente (OPERATOR/ADMIN)',
@@ -189,7 +189,7 @@ export class AdsController {
 
   @Get('admin/:id')
   @UseGuards(RolesGuard)
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: "Détail annonce (OPERATOR/ADMIN)",
@@ -208,7 +208,7 @@ export class AdsController {
 
   @Patch(':id/validate')
   @UseGuards(RolesGuard)
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Valider/Refuser une annonce (OPERATOR/ADMIN)',
@@ -228,7 +228,7 @@ export class AdsController {
 
   @Get('stats')
   @UseGuards(RolesGuard)
-  @Roles(Role.OPERATOR, Role.SUPER_ADMIN)
+  @Roles(Role.OPERATOR, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Statistiques dashboard (OPERATOR/ADMIN)',

@@ -25,6 +25,7 @@ export interface UserPayload {
   lastName: string;
   role: Role;
   isSeller: boolean;
+  mustChangePassword: boolean;
 }
 
 export interface Tokens {
@@ -351,6 +352,7 @@ export class AuthService {
     // Vérifier accès au panel admin
     const hasAdminAccess =
       user.role === Role.SUPER_ADMIN ||
+      user.role === Role.ADMIN ||
       user.role === Role.OPERATOR ||
       user.isSeller === true;
 
@@ -358,8 +360,8 @@ export class AuthService {
       throw new ForbiddenException(ERROR_MESSAGES.ADMIN_ACCESS_DENIED);
     }
 
-    // Historique de connexion pour OPERATOR et SUPER_ADMIN
-    if (user.role === Role.OPERATOR || user.role === Role.SUPER_ADMIN) {
+    // Historique de connexion pour staff (OPERATOR, ADMIN, SUPER_ADMIN)
+    if (user.role === Role.OPERATOR || user.role === Role.ADMIN || user.role === Role.SUPER_ADMIN) {
       await this.prisma.loginHistory.create({
         data: {
           userId: user.id,
@@ -400,6 +402,52 @@ export class AuthService {
     }
 
     return this.generateTokens(user);
+  }
+
+  /**
+   * Changement de mot de passe (utilisateur connecté)
+   * Utilisé notamment pour le changement obligatoire à la première connexion
+   */
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<{ message: string }> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException(ERROR_MESSAGES.USER_NOT_FOUND);
+    }
+
+    // Vérifier le mot de passe actuel
+    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isCurrentPasswordValid) {
+      throw new BadRequestException('Le mot de passe actuel est incorrect');
+    }
+
+    // Vérifier que le nouveau mot de passe est différent
+    const isSamePassword = await bcrypt.compare(newPassword, user.password);
+    if (isSamePassword) {
+      throw new BadRequestException('Le nouveau mot de passe doit être différent de l\'ancien');
+    }
+
+    // Hash le nouveau mot de passe
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Mettre à jour le mot de passe et désactiver le flag mustChangePassword
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        password: hashedPassword,
+        mustChangePassword: false,
+      },
+    });
+
+    this.logger.log(`Password changed for user ${user.email}`);
+
+    return { message: 'Votre mot de passe a été modifié avec succès.' };
   }
 
   async generateTokens(user: {

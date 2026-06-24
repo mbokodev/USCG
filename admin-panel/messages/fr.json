@@ -21,10 +21,25 @@
     "orders": "Commandes",
     "customers": "Clients",
     "sellerRequests": "Demandes vendeur",
+    "staff": "Equipe",
     "logout": "Deconnexion",
     "adminPanel": "USCG Admin",
     "version": "Admin Panel v1.0",
     "staticPages": "Pages statiques"
+  },
+  "changePassword": {
+    "title": "Changement de mot de passe",
+    "subtitle": "Choisissez un nouveau mot de passe securise",
+    "required": "Changement obligatoire",
+    "requiredDescription": "Pour des raisons de securite, vous devez changer votre mot de passe temporaire avant de continuer.",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe",
+    "submit": "Changer le mot de passe",
+    "loading": "Modification en cours...",
+    "success": "Mot de passe modifie avec succes !",
+    "error": "Une erreur est survenue",
+    "hint": "Utilisez au moins 8 caracteres avec majuscule, minuscule, chiffre et caractere special"
   },
   "login": {
     "title": "Connexion",
@@ -295,6 +310,14 @@
       "termsAccepted": "CGU acceptees le",
       "isSeller": "Vendeur approuve",
       "isActive": "Compte actif"
+    },
+    "blockModal": {
+      "title": "Bloquer le client",
+      "message": "Voulez-vous vraiment bloquer {name} ? Ce client ne pourra plus se connecter."
+    },
+    "unblockModal": {
+      "title": "Debloquer le client",
+      "message": "Voulez-vous vraiment debloquer {name} ? Ce client pourra a nouveau se connecter."
     }
   },
   "users": {
@@ -328,6 +351,60 @@
     "empty": {
       "title": "Aucun utilisateur",
       "description": "Aucun utilisateur trouve."
+    },
+    "blockModal": {
+      "title": "Bloquer l'utilisateur",
+      "message": "Voulez-vous vraiment bloquer {name} ? Cet utilisateur ne pourra plus se connecter."
+    },
+    "unblockModal": {
+      "title": "Debloquer l'utilisateur",
+      "message": "Voulez-vous vraiment debloquer {name} ? Cet utilisateur pourra a nouveau se connecter."
+    },
+    "status": {
+      "active": "Actif",
+      "blocked": "Bloque"
+    }
+  },
+  "staff": {
+    "title": "Equipe",
+    "description": "Gerez les comptes du personnel (Operateurs et Admins)",
+    "totalStaff": "membres de l'equipe",
+    "addStaff": "Nouveau membre",
+    "searchPlaceholder": "Rechercher un membre...",
+    "noStaff": "Aucun membre trouve",
+    "table": {
+      "member": "Membre",
+      "contact": "Contact",
+      "role": "Role",
+      "date": "Inscription",
+      "actions": "Actions"
+    },
+    "form": {
+      "createTitle": "Nouveau membre",
+      "firstName": "Prenom",
+      "lastName": "Nom",
+      "email": "Email",
+      "password": "Mot de passe",
+      "phone": "Telephone (optionnel)",
+      "role": "Role",
+      "submit": "Creer",
+      "cancel": "Annuler"
+    },
+    "deleteModal": {
+      "title": "Supprimer le membre",
+      "message": "Voulez-vous vraiment supprimer {name} ? Cette action est irreversible."
+    },
+    "blockModal": {
+      "title": "Bloquer le membre",
+      "message": "Voulez-vous vraiment bloquer {name} ? Ce membre ne pourra plus se connecter."
+    },
+    "unblockModal": {
+      "title": "Debloquer le membre",
+      "message": "Voulez-vous vraiment debloquer {name} ? Ce membre pourra a nouveau se connecter."
+    },
+    "status": {
+      "active": "Actif",
+      "blocked": "Bloque"
     }
   },
   "categories": {
@@ -615,6 +692,8 @@
     "no": "Non",
     "active": "Actif",
     "inactive": "Inactif",
+    "block": "Bloquer",
+    "unblock": "Debloquer",
     "all": "Tous",
     "currency": "FCFA",
     "admin": "Administrateur",

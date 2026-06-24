@@ -31,6 +31,7 @@ export const UserMapper = {
       preferredLanguage: user.preferredLanguage,
       isActive: user.isActive,
       emailVerified: user.emailVerified,
+      mustChangePassword: user.mustChangePassword,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
