@@ -330,26 +330,31 @@ export class StaticPagesService {
 
   /**
    * Update About page content
-   * - CREATE (no existing data): Auto-translate values from sourceLang
-   * - UPDATE (existing data): Just update, no translation
+   * - CREATE (no existing data): Auto-translate via TranslationService
+   * - UPDATE (existing data): Update only source language, keep other
    */
   async updateAbout(dto: UpdateAboutDto): Promise<IAboutPage> {
     const existingAbout = await this.prisma.aboutPage.findFirst();
     const isCreate = !existingAbout;
     const sourceLang = (dto.sourceLang || 'fr') as SourceLang;
-    const targetLang = sourceLang === 'fr' ? 'en' : 'fr';
+    const targetLang: SourceLang = sourceLang === 'fr' ? 'en' : 'fr';
 
     // Build update data
     const updateData: any = {};
 
     // Handle TipTap content fields (introduction, mission, vision)
-    // For TipTap, we duplicate content for both languages (no translation for rich text)
+    // Auto-translate on CREATE, update only source lang on UPDATE
     if (dto.introduction) {
       if (isCreate) {
-        // CREATE: duplicate content for both languages
+        // CREATE: auto-translate content
+        const translatedContent = await this.translateTiptapContent(
+          dto.introduction as TiptapContent,
+          sourceLang,
+          targetLang,
+        );
         updateData.introduction = {
-          fr: dto.introduction,
-          en: dto.introduction,
+          [sourceLang]: dto.introduction,
+          [targetLang]: translatedContent,
         };
       } else {
         // UPDATE: update only source language, keep other
@@ -363,9 +368,15 @@ export class StaticPagesService {
 
     if (dto.mission) {
       if (isCreate) {
+        // CREATE: auto-translate content
+        const translatedContent = await this.translateTiptapContent(
+          dto.mission as TiptapContent,
+          sourceLang,
+          targetLang,
+        );
         updateData.mission = {
-          fr: dto.mission,
-          en: dto.mission,
+          [sourceLang]: dto.mission,
+          [targetLang]: translatedContent,
         };
       } else {
         const existing = await this.getAbout();
@@ -378,9 +389,15 @@ export class StaticPagesService {
 
     if (dto.vision) {
       if (isCreate) {
+        // CREATE: auto-translate content
+        const translatedContent = await this.translateTiptapContent(
+          dto.vision as TiptapContent,
+          sourceLang,
+          targetLang,
+        );
         updateData.vision = {
-          fr: dto.vision,
-          en: dto.vision,
+          [sourceLang]: dto.vision,
+          [targetLang]: translatedContent,
         };
       } else {
         const existing = await this.getAbout();

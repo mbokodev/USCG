@@ -29,6 +29,9 @@ export function PrivacyForm({ initialData, locale }: PrivacyFormProps) {
 
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Determine if this is create or update mode
+  const isCreateMode = !initialData || initialData.id === "default-privacy";
+
   const mutation = useMutation({
     mutationFn: staticPagesService.updatePrivacy,
     onSuccess: () => {
@@ -69,6 +72,21 @@ export function PrivacyForm({ initialData, locale }: PrivacyFormProps) {
           </span>
         </div>
       </div>
+
+      {/* Info notice for create mode */}
+      {isCreateMode && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
+            <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-blue-700">
+              <p className="font-medium mb-1">Première sauvegarde</p>
+              <p>
+                {locale === "fr"
+                    ? "Le contenu sera dupliqué pour la version anglaise lors de la première sauvegarde."
+                    : "Content will be duplicated for the French version on first save."}
+              </p>
+            </div>
+          </div>
+      )}
 
       {/* Content Editor */}
       <div className="min-h-[400px]">
