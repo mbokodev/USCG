@@ -91,26 +91,11 @@ export function AdForm({
     setIsSubmitting(true);
 
     try {
-      let uploadedFileIds: string[] = [];
-
-      // Step 1: Upload new images if any
-      if (values.images.length > 0) {
-        setSubmitProgress(t("form.uploadingImages"));
-
-        for (let i = 0; i < values.images.length; i++) {
-          setSubmitProgress(t("form.uploadingImages"));
-          const uploadedFile = await filesService.uploadImage(
-            values.images[i].file
-          );
-          uploadedFileIds.push(uploadedFile.id);
-        }
-      }
-
       if (isEditMode && adId) {
         // EDIT MODE
         setSubmitProgress(t("form.updatingAd"));
 
-        // Update the ad (remet en PENDING si REJECTED ou MODIFICATION_REQUESTED)
+        // Step 1: Update the ad (remet en PENDING si REJECTED ou MODIFICATION_REQUESTED)
         await adsService.update(adId, {
           title: values.title,
           description: values.description,
@@ -123,7 +108,7 @@ export function AdForm({
           location: values.location,
         });
 
-        // Delete removed images
+        // Step 2: Delete removed images
         if (values.removedImageIds.length > 0) {
           setSubmitProgress(t("form.deletingImages"));
           for (const fileId of values.removedImageIds) {
@@ -131,10 +116,13 @@ export function AdForm({
           }
         }
 
-        // Link new uploaded files
-        if (uploadedFileIds.length > 0) {
-          setSubmitProgress(t("form.linkingImages"));
-          await filesService.linkFilesToAd(uploadedFileIds, adId);
+        // Step 3: Upload new images with adId (directly linked)
+        if (values.images.length > 0) {
+          setSubmitProgress(t("form.uploadingImages"));
+          await filesService.uploadImages(
+            values.images.map((img) => img.file),
+            adId
+          );
         }
 
         // Success - invalidate caches and redirect
@@ -144,6 +132,7 @@ export function AdForm({
         router.push(ROUTES.ADS.DETAIL(adId));
       } else {
         // CREATE MODE
+        // Step 1: Create the ad FIRST
         setSubmitProgress(t("form.creatingAd"));
         const createdAd = await adsService.create({
           title: values.title,
@@ -158,10 +147,13 @@ export function AdForm({
           location: values.location,
         });
 
-        // Link uploaded files to the ad
-        if (uploadedFileIds.length > 0) {
-          setSubmitProgress(t("form.linkingImages"));
-          await filesService.linkFilesToAd(uploadedFileIds, createdAd.id);
+        // Step 2: Upload images with adId (directly linked, no need to link separately)
+        if (values.images.length > 0) {
+          setSubmitProgress(t("form.uploadingImages"));
+          await filesService.uploadImages(
+            values.images.map((img) => img.file),
+            createdAd.id
+          );
         }
 
         // Success - invalidate caches and redirect
