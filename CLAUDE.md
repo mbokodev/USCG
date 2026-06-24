@@ -465,14 +465,18 @@ Quand un utilisateur est bloqué (`isActive = false`) :
 
 **Pages Statiques (Static Pages)** ✅ TERMINÉ
 - [x] GET /static-pages/terms (public - CGU pour marketplace)
-- [x] PATCH /static-pages/terms (SUPER_ADMIN - modifier CGU)
+- [x] PATCH /static-pages/terms (ADMIN/SUPER_ADMIN - modifier CGU)
 - [x] GET /static-pages/privacy (public - Politique de confidentialité)
-- [x] PATCH /static-pages/privacy (SUPER_ADMIN - modifier Privacy)
+- [x] PATCH /static-pages/privacy (ADMIN/SUPER_ADMIN - modifier Privacy)
 - [x] GET /static-pages/about (public - À propos)
-- [x] PATCH /static-pages/about (SUPER_ADMIN - modifier About)
-- [x] **Modèles Prisma** : TermsPage, PrivacyPage, AboutPage
+- [x] PATCH /static-pages/about (ADMIN/SUPER_ADMIN - modifier About)
+- [x] GET /static-pages/seller-terms (public - CGU vendeur)
+- [x] PATCH /static-pages/seller-terms (ADMIN/SUPER_ADMIN - modifier CGU vendeur)
+- [x] GET /static-pages/seller-privacy (public - Politique vendeur)
+- [x] PATCH /static-pages/seller-privacy (ADMIN/SUPER_ADMIN - modifier Politique vendeur)
+- [x] **Modèles Prisma** : TermsPage, PrivacyPage, AboutPage, SellerTermsPage, SellerPrivacyPage
 - [x] **Contenu i18n** : `{ fr: TiptapContent, en: TiptapContent }`
-- [x] **Traduction automatique** : CREATE duplique vers les 2 langues, UPDATE ne modifie que la langue source
+- [x] **Traduction automatique** : CREATE traduit via TranslationService, UPDATE ne modifie que la langue source
 - [x] **About structuré** : introduction, mission, vision, values (avec icônes), team (optionnel)
 
 **Historique connexions** ⚠️ PARTIEL
@@ -597,10 +601,12 @@ Quand un utilisateur est bloqué (`isActive = false`) :
   - CRUD complet avec filtres dynamiques
 
 - [x] Gestion pages statiques (`/static-pages`)
-  - Liste avec cartes : Terms, Privacy, About
+  - Liste avec cartes : Terms, Privacy, About, Seller Terms, Seller Privacy
   - Page Terms (`/static-pages/terms`) : TiptapEditor, édition locale-aware
   - Page Privacy (`/static-pages/privacy`) : TiptapEditor, édition locale-aware
   - Page About (`/static-pages/about`) : Formulaire structuré (intro, mission, vision, values, team)
+  - Page Seller Terms (`/static-pages/seller-terms`) : TiptapEditor, traduction auto sur CREATE
+  - Page Seller Privacy (`/static-pages/seller-privacy`) : TiptapEditor, traduction auto sur CREATE
   - Indicateur de langue en cours d'édition
   - Sauvegarde indépendante FR/EN
 
@@ -697,6 +703,9 @@ Quand un utilisateur est bloqué (`isActive = false`) :
     - Numéro fiscal (taxId - optionnel)
     - Description de l'activité (description - textarea)
     - Logo entreprise (optionnel, upload image via SingleImageUpload)
+    - **Checkbox CGU vendeur** : Acceptation obligatoire des CGU et Politique vendeur
+      - Liens vers `/seller-terms` et `/seller-privacy`
+      - Validation bloquante si non coché
   - Submit → API POST /seller-requests
   - **États affichés sur la même page** (formulaire grisé + banner) :
     - PENDING : "Demande en attente" + formulaire soumis en lecture seule
@@ -753,6 +762,14 @@ Quand un utilisateur est bloqué (`isActive = false`) :
 - [x] Page Contact (`/contact`)
   - Contenu statique (adresse, email, téléphone)
   - Formulaire placeholder "bientôt disponible"
+  - i18n complet
+- [x] Page CGU Vendeur (`/seller-terms`)
+  - Contenu depuis API /static-pages/seller-terms
+  - TiptapViewer pour rendu rich text
+  - i18n complet
+- [x] Page Politique Vendeur (`/seller-privacy`)
+  - Contenu depuis API /static-pages/seller-privacy
+  - TiptapViewer pour rendu rich text
   - i18n complet
 
 **Header/Footer** ✅ TERMINÉ
@@ -1333,9 +1350,10 @@ Si un agent IA a besoin de clarifications :
 
 ---
 
-**Version** : 1.14
+**Version** : 1.15
 **Dernière mise à jour** : 24 Juin 2026
 **Changelog** :
+- v1.15 : Pages statiques vendeur (SellerTerms, SellerPrivacy), Checkbox CGU dans /become-seller, Traduction auto TipTap pour toutes les pages statiques, Fix URL logo dynamique
 - v1.14 : Rôle ADMIN ajouté, Staff management (/staff), Blocage utilisateurs (block/unblock), mustChangePassword pour OPERATOR, Hiérarchie des permissions
 - v1.13 : Pages statiques (Terms, Privacy, About, Contact) - API backend, Admin Panel avec édition locale-aware, Marketplace avec i18n complet
 - v1.12 : Fix upload image pour BUYER (formulaire devenir vendeur), Container padding écrans larges
