@@ -40,6 +40,14 @@ const CONTACT_INFO = {
   hours: "Lun - Sam: 8h00 - 18h00",
 };
 
+// Social media links
+const SOCIAL_LINKS = [
+  { name: "Facebook", url: "https://facebook.com" },
+  { name: "Twitter", url: "https://twitter.com" },
+  { name: "Instagram", url: "https://instagram.com" },
+  { name: "Linkedin", url: "https://linkedin.com" },
+];
+
 export default async function ContactPage({ params }: ContactPageProps) {
   const { locale } = await params;
   const t = await getTranslations("staticPages.contact");
@@ -231,12 +239,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
               {locale === "fr" ? "Suivez-nous sur les réseaux sociaux" : "Follow us on social media"}
             </Paragraph>
             <FlexBox justifyContent="center" style={{ gap: "1rem" }}>
-              {[
-                { name: "Facebook", url: "https://facebook.com" },
-                { name: "Twitter", url: "https://twitter.com" },
-                { name: "Instagram", url: "https://instagram.com" },
-                { name: "Linkedin", url: "https://linkedin.com" },
-              ].map((social) => (
+              {SOCIAL_LINKS.map((social) => (
                 <a
                   key={social.name}
                   href={social.url}
