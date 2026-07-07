@@ -370,5 +370,14 @@
         "comingSoon": "Formulaire bientôt disponible"
       }
     }
+  },
+  "faq": {
+    "title": "Foire Aux Questions",
+    "subtitle": "Trouvez les réponses à vos questions",
+    "categories": "Catégories",
+    "noResults": "Aucune question trouvée",
+    "noResultsDescription": "Les FAQ seront bientôt disponibles.",
+    "stillQuestions": "Vous avez d'autres questions ?",
+    "contactUs": "Contactez-nous"
   }
 }

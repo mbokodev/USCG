@@ -165,6 +165,22 @@ export {
 } from "./static-page.types";
 
 // ============================================
+// FAQ types
+// ============================================
+export {
+  type IFaqCategory,
+  type ICreateFaqCategoryDto,
+  type IUpdateFaqCategoryDto,
+  type IFaq,
+  type IFaqListItem,
+  type ICreateFaqDto,
+  type IUpdateFaqDto,
+  type IFaqGrouped,
+  type IFaqQueryParams,
+  type IFaqCategoryQueryParams,
+} from "./faq.types";
+
+// ============================================
 // API types (pagination, responses)
 // ============================================
 export {

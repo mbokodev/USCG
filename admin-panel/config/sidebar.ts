@@ -12,6 +12,7 @@ import {
   Zap,
   LayoutGrid,
   FileText,
+  HelpCircle,
   type LucideIcon,
 } from "lucide-react";
 import { UserRole } from "@uscg/shared";
@@ -74,6 +75,7 @@ export const adminSidebarGroups: SidebarGroup[] = [
       { path: ROUTES.FLASH_DEALS, icon: Zap, name: "flashDeals" },
       { path: ROUTES.FEATURED_SECTIONS.LIST, icon: LayoutGrid, name: "featuredSections" },
       { path: ROUTES.STATIC_PAGES.LIST, icon: FileText, name: "staticPages" },
+      { path: ROUTES.FAQ.LIST, icon: HelpCircle, name: "faq" },
     ],
   },
   {

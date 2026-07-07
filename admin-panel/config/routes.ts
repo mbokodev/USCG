@@ -71,6 +71,15 @@ export const ROUTES = {
     SELLER_PRIVACY: "/static-pages/seller-privacy",
   },
 
+  // Store - FAQ (ADMIN)
+  FAQ: {
+    LIST: "/faq",
+    CREATE: "/faq/new",
+    EDIT: (id: string) => `/faq/${id}` as const,
+    CATEGORY_NEW: "/faq/categories",
+    CATEGORY_EDIT: (id: string) => `/faq/categories/${id}` as const,
+  },
+
   // Sales - Orders (Phase 3 placeholder)
   ORDERS: "/orders",
 

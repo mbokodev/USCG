@@ -25,7 +25,8 @@
     "logout": "Deconnexion",
     "adminPanel": "USCG Admin",
     "version": "Admin Panel v1.0",
-    "staticPages": "Pages statiques"
+    "staticPages": "Pages statiques",
+    "faq": "FAQ"
   },
   "changePassword": {
     "title": "Changement de mot de passe",
@@ -763,6 +764,49 @@
       "contentEn": "Contenu (Anglais)",
       "tabFr": "Francais",
       "tabEn": "English"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "description": "Gerez les questions frequentes",
+    "tabs": {
+      "categories": "Categories",
+      "questions": "Questions"
+    },
+    "categories": {
+      "title": "Categories",
+      "create": "Nouvelle categorie",
+      "createDescription": "Ajoutez une nouvelle categorie de FAQ",
+      "edit": "Modifier la categorie",
+      "name": "Nom",
+      "slug": "Slug",
+      "slugPlaceholder": "Auto-genere si vide",
+      "order": "Ordre",
+      "statusDescription": "Desactivez pour masquer cette categorie",
+      "empty": "Aucune categorie",
+      "emptyDescription": "Creez votre premiere categorie de FAQ",
+      "deleteTitle": "Supprimer la categorie",
+      "confirmDelete": "Voulez-vous vraiment supprimer cette categorie et toutes ses questions ?"
+    },
+    "questions": {
+      "title": "Questions",
+      "create": "Nouvelle question",
+      "createDescription": "Ajoutez une nouvelle question FAQ",
+      "edit": "Modifier la question",
+      "question": "Question",
+      "answer": "Reponse",
+      "category": "Categorie",
+      "selectCategory": "Selectionnez une categorie",
+      "order": "Ordre",
+      "statusDescription": "Desactivez pour masquer cette question",
+      "empty": "Aucune question",
+      "emptyDescription": "Creez votre premiere question FAQ",
+      "deleteTitle": "Supprimer la question",
+      "confirmDelete": "Voulez-vous vraiment supprimer cette question ?"
+    },
+    "autoTranslate": {
+      "title": "Traduction automatique",
+      "description": "Le contenu sera automatiquement traduit dans l'autre langue lors de la premiere sauvegarde."
     }
   }
 }

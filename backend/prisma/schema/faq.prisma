@@ -1,0 +1,28 @@
+// ============================================
+// FAQ Category & FAQ Items
+// ============================================
+
+model FaqCategory {
+  id        String   @id @default(cuid())
+  name      Json     // { fr: string, en: string }
+  slug      String   @unique
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  faqs      Faq[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Faq {
+  id         String      @id @default(cuid())
+  categoryId String
+  category   FaqCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  question   Json        // { fr: string, en: string }
+  answer     Json        // { fr: TiptapContent, en: TiptapContent }
+  order      Int         @default(0)
+  isActive   Boolean     @default(true)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([categoryId])
+}

@@ -370,5 +370,14 @@
         "comingSoon": "Form coming soon"
       }
     }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to your questions",
+    "categories": "Categories",
+    "noResults": "No questions found",
+    "noResultsDescription": "FAQs will be available soon.",
+    "stillQuestions": "Still have questions?",
+    "contactUs": "Contact us"
   }
 }
