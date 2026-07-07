@@ -5,6 +5,7 @@
 import type { IFile } from "./file.types";
 import type { I18nText, ICategoryInfo, ISubCategoryInfo } from "./category.types";
 import type { IVariantValue } from "./variant.types";
+import type { ContactMethod } from "./seller-request.types";
 
 // Re-export I18nText for convenience
 export type { I18nText };
@@ -43,6 +44,15 @@ export type IAdSubCategory = ISubCategoryInfo;
 export interface IAdSeller {
   firstName: string;
   lastName: string;
+}
+
+/**
+ * Seller contact info (for authenticated users viewing ads)
+ */
+export interface ISellerContact {
+  businessName: string;
+  businessPhone: string;
+  enabledContactMethods: ContactMethod[];
 }
 
 /**
@@ -121,6 +131,7 @@ export interface IAdListItem extends Omit<IAd, "description" | "location" | "lat
 export interface IAdPublic extends IAdListItem {
   description: unknown;
   variantValues?: IAdVariantValue[];
+  sellerContact?: ISellerContact | null;
 }
 
 /**

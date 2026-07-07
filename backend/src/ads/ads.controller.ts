@@ -66,6 +66,20 @@ export class AdsController {
     return this.adsService.findOnePublic(id);
   }
 
+  @Get('detail/:id/contact')
+  @SkipThrottle()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: "Détail d'une annonce avec contact vendeur (authentifié)",
+    description: 'Récupère une annonce approuvée avec les infos de contact du vendeur.',
+  })
+  @ApiParam({ name: 'id' })
+  @ApiResponse({ status: 200, type: AdPublicResponseDto })
+  @ApiResponse({ status: 404, description: 'Annonce non trouvée' })
+  async findOnePublicWithContact(@Param('id') id: string): Promise<AdPublicResponseDto> {
+    return this.adsService.findOnePublicWithContact(id);
+  }
+
   // =========================================================================
   // ENDPOINTS SELLER (isSeller=true)
   // =========================================================================

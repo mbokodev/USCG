@@ -16,6 +16,7 @@ import { H1, H2, H6, SemiSpan, Span } from "@component/ui/Typography";
 import { currency } from "@utils/utils";
 import { buildFileUrl } from "@/utils/ad-utils";
 import type { IAdPublic } from "@uscg/shared/types";
+import ContactSellerButton from "./ContactSellerButton";
 
 // ========================================
 interface ProductIntroProps {
@@ -154,12 +155,13 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
                     <Box
                       key={ind}
                       position="relative"
-                      flex="1"
                       cursor="pointer"
                       borderRadius="8px"
                       overflow="hidden"
                       onClick={handleImageClick(ind)}
                       style={{
+                        width: "calc(25% - 9px)",
+                        maxWidth: "120px",
                         aspectRatio: "4/3",
                         outline: isSelected ? "3px solid var(--primary-main, #D23F57)" : "1px solid #e0e0e0",
                         outlineOffset: "-1px",
@@ -172,7 +174,7 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
                         fill
                         style={{ objectFit: "cover" }}
                       />
-                      {/* +X Indicator */}
+                      {/* +X Indicator - Opens lightbox at first hidden image */}
                       {isLast && (
                         <FlexBox
                           position="absolute"
@@ -185,7 +187,7 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
                           alignItems="center"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setSelectedImage(MAX_VISIBLE_THUMBNAILS);
+                            openLightbox(MAX_VISIBLE_THUMBNAILS);
                           }}
                         >
                           <SemiSpan color="white" fontWeight={600} fontSize={16}>
@@ -268,7 +270,7 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
                   width={36}
                   height={36}
                   borderRadius="50%"
-                  bg="primary.light"
+                  // bg="primary.light"
                   mr="12px"
                 >
                   <IconMapPin size={18} color="#D23F57" />
@@ -298,7 +300,7 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
                     width={36}
                     height={36}
                     borderRadius="50%"
-                    bg="secondary.light"
+                    // bg="secondary.light"
                     mr="12px"
                   >
                     <IconUser size={18} color="#4E97FD" />
@@ -314,6 +316,11 @@ export default function ProductIntro({ ad }: ProductIntroProps) {
                 </FlexBox>
               )}
             </FlexBox>
+
+            {/* Contact Seller Button */}
+            <Box mb="20px">
+              <ContactSellerButton adId={ad.id} initialContact={ad.sellerContact} />
+            </Box>
 
             {/* Description */}
             {hasDescription && (

@@ -15,6 +15,7 @@ type BusinessLogo = Pick<File, 'id' | 'url' | 'originalName' | 'path'>;
 type SellerRequestWithRelations = SellerRequest & {
   user?: SellerRequestUser;
   businessLogo?: BusinessLogo | null;
+  enabledContactMethods?: string[];
 };
 
 // Get API URL from environment
@@ -65,6 +66,7 @@ export const SellerRequestMapper = {
       businessLogo: sellerRequest.businessLogo ? this.toLogoDto(sellerRequest.businessLogo) : null,
       status: sellerRequest.status,
       rejectionReason: sellerRequest.rejectionReason,
+      enabledContactMethods: sellerRequest.enabledContactMethods || [],
       validatedAt: sellerRequest.validatedAt,
       validatedBy: sellerRequest.validatedBy,
       createdAt: sellerRequest.createdAt,

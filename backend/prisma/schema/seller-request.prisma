@@ -22,6 +22,9 @@ model SellerRequest {
   status          RequestStatus @default(PENDING)
   rejectionReason String?
 
+  // Contact preferences (enabled methods: PHONE, SMS, WHATSAPP)
+  enabledContactMethods String[] @default([])
+
   // Validation
   validatedAt DateTime?
   validatedBy String? // ID de l'OPERATOR/SUPER_ADMIN qui a validé

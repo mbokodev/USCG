@@ -37,6 +37,26 @@ const adInclude = {
   user: { select: { id: true, firstName: true, lastName: true, phone: true } },
 };
 
+// Include avec seller request (pour contact info)
+const adIncludeWithContact = {
+  ...adInclude,
+  user: {
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      phone: true,
+      sellerRequest: {
+        select: {
+          businessName: true,
+          businessPhone: true,
+          enabledContactMethods: true,
+        },
+      },
+    },
+  },
+};
+
 @Injectable()
 export class AdsService {
   constructor(
@@ -175,6 +195,28 @@ export class AdsService {
     });
 
     return AdMapper.toPublic(ad);
+  }
+
+  /**
+   * Détail d'une annonce publique avec contact vendeur (authenticated)
+   */
+  async findOnePublicWithContact(id: string): Promise<AdPublicResponseDto> {
+    const ad = await this.prisma.ad.findUnique({
+      where: { id },
+      include: adIncludeWithContact,
+    });
+
+    if (!ad || ad.status !== AdStatus.APPROVED) {
+      throw new NotFoundException('Annonce non trouvée');
+    }
+
+    // Incrémenter le compteur de vues
+    await this.prisma.ad.update({
+      where: { id },
+      data: { viewCount: { increment: 1 } },
+    });
+
+    return AdMapper.toPublic(ad as any, true);
   }
 
   /**

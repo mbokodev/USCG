@@ -102,6 +102,20 @@ export async function getAdById(id: string): Promise<IAdPublic | null> {
 }
 
 /**
+ * Fetch a single ad by ID with seller contact info (authenticated users)
+ * Returns ad with sellerContact populated if seller has configured contact methods
+ */
+export async function getAdWithContact(id: string): Promise<IAdPublic | null> {
+  try {
+    const response = await api.get<IAdPublic>(`/ads/detail/${id}/contact`);
+    return response.data;
+  } catch {
+    // Fallback to public endpoint if contact endpoint fails
+    return getAdById(id);
+  }
+}
+
+/**
  * Fetch related products by category (excluding current ad)
  */
 export async function getRelatedProducts(
@@ -123,5 +137,6 @@ export const adsService = {
   getLatestAds,
   searchAds,
   getAdById,
+  getAdWithContact,
   getRelatedProducts,
 };

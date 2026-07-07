@@ -37,23 +37,23 @@ export function categoriesToNavigation(
   return categories.map((category) => ({
     id: category.id,
     title: category.name[locale] || category.name.fr,
-    href: `/categories/${category.slug}`,
+    href: `/search?categoryId=${category.id}`,
     icon: category.icon || undefined,
     menuComponent: "MegaMenu2" as const,
     menuData: category.subCategories?.map((sub) =>
-      subCategoryToNavItem(sub, category.slug, locale)
+      subCategoryToNavItem(sub, category.id, locale)
     ),
   }));
 }
 
 function subCategoryToNavItem(
   subCategory: ISubCategory,
-  categorySlug: string,
+  categoryId: string,
   locale: "fr" | "en"
 ): SubCategoryItem {
   return {
     title: subCategory.name[locale] || subCategory.name.fr,
-    href: `/categories/${categorySlug}/${subCategory.slug}`,
+    href: `/search?categoryId=${categoryId}&subCategoryId=${subCategory.id}`,
   };
 }
 

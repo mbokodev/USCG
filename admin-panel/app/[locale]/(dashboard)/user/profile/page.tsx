@@ -17,6 +17,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { PageTitle } from "@/components/ui";
 import sellerRequestsService from "@/features/seller-requests/services/seller-requests.service";
 import { formatDate } from "@/shared/utils";
+import { ContactPreferences } from "./components/ContactPreferences";
 
 export default function ProfilePage() {
   const t = useTranslations("profile");
@@ -162,6 +163,16 @@ export default function ProfilePage() {
           )}
         </div>
       </div>
+
+      {/* Contact Preferences - Only for approved sellers */}
+      {sellerRequest?.status === "APPROVED" && (
+        <div className="mt-6">
+          <ContactPreferences
+            businessPhone={sellerRequest.businessPhone}
+            enabledContactMethods={sellerRequest.enabledContactMethods || []}
+          />
+        </div>
+      )}
     </div>
   );
 }

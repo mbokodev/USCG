@@ -12,6 +12,7 @@ import type {
   AdFileDto,
   AdVariantValueResponseDto,
   AdSellerDto,
+  SellerContactDto,
   I18nText,
 } from '../dto';
 
@@ -21,6 +22,16 @@ type AdSubCategory = Pick<SubCategory, 'id' | 'name' | 'slug'> | null;
 type AdFile = Pick<File, 'id' | 'filename' | 'originalName' | 'mimeType' | 'path' | 'type' | 'isDefault'>;
 type AdVariantValueWithRelation = AdVariantValue & { variant: Variant };
 type AdUser = Pick<User, 'id' | 'firstName' | 'lastName' | 'phone'>;
+type AdSellerRequest = {
+  businessName: string;
+  businessPhone: string;
+  enabledContactMethods: string[];
+} | null;
+
+// Type pour User avec seller request
+type AdUserWithSellerRequest = AdUser & {
+  sellerRequest?: AdSellerRequest;
+};
 
 // Type pour Ad avec toutes les relations
 type AdWithRelations = Ad & {
@@ -28,7 +39,7 @@ type AdWithRelations = Ad & {
   subCategory?: AdSubCategory;
   files?: AdFile[];
   variantValues?: AdVariantValueWithRelation[];
-  user?: AdUser;
+  user?: AdUser | AdUserWithSellerRequest;
 };
 
 export const AdMapper = {
@@ -101,6 +112,20 @@ export const AdMapper = {
   },
 
   /**
+   * Convertit un SellerRequest en SellerContactDto
+   */
+  toSellerContactDto(sellerRequest: AdSellerRequest): SellerContactDto | null {
+    if (!sellerRequest || !sellerRequest.enabledContactMethods?.length) {
+      return null;
+    }
+    return {
+      businessName: sellerRequest.businessName,
+      businessPhone: sellerRequest.businessPhone,
+      enabledContactMethods: sellerRequest.enabledContactMethods,
+    };
+  },
+
+  /**
    * Convertit une Ad en AdListItemDto (sans description pour alléger les listes)
    */
   toListItem(ad: AdWithRelations): AdListItemDto {
@@ -128,12 +153,19 @@ export const AdMapper = {
 
   /**
    * Convertit une Ad en AdPublicResponseDto (avec description, sans location)
+   * @param includeContact - Si true, inclut les infos de contact du vendeur
    */
-  toPublic(ad: AdWithRelations): AdPublicResponseDto {
+  toPublic(ad: AdWithRelations, includeContact = false): AdPublicResponseDto {
+    const userWithSellerRequest = ad.user as AdUserWithSellerRequest | undefined;
+    const sellerContact = includeContact && userWithSellerRequest?.sellerRequest
+      ? this.toSellerContactDto(userWithSellerRequest.sellerRequest)
+      : undefined;
+
     return {
       ...this.toListItem(ad),
       description: ad.description,
       variantValues: ad.variantValues?.map((vv) => this.toVariantValueDto(vv)),
+      sellerContact,
     };
   },
 

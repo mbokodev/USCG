@@ -503,7 +503,19 @@
     "sellerStatus": "Statut vendeur",
     "approvedAt": "Approuve le",
     "noBusinessInfo": "Aucune information entreprise disponible",
-    "submit": "Mettre a jour"
+    "submit": "Mettre a jour",
+    "contact": {
+      "title": "Preferences de contact",
+      "businessPhone": "Telephone professionnel",
+      "enabledMethods": "Methodes de contact activees",
+      "phone": "Appel telephonique",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp",
+      "warningTitle": "Aucune methode configuree",
+      "warningDescription": "Configurez vos preferences pour permettre aux acheteurs de vous contacter.",
+      "updateSuccess": "Preferences mises a jour",
+      "updateError": "Erreur lors de la mise a jour"
+    }
   },
   "banners": {
     "title": "Bannieres",

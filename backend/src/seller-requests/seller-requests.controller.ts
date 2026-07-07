@@ -24,6 +24,7 @@ import {
   QuerySellerRequestsDto,
   SellerRequestResponseDto,
   SellerRequestsListResponseDto,
+  UpdateContactPreferencesDto,
 } from './dto';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '@prisma/client';
@@ -64,6 +65,24 @@ export class SellerRequestsController {
   @ApiResponse({ status: 200, type: SellerRequestResponseDto })
   async findMyRequest(@Req() req: any): Promise<SellerRequestResponseDto | null> {
     return this.sellerRequestsService.findMyRequest(req.user.id);
+  }
+
+  /**
+   * Mettre à jour mes préférences de contact (SELLER)
+   */
+  @Patch('me/contact-preferences')
+  @ApiOperation({
+    summary: 'Mettre à jour mes préférences de contact (SELLER)',
+    description: 'Permet à un vendeur approuvé de configurer ses méthodes de contact (Appel, SMS, WhatsApp)',
+  })
+  @ApiResponse({ status: 200, type: SellerRequestResponseDto })
+  @ApiResponse({ status: 400, description: 'Non vendeur ou non approuvé' })
+  @ApiResponse({ status: 404, description: 'Demande vendeur non trouvée' })
+  async updateContactPreferences(
+    @Body() dto: UpdateContactPreferencesDto,
+    @Req() req: any,
+  ): Promise<SellerRequestResponseDto> {
+    return this.sellerRequestsService.updateContactPreferences(req.user.id, dto);
   }
 
   /**

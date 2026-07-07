@@ -4,6 +4,7 @@ import {
   SellerRequest,
   ValidateSellerRequestDto,
   SellerRequestQueryParams,
+  UpdateContactPreferencesDto,
 } from "../types/seller-requests.types";
 
 const sellerRequestsService = {
@@ -60,6 +61,16 @@ const sellerRequestsService = {
     rejected: number;
   }> => {
     const response = await http.get("/seller-requests/stats");
+    return response.data;
+  },
+
+  updateContactPreferences: async (
+    data: UpdateContactPreferencesDto
+  ): Promise<SellerRequest> => {
+    const response = await http.patch<SellerRequest>(
+      "/seller-requests/me/contact-preferences",
+      data
+    );
     return response.data;
   },
 };

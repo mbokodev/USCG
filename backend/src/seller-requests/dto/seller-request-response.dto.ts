@@ -63,6 +63,9 @@ export class SellerRequestResponseDto {
   @ApiPropertyOptional()
   rejectionReason: string | null;
 
+  @ApiProperty({ type: [String], description: 'Enabled contact methods (PHONE, SMS, WHATSAPP)' })
+  enabledContactMethods: string[];
+
   @ApiPropertyOptional()
   validatedAt: Date | null;
 

@@ -43,6 +43,17 @@ export class AdSellerDto {
   phone?: string;
 }
 
+export class SellerContactDto {
+  @ApiProperty()
+  businessName: string;
+
+  @ApiProperty()
+  businessPhone: string;
+
+  @ApiProperty({ type: [String], description: 'Enabled contact methods (PHONE, SMS, WHATSAPP)' })
+  enabledContactMethods: string[];
+}
+
 export class AdFileDto {
   @ApiProperty()
   id: string;
@@ -148,6 +159,9 @@ export class AdPublicResponseDto extends AdListItemDto {
 
   @ApiPropertyOptional({ type: [AdVariantValueResponseDto] })
   variantValues?: AdVariantValueResponseDto[];
+
+  @ApiPropertyOptional({ type: SellerContactDto, description: 'Contact vendeur (uniquement pour utilisateurs authentifiés)' })
+  sellerContact?: SellerContactDto | null;
 }
 
 // Réponse complète (avec location - pour owner, operator, admin)

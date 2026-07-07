@@ -14,6 +14,15 @@ export enum SellerRequestStatus {
 }
 
 /**
+ * Contact method enum (for seller contact preferences)
+ */
+export enum ContactMethod {
+  PHONE = "PHONE",
+  SMS = "SMS",
+  WHATSAPP = "WHATSAPP",
+}
+
+/**
  * Business logo info
  */
 export interface IBusinessLogo {
@@ -42,6 +51,7 @@ export interface ISellerRequest {
   createdAt: string;
   updatedAt: string;
   user?: ISellerRequestUser;
+  enabledContactMethods: ContactMethod[];
 }
 
 /**
@@ -90,6 +100,13 @@ export interface ISellerRequestQueryParams {
   limit?: number;
   search?: string;
   status?: SellerRequestStatus;
+}
+
+/**
+ * DTO for updating contact preferences
+ */
+export interface IUpdateContactPreferencesDto {
+  enabledContactMethods: ContactMethod[];
 }
 
 /**

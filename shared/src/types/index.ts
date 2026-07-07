@@ -74,6 +74,7 @@ export {
   type IAdCategory,
   type IAdSubCategory,
   type IAdSeller,
+  type ISellerContact,
   type IAdUser,
   type IAdFile,
   type IAdVariantValue,
@@ -93,6 +94,7 @@ export {
 // ============================================
 export {
   SellerRequestStatus,
+  ContactMethod,
   type IBusinessLogo,
   type ISellerRequest,
   type ISellerRequestListItem,
@@ -101,6 +103,7 @@ export {
   type IValidateSellerRequestDto,
   type ISellerRequestQueryParams,
   type ISellerRequestStats,
+  type IUpdateContactPreferencesDto,
 } from "./seller-request.types";
 
 // ============================================

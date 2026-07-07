@@ -6,6 +6,7 @@
 // Re-export all shared seller request types
 export {
   SellerRequestStatus,
+  ContactMethod,
   type IBusinessLogo,
   type ISellerRequest,
   type ISellerRequestListItem,
@@ -14,6 +15,7 @@ export {
   type IValidateSellerRequestDto,
   type ISellerRequestQueryParams,
   type ISellerRequestStats,
+  type IUpdateContactPreferencesDto,
 } from "@uscg/shared/types";
 
 // Import shared types for aliasing
@@ -22,6 +24,7 @@ import type {
   ISellerRequest,
   IValidateSellerRequestDto,
   ISellerRequestQueryParams,
+  IUpdateContactPreferencesDto,
   SellerRequestStatus as SellerRequestStatusEnum,
 } from "@uscg/shared/types";
 
@@ -33,3 +36,4 @@ export type BusinessLogo = IBusinessLogo;
 export type SellerRequest = ISellerRequest;
 export type ValidateSellerRequestDto = IValidateSellerRequestDto;
 export type SellerRequestQueryParams = ISellerRequestQueryParams;
+export type UpdateContactPreferencesDto = IUpdateContactPreferencesDto;

@@ -144,7 +144,17 @@
     "type": "Type",
     "home": "Accueil",
     "products": "Annonces",
-    "imageGallery": "Galerie d'images"
+    "imageGallery": "Galerie d'images",
+    "loginToContact": "Connectez-vous pour contacter",
+    "contactNotAvailable": "Contact non disponible",
+    "loading": "Chargement...",
+    "contact": {
+      "title": "Contacter le vendeur",
+      "sellerName": "Vendeur",
+      "phone": "Appeler",
+      "sms": "Envoyer un SMS",
+      "whatsapp": "WhatsApp"
+    }
   },
   "search": {
     "title": "Recherche",

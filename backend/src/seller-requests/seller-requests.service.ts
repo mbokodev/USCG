@@ -13,6 +13,7 @@ import {
   QuerySellerRequestsDto,
   SellerRequestResponseDto,
   SellerRequestsListResponseDto,
+  UpdateContactPreferencesDto,
 } from './dto';
 import { SellerRequestMapper } from './mappers';
 import { toPaginatedResult } from '../common/mappers';
@@ -296,5 +297,42 @@ export class SellerRequestsService {
     ]);
 
     return { total, pending, approved, rejected };
+  }
+
+  /**
+   * Mettre à jour les préférences de contact (SELLER uniquement)
+   */
+  async updateContactPreferences(
+    userId: string,
+    dto: UpdateContactPreferencesDto,
+  ): Promise<SellerRequestResponseDto> {
+    // Vérifier que l'utilisateur est un vendeur approuvé
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user || !user.isSeller) {
+      throw new BadRequestException('Seuls les vendeurs approuvés peuvent modifier leurs préférences de contact');
+    }
+
+    const request = await this.prisma.sellerRequest.findUnique({
+      where: { userId },
+      include: sellerRequestInclude,
+    });
+
+    if (!request) {
+      throw new NotFoundException('Demande vendeur non trouvée');
+    }
+
+    if (request.status !== RequestStatus.APPROVED) {
+      throw new BadRequestException('Seuls les vendeurs approuvés peuvent modifier leurs préférences de contact');
+    }
+
+    const updated = await this.prisma.sellerRequest.update({
+      where: { userId },
+      data: {
+        enabledContactMethods: dto.enabledContactMethods,
+      },
+      include: sellerRequestInclude,
+    });
+
+    return SellerRequestMapper.toResponse(updated);
   }
 }

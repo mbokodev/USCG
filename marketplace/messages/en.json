@@ -144,7 +144,17 @@
     "type": "Type",
     "home": "Home",
     "products": "Ads",
-    "imageGallery": "Image Gallery"
+    "imageGallery": "Image Gallery",
+    "loginToContact": "Log in to contact",
+    "contactNotAvailable": "Contact not available",
+    "loading": "Loading...",
+    "contact": {
+      "title": "Contact Seller",
+      "sellerName": "Seller",
+      "phone": "Call",
+      "sms": "Send SMS",
+      "whatsapp": "WhatsApp"
+    }
   },
   "search": {
     "title": "Search",

@@ -503,7 +503,19 @@
     "sellerStatus": "Seller Status",
     "approvedAt": "Approved on",
     "noBusinessInfo": "No business information available",
-    "submit": "Update"
+    "submit": "Update",
+    "contact": {
+      "title": "Contact Preferences",
+      "businessPhone": "Business Phone",
+      "enabledMethods": "Enabled Contact Methods",
+      "phone": "Phone Call",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp",
+      "warningTitle": "No contact method configured",
+      "warningDescription": "Configure your preferences to allow buyers to contact you.",
+      "updateSuccess": "Preferences updated",
+      "updateError": "Error updating preferences"
+    }
   },
   "banners": {
     "title": "Banners",
