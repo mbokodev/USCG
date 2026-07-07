@@ -19,7 +19,7 @@ const LogoText = styled.span`
 export default function Logo() {
   return (
     <LogoWrapper>
-      <Image src="/assets/logo/logo.png" alt="USCG" width={40} height={40} />
+      <Image src="/assets/logo/logo-red.png" alt="USCG" width={40} height={40} />
       <LogoText>USCG</LogoText>
     </LogoWrapper>
   );

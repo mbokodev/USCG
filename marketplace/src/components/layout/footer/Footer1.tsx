@@ -29,7 +29,7 @@ export default function Footer1() {
     { label: t("aboutUs"), href: "/about" },
     { label: t("terms"), href: "/terms" },
     { label: t("privacy"), href: "/privacy" },
-    { label: t("careers"), href: "/careers" },
+    // { label: t("careers"), href: "/careers" },
   ];
 
   return (

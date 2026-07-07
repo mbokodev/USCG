@@ -175,7 +175,7 @@ export class FilesController {
   @Get(':folder/:filename')
   @Public()
   @ApiOperation({ summary: 'Récupérer un fichier (public)' })
-  @ApiParam({ name: 'folder', enum: ['images', 'documents'] })
+  @ApiParam({ name: 'folder', enum: ['images', 'documents', 'assets'] })
   @ApiParam({ name: 'filename', description: 'Nom du fichier' })
   serveFile(
     @Param('folder') folder: string,
@@ -183,7 +183,7 @@ export class FilesController {
     @Res({ passthrough: true }) res: Response,
   ): StreamableFile {
     // Valider le dossier (sécurité)
-    const allowedFolders = ['images', 'documents'];
+    const allowedFolders = ['images', 'documents', 'assets'];
     if (!allowedFolders.includes(folder)) {
       throw new BadRequestException('Dossier invalide');
     }

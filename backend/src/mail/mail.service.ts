@@ -7,6 +7,7 @@ export class MailService {
   private resend: Resend | null = null;
   private fromEmail: string;
   private frontendUrl: string;
+  private apiUrl: string;
   private isConfigured: boolean;
 
   constructor() {
@@ -25,6 +26,137 @@ export class MailService {
       process.env.RESEND_FROM_EMAIL || 'noreply@universal-services-cg.com';
     this.frontendUrl =
       process.env.FRONTEND_URL || 'http://localhost:3000';
+    this.apiUrl =
+      process.env.API_URL || 'http://localhost:3001';
+  }
+
+  /**
+   * Get the logo URL for email templates
+   */
+  private getLogoUrl(): string {
+    return `${this.apiUrl}/api/files/assets/logo.png`;
+  }
+
+  /**
+   * Get the base email styles shared across all templates
+   */
+  private getBaseStyles(): string {
+    return `
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        line-height: 1.6;
+        color: #333333;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      .wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .header {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 30px;
+        text-align: center;
+      }
+      .header img {
+        max-width: 180px;
+        height: auto;
+      }
+      .content {
+        padding: 40px 30px;
+      }
+      .title {
+        color: #1f2937;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 20px 0;
+        text-align: center;
+      }
+      .text {
+        color: #4b5563;
+        font-size: 16px;
+        margin: 0 0 16px 0;
+      }
+      .button-container {
+        text-align: center;
+        margin: 30px 0;
+      }
+      .button {
+        display: inline-block;
+        background: #D23F57;
+        color: #ffffff !important;
+        padding: 16px 32px;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+      }
+      .link-fallback {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 20px 0;
+        font-size: 14px;
+      }
+      .link-fallback p {
+        margin: 0 0 8px 0;
+        color: #6b7280;
+      }
+      .link-fallback a {
+        color: #D23F57;
+        word-break: break-all;
+      }
+      .warning {
+        background: #fef3c7;
+        border-left: 4px solid #f59e0b;
+        padding: 12px 16px;
+        margin: 20px 0;
+        font-size: 14px;
+        color: #92400e;
+      }
+      .info-box {
+        background: #f3f4f6;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 20px 0;
+        font-size: 14px;
+        color: #4b5563;
+      }
+      .divider {
+        border: 0;
+        border-top: 1px solid #e5e7eb;
+        margin: 30px 0;
+      }
+      .footer {
+        background: #f9fafb;
+        padding: 24px 30px;
+        text-align: center;
+        border-top: 1px solid #e5e7eb;
+      }
+      .footer p {
+        margin: 0 0 8px 0;
+        font-size: 13px;
+        color: #6b7280;
+      }
+      .footer-links {
+        margin-top: 12px;
+      }
+      .footer-links a {
+        color: #D23F57;
+        text-decoration: none;
+        margin: 0 8px;
+        font-size: 13px;
+      }
+    `;
   }
 
   /**
@@ -204,95 +336,72 @@ export class MailService {
     firstName: string,
     verificationUrl: string,
   ): string {
+    const logoUrl = this.getLogoUrl();
+    const year = new Date().getFullYear();
+
     return `
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vérification Email</title>
+  <title>Vérifiez votre adresse email</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .container {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 40px;
-    }
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .logo h1 {
-      color: #2563eb;
-      margin: 0;
-      font-size: 28px;
-    }
-    h2 {
-      color: #1f2937;
-      margin-top: 0;
-    }
-    .button {
-      display: inline-block;
-      background: #2563eb;
-      color: #ffffff !important;
-      padding: 14px 28px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      margin: 20px 0;
-    }
-    .button:hover {
-      background: #1d4ed8;
-    }
-    .footer {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #e5e7eb;
-      font-size: 14px;
-      color: #6b7280;
-    }
-    .warning {
-      background: #fef3c7;
-      border: 1px solid #f59e0b;
-      border-radius: 8px;
-      padding: 12px;
-      margin-top: 20px;
-      font-size: 14px;
-    }
+    ${this.getBaseStyles()}
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">
-      <h1>USCG Marketplace</h1>
-    </div>
+  <div class="wrapper">
+    <div class="container">
+      <!-- Header avec logo -->
+      <div class="header">
+        <img src="${logoUrl}" alt="USCG" />
+      </div>
 
-    <h2>Bienvenue ${firstName} !</h2>
+      <!-- Contenu principal -->
+      <div class="content">
+        <h1 class="title">Vérifiez votre adresse email</h1>
 
-    <p>Merci de vous être inscrit sur USCG Marketplace. Pour activer votre compte et commencer à explorer nos annonces, veuillez vérifier votre adresse email.</p>
+        <p class="text">Bonjour ${firstName},</p>
 
-    <p style="text-align: center;">
-      <a href="${verificationUrl}" class="button">Vérifier mon email</a>
-    </p>
+        <p class="text">
+          Merci d'avoir créé votre compte sur USCG Marketplace.
+        </p>
 
-    <p>Ou copiez ce lien dans votre navigateur :</p>
-    <p style="word-break: break-all; color: #2563eb;">${verificationUrl}</p>
+        <p class="text">
+          Pour commencer à acheter et vendre sur la plateforme, veuillez confirmer votre adresse email.
+        </p>
 
-    <div class="warning">
-      ⏰ Ce lien expire dans <strong>24 heures</strong>.
-    </div>
+        <div class="button-container">
+          <a href="${verificationUrl}" class="button">Vérifier mon adresse email</a>
+        </div>
 
-    <div class="footer">
-      <p>Si vous n'avez pas créé de compte sur USCG Marketplace, vous pouvez ignorer cet email.</p>
-      <p>© ${new Date().getFullYear()} Universal Services of Congo. Tous droits réservés.</p>
+        <div class="warning">
+          ⏰ Ce lien est valable pendant <strong>24 heures</strong>.
+        </div>
+
+        <div class="link-fallback">
+          <p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p>
+          <a href="${verificationUrl}">${verificationUrl}</a>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="info-box">
+          Si vous n'êtes pas à l'origine de cette inscription, ignorez simplement cet email.
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>© ${year} Universal Services Of Congo</p>
+        <p>universal-services-cg.com</p>
+        <div class="footer-links">
+          <a href="${this.frontendUrl}/contact">Support</a>
+          <a href="${this.frontendUrl}/contact">Contact</a>
+          <a href="${this.frontendUrl}/terms">Conditions</a>
+        </div>
+      </div>
     </div>
   </div>
 </body>
@@ -305,6 +414,9 @@ export class MailService {
     businessName: string,
     adminPanelUrl: string,
   ): string {
+    const logoUrl = this.getLogoUrl();
+    const year = new Date().getFullYear();
+
     return `
 <!DOCTYPE html>
 <html lang="fr">
@@ -313,106 +425,79 @@ export class MailService {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demande Vendeur Approuvée</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .container {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 40px;
-    }
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .logo h1 {
-      color: #2563eb;
-      margin: 0;
-      font-size: 28px;
-    }
-    h2 {
-      color: #1f2937;
-      margin-top: 0;
-    }
+    ${this.getBaseStyles()}
     .success-badge {
       background: #10b981;
       color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 10px 20px;
+      border-radius: 25px;
       display: inline-block;
       font-weight: 600;
+      font-size: 14px;
       margin-bottom: 20px;
     }
-    .button {
-      display: inline-block;
-      background: #2563eb;
-      color: #ffffff !important;
-      padding: 14px 28px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      margin: 20px 0;
-    }
     .features {
-      background: #f3f4f6;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
       border-radius: 8px;
       padding: 20px;
       margin: 20px 0;
     }
     .features ul {
-      margin: 0;
+      margin: 10px 0 0 0;
       padding-left: 20px;
     }
     .features li {
       margin: 8px 0;
-    }
-    .footer {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #e5e7eb;
-      font-size: 14px;
-      color: #6b7280;
+      color: #166534;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">
-      <h1>USCG Marketplace</h1>
-    </div>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <img src="${logoUrl}" alt="USCG" />
+      </div>
 
-    <div style="text-align: center;">
-      <span class="success-badge">✓ Demande Approuvée</span>
-    </div>
+      <div class="content">
+        <div style="text-align: center;">
+          <span class="success-badge">✓ Demande Approuvée</span>
+        </div>
 
-    <h2>Félicitations ${firstName} !</h2>
+        <h1 class="title">Félicitations ${firstName} !</h1>
 
-    <p>Nous avons le plaisir de vous informer que votre demande pour devenir vendeur sous le nom <strong>"${businessName}"</strong> a été <strong>approuvée</strong>.</p>
+        <p class="text">
+          Nous avons le plaisir de vous informer que votre demande pour devenir vendeur sous le nom <strong>"${businessName}"</strong> a été <strong>approuvée</strong>.
+        </p>
 
-    <p>Vous pouvez maintenant accéder à votre espace vendeur et commencer à publier vos annonces.</p>
+        <p class="text">
+          Vous pouvez maintenant accéder à votre espace vendeur et commencer à publier vos annonces.
+        </p>
 
-    <div class="features">
-      <strong>Vous pouvez désormais :</strong>
-      <ul>
-        <li>Créer et gérer vos annonces</li>
-        <li>Suivre vos statistiques de vente</li>
-        <li>Communiquer avec vos clients</li>
-      </ul>
-    </div>
+        <div class="features">
+          <strong>Vous pouvez désormais :</strong>
+          <ul>
+            <li>Créer et gérer vos annonces</li>
+            <li>Suivre vos statistiques de vente</li>
+            <li>Communiquer avec vos clients</li>
+          </ul>
+        </div>
 
-    <p style="text-align: center;">
-      <a href="${adminPanelUrl}" class="button">Accéder à mon espace vendeur</a>
-    </p>
+        <div class="button-container">
+          <a href="${adminPanelUrl}" class="button">Accéder à mon espace vendeur</a>
+        </div>
+      </div>
 
-    <div class="footer">
-      <p>Bienvenue dans la communauté des vendeurs USCG !</p>
-      <p>© ${new Date().getFullYear()} Universal Services of Congo. Tous droits réservés.</p>
+      <div class="footer">
+        <p>Bienvenue dans la communauté des vendeurs USCG !</p>
+        <p>© ${year} Universal Services Of Congo</p>
+        <div class="footer-links">
+          <a href="${this.frontendUrl}/contact">Support</a>
+          <a href="${this.frontendUrl}/contact">Contact</a>
+          <a href="${this.frontendUrl}/terms">Conditions</a>
+        </div>
+      </div>
     </div>
   </div>
 </body>
@@ -425,7 +510,8 @@ export class MailService {
     businessName: string,
     rejectionReason: string,
   ): string {
-    const marketplaceUrl = this.frontendUrl;
+    const logoUrl = this.getLogoUrl();
+    const year = new Date().getFullYear();
 
     return `
 <!DOCTYPE html>
@@ -435,36 +521,11 @@ export class MailService {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demande Vendeur</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .container {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 40px;
-    }
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .logo h1 {
-      color: #2563eb;
-      margin: 0;
-      font-size: 28px;
-    }
-    h2 {
-      color: #1f2937;
-      margin-top: 0;
-    }
+    ${this.getBaseStyles()}
     .reason-box {
       background: #fef2f2;
       border: 1px solid #fecaca;
+      border-left: 4px solid #dc2626;
       border-radius: 8px;
       padding: 16px;
       margin: 20px 0;
@@ -472,51 +533,55 @@ export class MailService {
     .reason-box strong {
       color: #dc2626;
     }
-    .button {
-      display: inline-block;
-      background: #2563eb;
-      color: #ffffff !important;
-      padding: 14px 28px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      margin: 20px 0;
-    }
-    .footer {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #e5e7eb;
-      font-size: 14px;
-      color: #6b7280;
+    .reason-box p {
+      margin: 8px 0 0 0;
+      color: #7f1d1d;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">
-      <h1>USCG Marketplace</h1>
-    </div>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <img src="${logoUrl}" alt="USCG" />
+      </div>
 
-    <h2>Bonjour ${firstName},</h2>
+      <div class="content">
+        <h1 class="title">Demande en attente de modifications</h1>
 
-    <p>Nous avons examiné votre demande pour devenir vendeur sous le nom <strong>"${businessName}"</strong>.</p>
+        <p class="text">Bonjour ${firstName},</p>
 
-    <p>Malheureusement, nous ne sommes pas en mesure d'approuver votre demande pour le moment.</p>
+        <p class="text">
+          Nous avons examiné votre demande pour devenir vendeur sous le nom <strong>"${businessName}"</strong>.
+        </p>
 
-    <div class="reason-box">
-      <strong>Raison :</strong>
-      <p style="margin: 8px 0 0 0;">${rejectionReason}</p>
-    </div>
+        <p class="text">
+          Malheureusement, nous ne sommes pas en mesure d'approuver votre demande pour le moment.
+        </p>
 
-    <p>Vous pouvez corriger les éléments mentionnés et soumettre une nouvelle demande.</p>
+        <div class="reason-box">
+          <strong>Raison :</strong>
+          <p>${rejectionReason}</p>
+        </div>
 
-    <p style="text-align: center;">
-      <a href="${marketplaceUrl}/become-seller" class="button">Soumettre une nouvelle demande</a>
-    </p>
+        <p class="text">
+          Vous pouvez corriger les éléments mentionnés et soumettre une nouvelle demande.
+        </p>
 
-    <div class="footer">
-      <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
-      <p>© ${new Date().getFullYear()} Universal Services of Congo. Tous droits réservés.</p>
+        <div class="button-container">
+          <a href="${this.frontendUrl}/become-seller" class="button">Soumettre une nouvelle demande</a>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+        <p>© ${year} Universal Services Of Congo</p>
+        <div class="footer-links">
+          <a href="${this.frontendUrl}/contact">Support</a>
+          <a href="${this.frontendUrl}/contact">Contact</a>
+          <a href="${this.frontendUrl}/terms">Conditions</a>
+        </div>
+      </div>
     </div>
   </div>
 </body>
@@ -528,6 +593,9 @@ export class MailService {
     firstName: string,
     resetUrl: string,
   ): string {
+    const logoUrl = this.getLogoUrl();
+    const year = new Date().getFullYear();
+
     return `
 <!DOCTYPE html>
 <html lang="fr">
@@ -536,99 +604,57 @@ export class MailService {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Réinitialisation du mot de passe</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .container {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 40px;
-    }
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .logo h1 {
-      color: #2563eb;
-      margin: 0;
-      font-size: 28px;
-    }
-    h2 {
-      color: #1f2937;
-      margin-top: 0;
-    }
-    .button {
-      display: inline-block;
-      background: #2563eb;
-      color: #ffffff !important;
-      padding: 14px 28px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      margin: 20px 0;
-    }
-    .button:hover {
-      background: #1d4ed8;
-    }
-    .footer {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #e5e7eb;
-      font-size: 14px;
-      color: #6b7280;
-    }
-    .warning {
-      background: #fef3c7;
-      border: 1px solid #f59e0b;
-      border-radius: 8px;
-      padding: 12px;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    .security-note {
-      background: #f3f4f6;
-      border-radius: 8px;
-      padding: 16px;
-      margin-top: 20px;
-      font-size: 14px;
-    }
+    ${this.getBaseStyles()}
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">
-      <h1>USCG Marketplace</h1>
-    </div>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <img src="${logoUrl}" alt="USCG" />
+      </div>
 
-    <h2>Bonjour ${firstName},</h2>
+      <div class="content">
+        <h1 class="title">Réinitialisation du mot de passe</h1>
 
-    <p>Vous avez demandé la réinitialisation de votre mot de passe sur USCG Marketplace.</p>
+        <p class="text">Bonjour ${firstName},</p>
 
-    <p>Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe :</p>
+        <p class="text">
+          Vous avez demandé la réinitialisation de votre mot de passe sur USCG Marketplace.
+        </p>
 
-    <p style="text-align: center;">
-      <a href="${resetUrl}" class="button">Réinitialiser mon mot de passe</a>
-    </p>
+        <p class="text">
+          Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe :
+        </p>
 
-    <p>Ou copiez ce lien dans votre navigateur :</p>
-    <p style="word-break: break-all; color: #2563eb;">${resetUrl}</p>
+        <div class="button-container">
+          <a href="${resetUrl}" class="button">Réinitialiser mon mot de passe</a>
+        </div>
 
-    <div class="warning">
-      ⏰ Ce lien expire dans <strong>1 heure</strong>.
-    </div>
+        <div class="warning">
+          ⏰ Ce lien expire dans <strong>1 heure</strong>.
+        </div>
 
-    <div class="security-note">
-      🔒 <strong>Note de sécurité :</strong> Si vous n'avez pas demandé cette réinitialisation, ignorez cet email. Votre mot de passe restera inchangé.
-    </div>
+        <div class="link-fallback">
+          <p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p>
+          <a href="${resetUrl}">${resetUrl}</a>
+        </div>
 
-    <div class="footer">
-      <p>© ${new Date().getFullYear()} Universal Services of Congo. Tous droits réservés.</p>
+        <hr class="divider" />
+
+        <div class="info-box">
+          🔒 <strong>Note de sécurité :</strong> Si vous n'avez pas demandé cette réinitialisation, ignorez cet email. Votre mot de passe restera inchangé.
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>© ${year} Universal Services Of Congo</p>
+        <div class="footer-links">
+          <a href="${this.frontendUrl}/contact">Support</a>
+          <a href="${this.frontendUrl}/contact">Contact</a>
+          <a href="${this.frontendUrl}/terms">Conditions</a>
+        </div>
+      </div>
     </div>
   </div>
 </body>
@@ -642,6 +668,9 @@ export class MailService {
     password: string,
     adminPanelUrl: string,
   ): string {
+    const logoUrl = this.getLogoUrl();
+    const year = new Date().getFullYear();
+
     return `
 <!DOCTYPE html>
 <html lang="fr">
@@ -650,33 +679,7 @@ export class MailService {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Votre compte Opérateur</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .container {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 40px;
-    }
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .logo h1 {
-      color: #2563eb;
-      margin: 0;
-      font-size: 28px;
-    }
-    h2 {
-      color: #1f2937;
-      margin-top: 0;
-    }
+    ${this.getBaseStyles()}
     .credentials-box {
       background: #f3f4f6;
       border: 1px solid #e5e7eb;
@@ -687,98 +690,84 @@ export class MailService {
     .credentials-box p {
       margin: 8px 0;
     }
-    .credentials-box strong {
-      color: #1f2937;
-    }
     .credentials-box code {
       background: #e5e7eb;
       padding: 4px 8px;
       border-radius: 4px;
       font-family: monospace;
+      color: #1f2937;
     }
-    .button {
-      display: inline-block;
-      background: #2563eb;
-      color: #ffffff !important;
-      padding: 14px 28px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      margin: 20px 0;
+    .features-list {
+      margin: 16px 0;
+      padding-left: 20px;
     }
-    .warning {
-      background: #fef3c7;
-      border: 1px solid #f59e0b;
-      border-radius: 8px;
-      padding: 16px;
-      margin: 20px 0;
+    .features-list li {
+      margin: 8px 0;
+      color: #4b5563;
     }
-    .warning-icon {
-      font-size: 20px;
-    }
-    .warning strong {
-      color: #b45309;
-    }
-    .security-note {
+    .security-alert {
       background: #fef2f2;
       border: 1px solid #fecaca;
+      border-left: 4px solid #dc2626;
       border-radius: 8px;
       padding: 16px;
       margin-top: 20px;
       font-size: 14px;
     }
-    .security-note strong {
+    .security-alert strong {
       color: #dc2626;
-    }
-    .footer {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #e5e7eb;
-      font-size: 14px;
-      color: #6b7280;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">
-      <h1>USCG Admin</h1>
-    </div>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <img src="${logoUrl}" alt="USCG" />
+      </div>
 
-    <h2>Bienvenue ${firstName} !</h2>
+      <div class="content">
+        <h1 class="title">Bienvenue ${firstName} !</h1>
 
-    <p>Un compte <strong>Opérateur</strong> a été créé pour vous sur la plateforme USCG.</p>
+        <p class="text">
+          Un compte <strong>Opérateur</strong> a été créé pour vous sur la plateforme USCG.
+        </p>
 
-    <p>En tant qu'opérateur, vous pourrez :</p>
-    <ul>
-      <li>Valider ou refuser les annonces des vendeurs</li>
-      <li>Traiter les demandes pour devenir vendeur</li>
-      <li>Gérer les utilisateurs de la plateforme</li>
-    </ul>
+        <p class="text">En tant qu'opérateur, vous pourrez :</p>
+        <ul class="features-list">
+          <li>Valider ou refuser les annonces des vendeurs</li>
+          <li>Traiter les demandes pour devenir vendeur</li>
+          <li>Gérer les utilisateurs de la plateforme</li>
+        </ul>
 
-    <div class="credentials-box">
-      <p><strong>Vos identifiants de connexion :</strong></p>
-      <p>📧 Email : <code>${email}</code></p>
-      <p>🔑 Mot de passe : <code>${password}</code></p>
-    </div>
+        <div class="credentials-box">
+          <p><strong>Vos identifiants de connexion :</strong></p>
+          <p>📧 Email : <code>${email}</code></p>
+          <p>🔑 Mot de passe : <code>${password}</code></p>
+        </div>
 
-    <div class="warning">
-      <span class="warning-icon">⚠️</span>
-      <strong>IMPORTANT :</strong>
-      <p style="margin: 8px 0 0 0;">Lors de votre première connexion, vous serez obligé de changer votre mot de passe. Choisissez un mot de passe fort et unique que vous seul connaissez.</p>
-    </div>
+        <div class="warning">
+          ⚠️ <strong>IMPORTANT :</strong> Lors de votre première connexion, vous serez obligé de changer votre mot de passe. Choisissez un mot de passe fort et unique que vous seul connaissez.
+        </div>
 
-    <p style="text-align: center;">
-      <a href="${adminPanelUrl}" class="button">Se connecter au panel admin</a>
-    </p>
+        <div class="button-container">
+          <a href="${adminPanelUrl}" class="button">Se connecter au panel admin</a>
+        </div>
 
-    <div class="security-note">
-      🔒 <strong>Sécurité :</strong> Ne partagez jamais vos identifiants avec qui que ce soit. L'équipe USCG ne vous demandera jamais votre mot de passe.
-    </div>
+        <div class="security-alert">
+          🔒 <strong>Sécurité :</strong> Ne partagez jamais vos identifiants avec qui que ce soit. L'équipe USCG ne vous demandera jamais votre mot de passe.
+        </div>
+      </div>
 
-    <div class="footer">
-      <p>Cet email a été envoyé automatiquement. Merci de ne pas y répondre.</p>
-      <p>© ${new Date().getFullYear()} Universal Services of Congo. Tous droits réservés.</p>
+      <div class="footer">
+        <p>Cet email a été envoyé automatiquement. Merci de ne pas y répondre.</p>
+        <p>© ${year} Universal Services Of Congo</p>
+        <div class="footer-links">
+          <a href="${this.frontendUrl}/contact">Support</a>
+          <a href="${this.frontendUrl}/contact">Contact</a>
+          <a href="${this.frontendUrl}/terms">Conditions</a>
+        </div>
+      </div>
     </div>
   </div>
 </body>
