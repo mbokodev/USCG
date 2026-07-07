@@ -231,22 +231,35 @@ export default async function ContactPage({ params }: ContactPageProps) {
               {locale === "fr" ? "Suivez-nous sur les réseaux sociaux" : "Follow us on social media"}
             </Paragraph>
             <FlexBox justifyContent="center" style={{ gap: "1rem" }}>
-              {["Facebook", "Twitter", "Instagram", "Linkedin"].map((social) => (
-                <FlexBox
-                  key={social}
-                  width={44}
-                  height={44}
-                  bg="gray.100"
-                  borderRadius="50%"
-                  alignItems="center"
-                  justifyContent="center"
-                  style={{
-                    cursor: "pointer",
-                    transition: "background 0.2s",
-                  }}
+              {[
+                { name: "Facebook", url: "https://facebook.com" },
+                { name: "Twitter", url: "https://twitter.com" },
+                { name: "Instagram", url: "https://instagram.com" },
+                { name: "Linkedin", url: "https://linkedin.com" },
+              ].map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
                 >
-                  <LucideIcon name={social} size={20} color="#666" />
-                </FlexBox>
+                  <FlexBox
+                    width={44}
+                    height={44}
+                    bg="gray.100"
+                    borderRadius="50%"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{
+                      cursor: "pointer",
+                      transition: "all 0.2s",
+                    }}
+                    className="hover:bg-gray-200"
+                  >
+                    <LucideIcon name={social.name} size={20} color="#666" />
+                  </FlexBox>
+                </a>
               ))}
             </FlexBox>
           </Box>
