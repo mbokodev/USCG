@@ -10,8 +10,11 @@ import Box from "@component/ui/Box";
 import Card from "@component/ui/Card";
 import Grid from "@component/ui/grid/Grid";
 import FlexBox from "@component/ui/FlexBox";
-import { H1, H2, H3, Paragraph } from "@component/ui/Typography";
+import { H1, H2, Paragraph } from "@component/ui/Typography";
 import LucideIcon from "@component/ui/LucideIcon";
+
+// COMPONENTS
+import { ContactForm } from "@component/contact";
 
 // API FUNCTIONS
 import { getCategories } from "@/services/categories.service";
@@ -32,7 +35,7 @@ interface ContactPageProps {
 const CONTACT_INFO = {
   address: "Carrefour Raffinerie - Siafoumou Bloc 7-8",
   city: "Pointe-Noire, Congo",
-  email: "support@universal-services-cg.com",
+  email: "contact@universal-services-cg.com",
   phone: "+242 06 654 40 11",
   hours: "Lun - Sam: 8h00 - 18h00",
 };
@@ -212,50 +215,13 @@ export default async function ContactPage({ params }: ContactPageProps) {
               </Box>
             </Grid>
 
-            {/* Form Placeholder */}
+            {/* Contact Form */}
             <Grid item xs={12} md={5}>
               <H2 mb="1.5rem" fontSize="1.5rem">
                 {t("form.title")}
               </H2>
 
-              <Card
-                p="2rem"
-                borderRadius={16}
-                style={{
-                  background: "linear-gradient(135deg, #f8f9fa 0%, #fff 100%)",
-                  border: "2px dashed #ddd",
-                  minHeight: "300px",
-                }}
-              >
-                <FlexBox
-                  height="100%"
-                  minHeight="250px"
-                  flexDirection="column"
-                  alignItems="center"
-                  justifyContent="center"
-                  textAlign="center"
-                >
-                  <FlexBox
-                    width={64}
-                    height={64}
-                    bg="gray.100"
-                    borderRadius="50%"
-                    alignItems="center"
-                    justifyContent="center"
-                    mb="1rem"
-                  >
-                    <LucideIcon name="Send" size={28} color="#999" />
-                  </FlexBox>
-                  <H3 color="text.secondary" fontSize="1.1rem" mb="0.5rem">
-                    {t("form.comingSoon")}
-                  </H3>
-                  <Paragraph color="text.muted" fontSize="14px">
-                    {locale === "fr"
-                      ? "En attendant, contactez-nous par email ou téléphone."
-                      : "In the meantime, contact us by email or phone."}
-                  </Paragraph>
-                </FlexBox>
-              </Card>
+              <ContactForm locale={locale} />
             </Grid>
           </Grid>
 

@@ -367,7 +367,17 @@
       },
       "form": {
         "title": "Envoyez-nous un message",
-        "comingSoon": "Formulaire bientôt disponible"
+        "name": "Votre nom",
+        "email": "Votre email",
+        "subject": "Sujet",
+        "message": "Message",
+        "messageHint": "Minimum 10 caractères",
+        "submit": "Envoyer le message",
+        "sending": "Envoi en cours...",
+        "successTitle": "Message envoyé !",
+        "successMessage": "Merci pour votre message. Nous vous répondrons dans les plus brefs délais.",
+        "sendAnother": "Envoyer un autre message",
+        "errorGeneric": "Une erreur est survenue. Veuillez réessayer."
       }
     }
   },

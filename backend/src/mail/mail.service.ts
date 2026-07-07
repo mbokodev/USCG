@@ -662,6 +662,134 @@ export class MailService {
     `.trim();
   }
 
+  /**
+   * Email de formulaire de contact
+   */
+  async sendContactFormEmail(
+    name: string,
+    email: string,
+    subject: string,
+    message: string,
+  ): Promise<void> {
+    const adminEmail = process.env.CONTACT_EMAIL || 'contact@universal-services-cg.com';
+
+    if (!this.isConfigured || !this.resend) {
+      this.logger.warn('='.repeat(60));
+      this.logger.warn('EMAIL FORMULAIRE DE CONTACT (Mode développement)');
+      this.logger.warn(`From: ${name} <${email}>`);
+      this.logger.warn(`Subject: ${subject}`);
+      this.logger.warn(`Message: ${message}`);
+      this.logger.warn(`To Admin: ${adminEmail}`);
+      this.logger.warn('='.repeat(60));
+      return;
+    }
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: adminEmail,
+        replyTo: email,
+        subject: `[Contact USCG] ${subject}`,
+        html: this.getContactFormEmailTemplate(name, email, subject, message),
+      });
+
+      this.logger.log(`Contact form email sent from ${email}`);
+    } catch (error) {
+      this.logger.error(`Failed to send contact form email from ${email}`, error);
+      throw error;
+    }
+  }
+
+  private getContactFormEmailTemplate(
+    name: string,
+    email: string,
+    subject: string,
+    message: string,
+  ): string {
+    const logoUrl = this.getLogoUrl();
+    const year = new Date().getFullYear();
+    const date = new Date().toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    return `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nouveau message de contact</title>
+  <style>
+    ${this.getBaseStyles()}
+    .contact-info {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+    }
+    .contact-info p {
+      margin: 8px 0;
+    }
+    .contact-info strong {
+      color: #374151;
+    }
+    .message-box {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-left: 4px solid #D23F57;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      white-space: pre-wrap;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <img src="${logoUrl}" alt="USCG" />
+      </div>
+
+      <div class="content">
+        <h1 class="title">Nouveau message de contact</h1>
+
+        <p class="text">Vous avez reçu un nouveau message via le formulaire de contact du site.</p>
+
+        <div class="contact-info">
+          <p><strong>Date :</strong> ${date}</p>
+          <p><strong>Nom :</strong> ${name}</p>
+          <p><strong>Email :</strong> <a href="mailto:${email}" style="color: #D23F57;">${email}</a></p>
+          <p><strong>Sujet :</strong> ${subject}</p>
+        </div>
+
+        <h3 style="margin-bottom: 10px; color: #1f2937;">Message :</h3>
+        <div class="message-box">${message}</div>
+
+        <div class="button-container">
+          <a href="mailto:${email}?subject=Re: ${subject}" class="button">Répondre à ${name}</a>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>Ce message a été envoyé depuis le formulaire de contact USCG Marketplace.</p>
+        <p>© ${year} Universal Services Of Congo</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+  }
+
   private getOperatorCredentialsEmailTemplate(
     firstName: string,
     email: string,

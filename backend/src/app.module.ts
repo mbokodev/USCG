@@ -19,6 +19,7 @@ import { FlashDealsModule } from './flash-deals';
 import { FeaturedSectionsModule } from './featured-sections';
 import { StaticPagesModule } from './static-pages';
 import { FaqModule } from './faq';
+import { ContactModule } from './contact';
 import { MailModule } from './mail/mail.module';
 
 @Module({
@@ -59,6 +60,7 @@ import { MailModule } from './mail/mail.module';
     FeaturedSectionsModule,
     StaticPagesModule,
     FaqModule,
+    ContactModule,
     MailModule,
   ],
   controllers: [AppController],

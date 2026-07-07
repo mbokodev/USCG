@@ -367,7 +367,17 @@
       },
       "form": {
         "title": "Send us a message",
-        "comingSoon": "Form coming soon"
+        "name": "Your name",
+        "email": "Your email",
+        "subject": "Subject",
+        "message": "Message",
+        "messageHint": "Minimum 10 characters",
+        "submit": "Send message",
+        "sending": "Sending...",
+        "successTitle": "Message sent!",
+        "successMessage": "Thank you for your message. We will respond as soon as possible.",
+        "sendAnother": "Send another message",
+        "errorGeneric": "An error occurred. Please try again."
       }
     }
   },
